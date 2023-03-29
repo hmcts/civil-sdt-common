@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+	elementFormDefault="qualified"
+    version="1.0">
+    
+	<xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="Base.xsd" />
+    
+    <xs:complexType name="responseDetailType">
+        <xs:sequence>
+            <xs:element name="claimNumber" type="base:claimNumberType"  minOccurs="0"/>
+            <xs:element name="issueDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="serviceDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="judgmentEnteredDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="firstPaymentDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="warrantNumber" type="base:warrantNumberType"  minOccurs="0"/>
+            <xs:element name="enforcingCourtCode" type="base:courtCodeType"  minOccurs="0"/>
+            <xs:element name="enforcingCourtName" type="base:courtNameType"  minOccurs="0"/>
+            <xs:element name="fee" type="xs:unsignedLong"  minOccurs="0"/>
+            <xs:element name="judgmentWarrantStatus" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="255" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="mcolResponseDetail" type="tns:responseDetailType" />
+
+</xs:schema>

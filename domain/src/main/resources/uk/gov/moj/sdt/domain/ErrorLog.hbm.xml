@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.ErrorLog" lazy="false" table="ERROR_LOGS">
+        <id name="id" column="ERROR_LOG_ID" >  
+        	<generator class="sequence" >
+            	<param name="sequence">err_log_seq</param>
+            </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <property name="createdDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="CREATED_DATE" />
+        </property>
+        <property name="updatedDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="UPDATED_DATE" />
+        </property>
+        <property name="errorCode" type="java.lang.String">
+            <column name="ERROR_CODE" />
+        </property>
+        <property name="errorText" type="java.lang.String">
+            <column name="ERROR_TEXT" />
+        </property>
+		<!-- This is effectively a one to one mapping -->
+        <many-to-one name="individualRequest" class="uk.gov.moj.sdt.domain.IndividualRequest" not-null="true" unique="true">
+        	<column name="INDIVIDUAL_REQUEST_ID" />
+    	</many-to-one>
+    </class>
+</hibernate-mapping>

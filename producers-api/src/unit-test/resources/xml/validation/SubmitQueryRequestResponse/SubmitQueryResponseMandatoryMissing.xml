@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:submitQueryResponse xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns2="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema ../../../../../main/resources/xsd/SubmitQueryRequestResponse/SubmitQueryResponse.xsd ">
+  <tns1:status code="Ok">
+    <tns1:error>
+      <tns1:code>tns1 code</tns1:code>
+      <tns1:description>tns1 description</tns1:description>
+    </tns1:error>
+  </tns1:status>
+  <tns:sdtService>tns sdtService</tns:sdtService>
+  <tns:resultCount>0</tns:resultCount>
+  <tns:results>
+      <tns:mcolDefenceDetail>
+        <tns2:defendantResponse defendantId="1">
+          <tns2:filedDate>2001-12-31</tns2:filedDate>
+          <tns2:eventCreatedDateOnMcol>2001-12-31T12:00:00</tns2:eventCreatedDateOnMcol>
+          <tns2:raisedOnMcol>true</tns2:raisedOnMcol>
+          <tns2:responseType>DE</tns2:responseType>
+          <!--  optional <tns2:defence>Good alibi.</tns2:defence>  -->
+        </tns2:defendantResponse>
+      </tns:mcolDefenceDetail>
+  </tns:results>
+</tns:submitQueryResponse>

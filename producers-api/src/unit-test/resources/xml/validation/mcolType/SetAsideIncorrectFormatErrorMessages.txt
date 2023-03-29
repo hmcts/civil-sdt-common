@@ -1,0 +1,21 @@
+cvc-complex-type.2.4.e: 'tns:supportingInformation' can occur a maximum of '3' times in the current sequence. This limit was exceeded. At this point one of '{"http://ws.sdt.moj.gov.uk/2013/mcol/SetAsideSchema":evidence}' is expected.
+cvc-datatype-valid.1.2.1: 'blah' is not a valid value for 'boolean'.
+cvc-enumeration-valid: Value 'PH' is not facet-valid with respect to enumeration '[AH, WH, TH]'. It must be a value from the enumeration.
+cvc-enumeration-valid: Value 'PS' is not facet-valid with respect to enumeration '[WS, SC, EV]'. It must be a value from the enumeration.
+cvc-enumeration-valid: Value 'VS' is not facet-valid with respect to enumeration '[WS, SC, EV]'. It must be a value from the enumeration.
+cvc-enumeration-valid: Value 'z' is not facet-valid with respect to enumeration '[C, D, L, O]'. It must be a value from the enumeration.
+cvc-maxInclusive-valid: Value '2000' is not facet-valid with respect to maxInclusive '999' for type '#AnonType_hourshearingTimeEstimateType'.
+cvc-maxInclusive-valid: Value '60' is not facet-valid with respect to maxInclusive '59' for type '#AnonType_minuteshearingTimeEstimateType'.
+cvc-maxLength-valid: Value '1234567890123456789012345678901234567890' with length = '40' is not facet-valid with respect to maxLength '34' for type 'setAsideStringType'.
+cvc-pattern-valid: Value 'tns:claimNumber' is not facet-valid with respect to pattern '[0-9A-Za-z]{8}' for type 'claimNumberType'.
+cvc-pattern-valid: Value 'tns:postcode' is not facet-valid with respect to pattern '[0-9a-zA-Z ]+' for type 'nonUKPostcodeType'.
+cvc-type.3.1.3: The value '1234567890123456789012345678901234567890' of element 'tns:representing' is not valid.
+cvc-type.3.1.3: The value '2000' of element 'tns:hours' is not valid.
+cvc-type.3.1.3: The value '60' of element 'tns:minutes' is not valid.
+cvc-type.3.1.3: The value 'blah' of element 'tns:agreedByAll' is not valid.
+cvc-type.3.1.3: The value 'PH' of element 'tns:applicationHandling' is not valid.
+cvc-type.3.1.3: The value 'PS' of element 'tns:supportingInformation' is not valid.
+cvc-type.3.1.3: The value 'tns:claimNumber' of element 'tns:claimNumber' is not valid.
+cvc-type.3.1.3: The value 'tns:postcode' of element 'tns:postcode' is not valid.
+cvc-type.3.1.3: The value 'VS' of element 'tns:supportingInformation' is not valid.
+cvc-type.3.1.3: The value 'z' of element 'tns:applicantType' is not valid.

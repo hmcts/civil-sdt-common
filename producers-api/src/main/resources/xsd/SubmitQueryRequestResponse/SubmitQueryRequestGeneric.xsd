@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+	elementFormDefault="qualified"
+    version="1.0">
+	
+	<xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="../RootXSDs/Base.xsd"/>
+	
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="sdtCustomerId" type="base:sdtCustomerIdType" />
+			<xs:element name="targetApplicationId" type="base:targetApplicationIdType" />
+            <xs:element name="queryReference" minOccurs="0"> 
+                <xs:simpleType>
+                    <xs:restriction base="base:sdtStringType">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    
+    <xs:complexType name="criterionType">
+        <xs:choice>
+            <xs:any processContents="lax"/>
+        </xs:choice>
+        <xs:attribute name="criteriaType" type="base:criteriaTypeType" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="criteriaType">
+        <xs:sequence>
+            <xs:element name="criterion" type="tns:criterionType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="submitQueryRequestType">
+        <xs:sequence>
+            <xs:element name="header" type="tns:headerType" />
+            <xs:element name="criteria" type="tns:criteriaType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="submitQueryRequest" type="tns:submitQueryRequestType" />
+    
+</xs:schema>

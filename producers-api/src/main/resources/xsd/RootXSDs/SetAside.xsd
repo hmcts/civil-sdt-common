@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://ws.sdt.moj.gov.uk/2013/mcol/SetAsideSchema"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/SetAsideSchema"
+	xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+	elementFormDefault="qualified" version="1.0">
+
+	<xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+		schemaLocation="Base.xsd" />
+
+
+	<xs:simpleType name="setAsideStringType">
+		<xs:restriction base="base:sdtNonBlankStringType">
+			<xs:minLength value="1" />
+			<xs:maxLength value="34" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="applicationTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="C" />
+			<xs:enumeration value="D" />
+			<xs:enumeration value="L" />
+			<xs:enumeration value="O" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="applicantType">
+		<xs:sequence>
+			<xs:element name="applicantType" type="tns:applicationTypeType" minOccurs="1"/>
+			<xs:element name="otherDetail" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="base:sdtNonBlankStringType">
+						<xs:minLength value="1" />
+						<xs:maxLength value="53" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="representing" type="tns:setAsideStringType"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="applicationHandlingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AH" />
+			<xs:enumeration value="WH" />
+			<xs:enumeration value="TH" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="hearingTimeEstimateType">
+		<xs:sequence>
+			<xs:element name="hours" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="999" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="minutes" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="59" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="agreedByAll" type="xs:boolean"
+				minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="serviceAddressType">
+		<xs:sequence>
+			<xs:element name="line1" type="base:nonBlankLineType" minOccurs="1" />
+			<xs:element name="line2" type="base:nonBlankLineType" minOccurs="1" />
+			<xs:element name="line3" type="base:lineType" minOccurs="0" />
+			<xs:element name="line4" type="base:lineType" minOccurs="0" />
+			<xs:element name="postcode" type="base:nonUKPostcodeType"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="servingTargetType">
+		<xs:sequence>
+			<xs:element name="serveApplicationTo" type="tns:setAsideStringType"
+				minOccurs="0" />
+			<xs:element name="serviceAddress" type="tns:serviceAddressType"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="supportingInformationTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WS" />
+			<xs:enumeration value="SC" />
+			<xs:enumeration value="EV" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="evidenceType">
+		<xs:restriction base="base:sdtNonBlankStringType">
+			<xs:minLength value="1" />
+			<xs:maxLength value="8000" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="inSupportType">
+		<xs:sequence>
+			<xs:element name="supportingInformation" type="tns:supportingInformationTypeType"
+				minOccurs="1" maxOccurs="3" />
+			<xs:element name="evidence" type="tns:evidenceType"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="setAsideType">
+		<xs:sequence>
+			<xs:element name="claimNumber" type="base:claimNumberType"
+				minOccurs="1" />
+
+			<xs:element name="defendantId" type="base:defendantIdType"
+				minOccurs="1" />
+			<xs:element name="applicantType" type="tns:applicantType"
+				minOccurs="1" />
+			<xs:element name="orderAndDetails" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="base:sdtNonBlankStringType">
+						<xs:minLength value="1" />
+						<xs:maxLength value="3000" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="applicationHandling" type="tns:applicationHandlingType" />
+
+			<xs:element name="hearingTimeEstimates" type="tns:hearingTimeEstimateType"
+				minOccurs="0" />
+			<xs:element name="trialDetails" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="base:sdtNonBlankStringType">
+						<xs:minLength value="0" />
+						<xs:maxLength value="34" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="judgeLevel" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="base:sdtNonBlankStringType">
+						<xs:minLength value="0" />
+						<xs:maxLength value="34" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="servingTarget" type="tns:servingTargetType"
+				minOccurs="0" />
+			<xs:element name="inSupport" type="tns:inSupportType"
+				minOccurs="1"/>
+			<xs:element name="sotSignature" type="base:sotSignatureType"
+				minOccurs="1">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="mcolSetAside" type="tns:setAsideType" />
+
+</xs:schema>

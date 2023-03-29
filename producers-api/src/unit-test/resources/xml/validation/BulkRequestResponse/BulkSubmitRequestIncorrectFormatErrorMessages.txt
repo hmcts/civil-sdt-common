@@ -1,0 +1,12 @@
+cvc-pattern-valid: Value '1234567890123456789012345' is not facet-valid with respect to pattern '[1-9][0-9]{7}' for type 'sdtCustomerIdType'.
+cvc-type.3.1.3: The value '1234567890123456789012345' of element 'tns:sdtCustomerId' is not valid.
+cvc-maxLength-valid: Value '123456789012345678901234567890123' with length = '33' is not facet-valid with respect to maxLength '32' for type 'customerReferenceType'.
+cvc-type.3.1.3: The value '123456789012345678901234567890123' of element 'tns:customerReference' is not valid.
+cvc-pattern-valid: Value 'false' is not facet-valid with respect to pattern 'true' for type '#AnonType_flagsotSignatureType'.
+cvc-type.3.1.3: The value 'false' of element 'tns1:flag' is not valid.
+cvc-maxLength-valid: Value '123456789012345678901234567890123' with length = '33' is not facet-valid with respect to maxLength '30' for type '#AnonType_namesotSignatureType'.
+cvc-type.3.1.3: The value '123456789012345678901234567890123' of element 'tns1:name' is not valid.
+cvc-maxLength-valid: Value '1234567890123456789012345' with length = '25' is not facet-valid with respect to maxLength '24' for type 'requestIdType'.
+cvc-attribute.3: The value '1234567890123456789012345' of attribute 'requestId' on element 'tns:request' is not valid with respect to its type, 'requestIdType'.
+cvc-length-valid: Value 'mcol1' with length = '5' is not facet-valid with respect to length '4' for type 'targetApplicationIdType'.
+cvc-type.3.1.3: The value 'mcol1' of element 'tns:targetApplicationId' is not valid.

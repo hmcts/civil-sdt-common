@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Message from SDT to MCOL -->
+<individualRequest>
+    <header>
+        <sdtRequestId>xyz123</sdtRequestId>
+        <targetAppCustomerId>Mcol Customer Id</targetAppCustomerId>
+        <requestType>mcolClaimStatusUpdate</requestType>
+    </header>
+    <targetAppDetail>
+        <mcolClaimStatusUpdate>
+            <claimNumber>12345678</claimNumber>
+            <defendantId>1</defendantId>
+            <notificationType>MP</notificationType>
+        </mcolClaimStatusUpdate>
+    </targetAppDetail>
+</individualRequest>

@@ -1,0 +1,3 @@
+cvc-complex-type.2.4.b: The content of element 'tns:header' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema":sdtCustomerId}' is expected.
+cvc-complex-type.2.4.b: The content of element 'tns:criterion' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema":mcolDefenceCriteria}' is expected.
+cvc-complex-type.4: Attribute 'criteriaType' must appear on element 'tns:criterion'.

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:individualResponse 
+xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema" 
+xmlns:mresp="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema ../../../../../main/resources/xsd/IndvRequestResponse/IndividualSubmitResponseGeneric.xsd ">
+  <tns:header>
+    <tns:sdtRequestId>1234567</tns:sdtRequestId>
+  </tns:header>
+  <tns:targetAppDetail>
+    <tns:mcolResponseDetail>
+    </tns:mcolResponseDetail>
+  </tns:targetAppDetail>
+  <tns:status code="Accepted">
+    <tns1:error>
+      <tns1:code>tns1 code</tns1:code>
+      <tns1:description>tns1 description</tns1:description>
+    </tns1:error>
+  </tns:status>
+</tns:individualResponse>

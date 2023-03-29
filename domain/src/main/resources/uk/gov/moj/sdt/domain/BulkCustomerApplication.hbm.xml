@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.BulkCustomerApplication" lazy="false" table="BULK_CUSTOMER_APPLICATIONS">
+        <id name="id" column="BULK_CUSTOMER_APPLICATIONS_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">bulk_cust_app_seq</param>
+                  </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <many-to-one name="targetApplication" class="uk.gov.moj.sdt.domain.TargetApplication" fetch="join">
+            <column name="TARGET_APPLICATION_ID" />
+        </many-to-one>
+        <many-to-one name="bulkCustomer" class="uk.gov.moj.sdt.domain.BulkCustomer" fetch="join">
+            <column name="BULK_CUSTOMER_ID" />
+        </many-to-one>
+        <property name="customerApplicationId" type="java.lang.String">
+            <column name="CUSTOMER_APPLICATION_ID" />
+        </property>
+    </class>
+</hibernate-mapping>

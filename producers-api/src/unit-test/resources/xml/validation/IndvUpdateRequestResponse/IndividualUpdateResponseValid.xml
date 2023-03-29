@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:updateResponse xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema ../../../../../main/resources/xsd/IndvUpdateRequestResponse/IndividualUpdateResponse.xsd ">
+  <tns:status code="Ok">
+    <tns1:error>
+      <tns1:code>tns1 code</tns1:code>
+      <tns1:description>tns1 description</tns1:description>
+    </tns1:error>
+  </tns:status>
+</tns:updateResponse>

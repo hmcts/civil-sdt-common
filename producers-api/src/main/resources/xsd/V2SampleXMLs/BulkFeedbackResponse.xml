@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bulkFeedbackResponse>
+    <bulkRequestStatus>
+        <customerReference>12345</customerReference>
+        <sdtBulkReference>std_reference</sdtBulkReference>
+        <submittedDate>2001-12-31T12:00:00</submittedDate>
+        <sdtService>SDT</sdtService>
+        <requestCount>1</requestCount>
+        <bulkStatus code="ACCEPTED|ERROR">
+            <error>
+                <code>1234</code>
+                <description>description</description>
+            </error>
+        </bulkStatus>
+        <status code="OK/Error">
+            <error> <!-- only if error found -->
+                <code>code</code>
+                <description>description</description>
+            </error>
+        </status>
+    </bulkRequestStatus>
+    <responses> 
+        <response requestType="mcolClaim" requestId="request identifier">
+            <responseDetail>
+                <mcolResponseDetail>
+                    <claimNumber>12345678</claimNumber>
+                    <issueDate>2012-11-11</issueDate>
+                    <serviceDate>2012-11-11</serviceDate>
+                    <warrantNumber>12345678</warrantNumber>
+                    <enforcingCourtCode>123</enforcingCourtCode>
+                    <enforcingCourtName>enforcing_court_name</enforcingCourtName>
+                    <fee>9999</fee>
+                </mcolResponseDetail>
+            </responseDetail>
+            <status code="OK|ERROR">
+                <error>
+                    <code>1234</code>
+                    <description>description</description>
+                </error>
+            </status>
+        </response>
+        <response requestType="abc" requestId="request identifier">
+            <responseDetail>
+                <pcolResponseDetail>
+                </pcolResponseDetail>
+            </responseDetail>
+            <status code="OK|ERROR">
+                <error>
+                    <code>1234</code>
+                    <description>description</description>
+                </error>
+            </status>
+        </response>
+    </responses>
+</bulkFeedbackResponse>

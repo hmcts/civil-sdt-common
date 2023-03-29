@@ -1,0 +1,2 @@
+cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema":sdtService}'. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema":sdtCustomerId}' is expected.
+cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema":defendantResponse}'. One of '{"http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema":claimNumber}' is expected.

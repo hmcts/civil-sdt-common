@@ -1,0 +1,2 @@
+cvc-complex-type.2.4.b: The content of element 'tns:header' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema":sdtRequestId}' is expected.
+cvc-complex-type.2.4.b: The content of element 'tns:individualRequest' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema":targetAppDetail}' is expected.

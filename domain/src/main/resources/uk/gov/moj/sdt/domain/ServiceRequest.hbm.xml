@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-Jul-2013 12:18:37 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="uk.gov.moj.sdt.domain.ServiceRequest" table="SERVICE_REQUESTS"  dynamic-update="true">
+		<id name="id" column="SERVICE_REQUEST_ID" >
+			<generator class="sequence">
+				<param name="sequence">srv_req_seq</param>
+			</generator>
+		</id>
+		<version name="version" access="field" column="VERSION_NUMBER"/>
+		<property name="bulkCustomerId" type="java.lang.String"
+			>
+			<column name="SDT_CUSTOMER_ID" />
+		</property>
+		<property name="requestDateTime" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime"
+			>
+			<column name="REQUEST_TIMESTAMP" />
+		</property>
+		<property name="responseDateTime" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime"
+			>
+			<column name="RESPONSE_TIMESTAMP" />
+		</property>
+		<property name="requestType" type="java.lang.String" >
+			<column name="REQUEST_TYPE" />
+		</property>
+		<property name="requestPayload" type="uk.gov.moj.sdt.domain.type.BlobType"
+			>
+			<column name="REQUEST_PAYLOAD" />
+		</property>
+		<property name="responsePayload" type="uk.gov.moj.sdt.domain.type.BlobType"
+			>
+			<column name="RESPONSE_PAYLOAD" />
+		</property>
+		<property name="bulkReference" type="java.lang.String"
+			>
+			<column name="SDT_BULK_REFERENCE" />
+		</property>		
+		<property name="serverHostName" type="java.lang.String"
+			>
+			<column name="SERVER_HOST_NAME" />
+		</property>	
+	</class>
+</hibernate-mapping>

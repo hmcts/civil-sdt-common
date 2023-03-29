@@ -1,0 +1,2 @@
+cvc-complex-type.2.4.b: The content of element 'tns:header' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryRequestSchema":targetAppCustomerId}' is expected.
+cvc-complex-type.2.4.b: The content of element 'tns:targetAppDetail' is not complete. One of '{WC[##any]}' is expected.

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkRequest xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns2="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema" xmlns:tns3="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema" xmlns:tns4="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:tns5="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema ../../../../../main/resources/xsd/BulkRequestResponse/BulkSubmitRequest.xsd ">
+  <tns:header>
+    <tns:sdtCustomerId>1234567890123456789012345</tns:sdtCustomerId>
+    <tns:targetApplicationId>mcol1</tns:targetApplicationId>
+    <tns:requestCount>-1</tns:requestCount>
+    <tns:customerReference>123456789012345678901234567890123</tns:customerReference>
+  </tns:header>
+  <tns:requests>
+      <tns:request requestId="1234567890123456789012345" requestType="mcolClaim1">
+        <tns:mcolClaim>
+          <tns2:defendant1>
+            <tns2:name>tns1 name</tns2:name>
+            <tns2:address>
+              <tns1:line1>tns1 line1</tns1:line1>
+              <tns1:line2>tns1 line2</tns1:line2>
+              <tns1:postcode>FL23 2SD</tns1:postcode>
+            </tns2:address>
+          </tns2:defendant1>
+          <tns2:sendParticularsSeparately>true</tns2:sendParticularsSeparately>
+          <tns2:reserveRightToClaimInterest>true</tns2:reserveRightToClaimInterest>
+          <tns2:claimAmount>0</tns2:claimAmount>
+          <tns2:particulars>tns2 particulars</tns2:particulars>
+          <tns2:sotSignature>
+            <tns1:flag>false</tns1:flag>
+            <tns1:name>123456789012345678901234567890123</tns1:name>
+          </tns2:sotSignature>
+        </tns:mcolClaim>
+      </tns:request>
+  </tns:requests>
+</tns:bulkRequest>

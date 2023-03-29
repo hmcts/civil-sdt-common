@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkFeedbackResponse xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema ../../../../../main/resources/xsd/RequestBulkFeedback/BulkFeedbackResponse.xsd ">
+  <tns:bulkRequestStatus>
+    <tns:sdtBulkReference>12345678901234567890123456789012</tns:sdtBulkReference>
+    <tns:requestCount>0</tns:requestCount>
+  </tns:bulkRequestStatus>
+  <tns:responses>
+    <tns:mcolResponses>
+      <tns:mcolResponse requestId="123" requestType="mcolClaim">
+        <tns:claimNumber>12345678</tns:claimNumber>
+        <tns:issueDate>2001-01-01</tns:issueDate>
+        <tns:serviceDate>2001-01-01</tns:serviceDate>
+        <tns:warrantNumber>12345678</tns:warrantNumber>
+        <tns:enforcingCourtCode>123</tns:enforcingCourtCode>
+        <tns:enforcingCourtName>tns:enforcingCourtName</tns:enforcingCourtName>
+        <tns:fee>0</tns:fee>
+        <tns:status code="ACCEPTED">
+          <base:error>
+            <base:code>base:code</base:code>
+            <base:description>base:description</base:description>
+          </base:error>
+        </tns:status>
+      </tns:mcolResponse>
+    </tns:mcolResponses>
+  </tns:responses>
+</tns:bulkFeedbackResponse>

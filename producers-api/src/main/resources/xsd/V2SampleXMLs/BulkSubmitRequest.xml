@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Message from external system to SDT Gateway -->
+<bulkRequest>
+    <header>
+        <sdtCustomerId>SDT_Customer_id</sdtCustomerId> 
+        <targetApplicationId>mcol</targetApplicationId>
+        <requestCount>2</requestCount>
+        <customerReference>customer_external_reference</customerReference>
+    </header>
+	<requests>
+        <request requestType="mcolClaim" requestId="request identifier">
+        <!-- Only one type of request will be allowed -->
+            <mcolClaim></mcolClaim>
+            <mcolJudgment></mcolJudgment>
+            <mcolWarrant></mcolWarrant>
+            <mcolJudgmentWarrant></mcolJudgmentWarrant>
+            <mcolClaimStatusUpdate></mcolClaimStatusUpdate>
+            <mcolBreathingSpace></mcolBreathingSpace>
+            <pcolRequest></pcolRequest>
+        </request>
+        <request requestType="pcolClaim" requestId="request identifier">
+            <pcolClaim></pcolClaim>
+        </request>
+	</requests>
+</bulkRequest>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.IndividualRequest" lazy="false" table="INDIVIDUAL_REQUESTS" dynamic-update="true">
+       <id name="id" column="INDIVIDUAL_REQUEST_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">ind_req_seq</param>
+                  </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <many-to-one name="bulkSubmission" class="uk.gov.moj.sdt.domain.BulkSubmission" fetch="join">
+            <column name="BULK_SUBMISSION_ID" />
+        </many-to-one>
+        <property name="customerRequestReference" type="java.lang.String">
+            <column name="CUSTOMER_REQUEST_REF" />
+        </property>
+        <property name="requestStatus" type="java.lang.String">
+            <column name="REQUEST_STATUS" />
+        </property>
+        <property name="sdtBulkReference" type="java.lang.String">
+            <column name="SDT_BULK_REFERENCE" />
+        </property>
+        <property name="lineNumber" type="int">
+            <column name="LINE_NUMBER" />
+        </property>
+        <property name="sdtRequestReference" type="java.lang.String">
+            <column name="SDT_REQUEST_REFERENCE" />
+        </property>
+        <property name="createdDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="CREATED_DATE" />
+        </property>
+        <property name="updatedDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="UPDATED_DATE" />
+        </property>
+        <property name="completedDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="COMPLETED_DATE" />
+        </property>
+        <property name="forwardingAttempts" type="int">
+            <column name="FORWARDING_ATTEMPTS" />
+        </property>
+        <property name="targetApplicationResponse" type="uk.gov.moj.sdt.domain.type.BlobType">
+            <column name="TARGET_APPLICATION_RESPONSE" />
+        </property>
+        <property name="requestPayload" type="uk.gov.moj.sdt.domain.type.BlobType">
+            <column name="INDIVIDUAL_PAYLOAD" />
+        </property>           
+        <property name="internalSystemError" type="java.lang.String">
+            <column name="INTERNAL_SYSTEM_ERROR" />
+        </property>
+        <property name="requestType" type="java.lang.String">
+            <column name="REQUEST_TYPE" />
+        </property>                
+        <property name="deadLetter" type="yes_no">
+            <column name="DEAD_LETTER" />
+        </property>                
+        <one-to-one name="errorLog" class="uk.gov.moj.sdt.domain.ErrorLog" cascade="all" property-ref="individualRequest">
+        </one-to-one>
+        
+    </class>
+</hibernate-mapping>

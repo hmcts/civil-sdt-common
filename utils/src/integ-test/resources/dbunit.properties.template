@@ -1,0 +1,3 @@
+db.url=${db.url}
+db.system.user=${db.system.user}
+db.system.pass=${db.system.pass}

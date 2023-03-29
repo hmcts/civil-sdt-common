@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:submitQueryResponse xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryResponseSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryResponseSchema ../../../../../main/resources/xsd/SubmitQueryRequestResponse/SubmitQueryResponseTargetAppGeneric.xsd ">
+  <tns:targetAppCustomerId></tns:targetAppCustomerId>
+  <tns:targetAppDetail>
+  </tns:targetAppDetail>
+
+
+</tns:submitQueryResponse>

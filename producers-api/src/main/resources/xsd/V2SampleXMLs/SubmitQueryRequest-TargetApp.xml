@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SDT to MCOL -->
+<submitQueryRequest>
+    <header>
+        <targetAppCustomerId>MCOL Customer Id</targetAppCustomerId>
+        <criteriaType>mcolDefenceCriteria</criteriaType>
+    </header>
+    <targetAppDetail>
+        <mcolDefenceCriteria>
+            <fromDate>2001-01-01T12:00:00</fromDate>
+            <toDate>2001-02-01T12:00:00</toDate>
+        </mcolDefenceCriteria>
+    </targetAppDetail>
+</submitQueryRequest>

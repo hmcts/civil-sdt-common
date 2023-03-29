@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.BulkCustomer" lazy="false" table="BULK_CUSTOMERS">
+    	<id name="id" column="BULK_CUSTOMER_ID" >  
+          <generator class="sequence" >
+          	<param name="sequence">bulk_cust_seq</param>
+          </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <property name="sdtCustomerId" column="SDT_CUSTOMER_ID"/>
+        <set name="bulkCustomerApplications" table="BULK_CUSTOMER_APPLICATIONS">
+            <key column="BULK_CUSTOMER_ID"/>
+            <one-to-many class="uk.gov.moj.sdt.domain.BulkCustomerApplication"/>
+        </set>
+    </class>
+</hibernate-mapping>

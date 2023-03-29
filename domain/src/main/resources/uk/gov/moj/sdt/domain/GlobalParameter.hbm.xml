@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.GlobalParameter" lazy="false" table="GLOBAL_PARAMETERS">
+     <id name="id" column="GLOBAL_PARAMETER_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">glb_par_seq</param>
+                  </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <property name="name" type="java.lang.String">
+            <column name="PARAMETER_NAME" />
+        </property>
+        <property name="value" type="java.lang.String">
+            <column name="PARAMETER_VALUE" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="PARAMETER_DESCRIPTION" />
+        </property>        
+    </class>
+</hibernate-mapping>

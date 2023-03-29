@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:updateResponse xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema ../../../../../main/resources/xsd/IndvUpdateRequestResponse/IndividualUpdateResponse.xsd ">
+  <tns:status code="NOTAENUM">
+    <tns1:error>
+    <tns1:code>abcdefghijklmnopqrstuvwxyz123456789</tns1:code>
+      <tns1:description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel est lacus. Integer ut mi facilisis nisi varius mattis eu sit amet dui. Donec neque purus, rutrum sit amet iaculis nec, faucibus porttitor velit. Integer vel pulvinar nunc aenean suscipit</tns1:description>
+    </tns1:error>
+  </tns:status>
+</tns:updateResponse>

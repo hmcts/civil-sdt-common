@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.TargetApplication" lazy="false" table="TARGET_APPLICATIONS">
+        <id name="id" column="TARGET_APPLICATION_ID" >  
+              <generator class="sequence" >
+              	<param name="sequence">tar_app_seq</param>
+              </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <property name="targetApplicationCode" type="java.lang.String">
+            <column name="TARGET_APPLICATION_CODE" />
+        </property>
+        <property name="targetApplicationName" type="java.lang.String">
+            <column name="TARGET_APPLICATION_NAME" />
+        </property>
+        <set name="serviceRoutings" table="SERVICE_ROUTINGS" inverse="true" lazy="true" fetch="select">
+        	<key column="TARGET_APPLICATION_ID"/>
+        	<one-to-many class="uk.gov.moj.sdt.domain.ServiceRouting"/>
+    	</set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkFeedbackResponse xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema" 
+xmlns:rdns="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema ../../../../../main/resources/xsd/RequestBulkFeedback/BulkFeedbackResponse.xsd ">
+  <tns:bulkRequestStatus>
+      <base:status code="Ok">
+          <base:error>
+            <base:code>base code</base:code>
+            <base:description>base description</base:description>
+          </base:error>
+      </base:status>
+      <tns:customerReference>123456789012345678901234567890123</tns:customerReference>
+      <tns:sdtBulkReference>123456789012345678901234567890123</tns:sdtBulkReference>
+      <tns:submittedDate>2001-12-31T12:00:001</tns:submittedDate>
+      <tns:sdtService>mcol1</tns:sdtService>
+      <tns:requestCount>-1</tns:requestCount>
+      <tns:bulkStatus code="UNKNOWN">
+          <base:error>
+            <base:code>123456789012345678901234567890123</base:code>
+            <base:description>123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</base:description>
+          </base:error>
+      </tns:bulkStatus>
+  </tns:bulkRequestStatus>
+  <tns:responses>
+      <tns:response requestId="1234567890123456789012345" requestType="unknown">
+      <tns:responseDetail>
+          	<tns:mcolResponseDetail>
+    	        <rdns:claimNumber>1234567890</rdns:claimNumber>
+    	        <rdns:issueDate>2001-01-010</rdns:issueDate>
+    	        <rdns:serviceDate>2001-01-010</rdns:serviceDate>
+    	        <rdns:warrantNumber>1234567890</rdns:warrantNumber>
+    	        <rdns:enforcingCourtCode>1234</rdns:enforcingCourtCode>
+    	        <rdns:enforcingCourtName>12345678901234567890123456789012345678901</rdns:enforcingCourtName>
+    	        <rdns:fee>0</rdns:fee>
+    	    </tns:mcolResponseDetail>
+        </tns:responseDetail>    
+        <tns:status code="UNKNOWN">
+          <base:error>
+            <base:code>123456789012345678901234567890123</base:code>
+            <base:description>123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</base:description>
+          </base:error>
+        </tns:status>
+      </tns:response>
+  </tns:responses>
+</tns:bulkFeedbackResponse>

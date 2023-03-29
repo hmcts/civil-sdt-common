@@ -1,0 +1,19 @@
+<jaxws:bindings
+          xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+          xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema">
+      <jxb:globalBindings xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <jxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
+                      parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+                      printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/>
+        <jxb:javaType name="java.util.Calendar" xmlType="xs:date"
+                      parseMethod="javax.xml.bind.DatatypeConverter.parseDate"
+                      printMethod="javax.xml.bind.DatatypeConverter.printDate"/>
+        <jxb:javaType name="java.lang.Long" xmlType="xs:unsignedLong"
+                      parseMethod="javax.xml.bind.DatatypeConverter.parseLong"
+                      printMethod="javax.xml.bind.DatatypeConverter.printLong"/>
+      </jxb:globalBindings>
+  </jaxws:bindings>
+</jaxws:bindings>

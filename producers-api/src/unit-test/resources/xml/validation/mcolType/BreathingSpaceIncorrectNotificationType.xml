@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolBreathingSpace xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema ../../../../../main/resources/xsd/RootXSDs/BreathingSpace.xsd ">
+  <tns:claimNumber>12345678</tns:claimNumber>
+  <tns:defendantId>1</tns:defendantId>
+  <tns:breathingSpaceNotificationType>ZZ</tns:breathingSpaceNotificationType>
+</tns:mcolBreathingSpace>

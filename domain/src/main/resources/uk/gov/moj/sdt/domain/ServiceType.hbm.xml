@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.ServiceType" lazy="false" table="SERVICE_TYPES">
+    <id name="id" column="SERVICE_TYPE_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">ser_typ_seq</param>
+                  </generator>
+        </id><version name="version" access="field" column="VERSION_NUMBER"/>
+        <property name="name" type="java.lang.String">
+            <column name="SERVICE_TYPE_NAME" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="SERVICE_TYPE_STATUS" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="SERVICE_TYPE_DESCRIPTION" />
+        </property>
+    </class>
+</hibernate-mapping>

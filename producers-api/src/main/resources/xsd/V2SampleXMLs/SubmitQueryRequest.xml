@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- External system to SDT -->
+<submitQueryRequest>
+    <header>
+        <sdtCustomerId>SDT_Customer_id</sdtCustomerId>
+        <targetApplicationId>mcol</targetApplicationId>
+    </header>
+    <criteria>
+        <!--  Only one of mcol/pcol criteria will be allowed -->
+        <criterion criteriaType="mcolDefenceCriteria">
+            <mcolDefenceCriteria>
+                <fromDate>2001-01-01T12:00:00</fromDate>
+                <toDate>2001-02-01T12:00:00</toDate>
+            </mcolDefenceCriteria>
+        </criterion>
+        <criterion criteriaType="pcolCriteria">
+            <pcolCriteria>
+                <fromDate>2001-01-01</fromDate>
+                <toDate>2001-02-01</toDate>
+            </pcolCriteria>
+        </criterion>
+    </criteria>
+</submitQueryRequest>

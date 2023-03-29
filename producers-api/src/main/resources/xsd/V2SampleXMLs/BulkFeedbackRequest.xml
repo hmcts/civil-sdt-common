@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Message from external system to SDT gateway -->
+<bulkFeedbackRequest>
+    <header>
+        <sdtCustomerId>SDT_Customer_id</sdtCustomerId>
+        <sdtBulkReference>sdt_reference</sdtBulkReference> 
+    </header>
+</bulkFeedbackRequest>

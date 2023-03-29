@@ -1,0 +1,2 @@
+cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema":defendantAddress}'. One of '{"http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema":defendantId}' is expected.
+cvc-complex-type.2.4.b: The content of element 'tns:defendantAddress' is not complete. One of '{"http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema":line4, "http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema":postcode}' is expected.

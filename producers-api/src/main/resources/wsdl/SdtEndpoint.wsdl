@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions name="SdtEndpoint" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/SdtEndpoint" 
+    xmlns:breq="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema"
+	xmlns:bresp="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema"
+	xmlns:bfreq="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackRequestSchema"
+	xmlns:bfresp="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema"
+    xmlns:qreq="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema"
+    xmlns:qresp="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema"
+	targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/SdtEndpoint">
+
+	<types>
+
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema" schemaLocation="../xsd/BulkRequestResponse/BulkSubmitRequestGeneric.xsd"/>
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema" schemaLocation="../xsd/BulkRequestResponse/BulkSubmitResponse.xsd"/>
+
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackRequestSchema" schemaLocation="../xsd/RequestBulkFeedback/BulkFeedbackRequest.xsd"/>
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema" schemaLocation="../xsd/RequestBulkFeedback/BulkFeedbackResponseGeneric.xsd"/>
+
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema" schemaLocation="../xsd/SubmitQueryRequestResponse/SubmitQueryRequestGeneric.xsd"/>
+            <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema" schemaLocation="../xsd/SubmitQueryRequestResponse/SubmitQueryResponseGeneric.xsd"/>
+        </xs:schema>
+
+	</types>
+
+	<message name="submitBulkRequest">
+		<part name="bulkRequest" element="breq:bulkRequest" />
+	</message>
+	<message name="submitBulkResponse">
+		<part name="bulkResponse" element="bresp:bulkResponse" />
+	</message>
+	<message name="bulkFeedbackRequest">
+		<part name="bulkFeedbackRequest" element="bfreq:bulkFeedbackRequest" />
+	</message>
+	<message name="bulkFeedbackResponse">
+		<part name="bulkFeedbackResponse" element="bfresp:bulkFeedbackResponse" />
+	</message>
+	<message name="submitQueryRequest">
+		<part name="submitQueryRequest" element="qreq:submitQueryRequest" />
+	</message>
+	<message name="submitQueryResponse">
+		<part name="submitQueryResponse" element="qresp:submitQueryResponse" />
+	</message>
+
+	<portType name="ISdtEndpointPortType">
+		<operation name="submitBulk">
+			<input message="tns:submitBulkRequest" />
+			<output message="tns:submitBulkResponse" />
+		</operation>
+		<operation name="getBulkFeedback">
+			<input message="tns:bulkFeedbackRequest" />
+			<output message="tns:bulkFeedbackResponse" />
+		</operation>
+		<operation name="submitQuery">
+			<input message="tns:submitQueryRequest" />
+			<output message="tns:submitQueryResponse" />
+		</operation>
+	</portType>
+
+	<binding name="SdtEndpointHttpPortBinding" type="tns:ISdtEndpointPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="submitBulk">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="getBulkFeedback">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="submitQuery">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+
+	<service name="SdtEndpoint">
+		<port name="SdtEndpointPort" binding="tns:SdtEndpointHttpPortBinding">
+			<soap:address location="http://ws.sdt.moj.gov.uk/sdt/service" />
+		</port>
+	</service>
+
+</definitions>

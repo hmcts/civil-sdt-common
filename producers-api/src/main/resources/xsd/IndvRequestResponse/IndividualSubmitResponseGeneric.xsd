@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema" 
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+    elementFormDefault="qualified"
+    version="1.0">
+	
+    <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="../RootXSDs/Base.xsd"/>
+
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="sdtRequestId" type="base:sdtRequestIdType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="individualResponseType">
+        <xs:sequence>
+            <xs:element name="header" type="tns:headerType"/>
+            <xs:element name="targetAppDetail" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any processContents="lax"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="status" type="base:createStatusType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="individualResponse" type="tns:individualResponseType"/>
+    
+ </xs:schema>

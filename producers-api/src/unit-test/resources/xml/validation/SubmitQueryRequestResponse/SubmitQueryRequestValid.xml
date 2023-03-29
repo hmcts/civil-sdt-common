@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:submitQueryRequest 
+xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema" 
+xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:mqry="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema ../../../../../main/resources/xsd/SubmitQueryRequestResponse/SubmitQueryRequest.xsd ">
+  <tns:header>
+    <tns:sdtCustomerId>12345678</tns:sdtCustomerId>
+    <tns:targetApplicationId>mcol</tns:targetApplicationId>
+  </tns:header>
+  <tns:criteria>
+    <tns:criterion criteriaType="mcolDefenceCriteria">
+      <tns:mcolDefenceCriteria>
+        <mqry:fromDate>2001-01-01T12:00:00</mqry:fromDate>
+        <mqry:toDate>2001-01-01T12:00:00</mqry:toDate>
+      </tns:mcolDefenceCriteria>
+    </tns:criterion>
+  </tns:criteria>
+</tns:submitQueryRequest>

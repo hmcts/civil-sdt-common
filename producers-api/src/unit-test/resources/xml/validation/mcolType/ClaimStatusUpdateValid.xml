@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolClaimStatusUpdate xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema ../../../../../main/resources/xsd/RootXSDs/ClaimStatusUpdate.xsd ">
+  <tns:claimNumber>12345678</tns:claimNumber>
+  <tns:defendantId>1</tns:defendantId>
+  <tns:notificationType>MP</tns:notificationType>
+  <tns:paidInFullDate>2001-01-01</tns:paidInFullDate>
+</tns:mcolClaimStatusUpdate>

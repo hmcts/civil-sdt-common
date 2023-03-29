@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkFeedbackRequest xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackRequestSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackRequestSchema ../../../../../main/resources/xsd/RequestBulkFeedback/BulkFeedbackRequest.xsd ">
+  <tns:header>
+  </tns:header>
+</tns:bulkFeedbackRequest>

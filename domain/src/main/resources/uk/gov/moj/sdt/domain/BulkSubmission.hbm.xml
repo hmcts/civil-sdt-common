@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.BulkSubmission" lazy="false" table="BULK_SUBMISSIONS" dynamic-update="true">
+        <id name="id" column="BULK_SUBMISSION_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">bulk_sub_seq</param>
+                  </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <many-to-one name="bulkCustomer" class="uk.gov.moj.sdt.domain.BulkCustomer" fetch="join">
+            <column name="BULK_CUSTOMER_ID" />
+        </many-to-one>
+        <many-to-one name="targetApplication" class="uk.gov.moj.sdt.domain.TargetApplication" fetch="join">
+            <column name="TARGET_APPLICATION_ID" />
+        </many-to-one>
+        <property name="sdtBulkReference" type="java.lang.String">
+            <column name="SDT_BULK_REFERENCE" />
+        </property>
+        <property name="customerReference" type="java.lang.String">
+            <column name="CUSTOMER_REFERENCE" />
+        </property>
+        <property name="createdDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="CREATED_DATE" />
+        </property>
+        <property name="numberOfRequest" type="long">
+            <column name="NUMBER_OF_REQUESTS" />
+        </property>
+        <property name="submissionStatus" type="java.lang.String">
+            <column name="BULK_SUBMISSION_STATUS" />
+        </property>
+        <property name="completedDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="COMPLETED_DATE" />
+        </property>
+         <property name="updatedDate" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime">
+            <column name="UPDATED_DATE" />
+        </property>
+        <property name="payload" type="uk.gov.moj.sdt.domain.type.BlobType">
+            <column name="BULK_PAYLOAD" />
+        </property>
+        <list name="individualRequests" inverse="true" table="INDIVIDUAL_REQUESTS" lazy="true" cascade="all">
+            <key>
+                <column name="BULK_SUBMISSION_ID" />
+            </key>
+            <list-index column="LINE_NUMBER" base="1"/>
+            <one-to-many class="uk.gov.moj.sdt.domain.IndividualRequest" />
+        </list>
+        <property name="errorCode" type="java.lang.String">
+            <column name="ERROR_CODE" />
+        </property>
+        <property name="errorText" type="java.lang.String">
+            <column name="ERROR_TEXT" />
+        </property>
+        <many-to-one name="serviceRequest" class="uk.gov.moj.sdt.domain.ServiceRequest">
+            <column name="SERVICE_REQUEST_ID" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

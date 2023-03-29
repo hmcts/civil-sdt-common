@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolSetAside xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/SetAsideSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/SetAsideSchema ../../../../../main/resources/xsd/RootXSDs/SetAside.xsd ">
+  <tns:claimNumber>tns:claimNumber</tns:claimNumber>
+  <tns:defendantId>1</tns:defendantId>
+  <tns:applicantType>
+    <tns:applicantType>z</tns:applicantType>
+    <tns:otherDetail>tnsotherDetail</tns:otherDetail>
+    <tns:representing>1234567890123456789012345678901234567890</tns:representing>
+  </tns:applicantType>
+  <tns:orderAndDetails>orderAndDetails</tns:orderAndDetails>
+  <tns:applicationHandling>PH</tns:applicationHandling>
+  <tns:hearingTimeEstimates>
+    <tns:hours>2000</tns:hours>
+    <tns:minutes>60</tns:minutes>
+    <tns:agreedByAll>blah</tns:agreedByAll>
+  </tns:hearingTimeEstimates>
+  <tns:trialDetails>trialDetails</tns:trialDetails>
+  <tns:judgeLevel>judgeLevel</tns:judgeLevel>
+  <tns:servingTarget>
+    <tns:serveApplicationTo>1</tns:serveApplicationTo>
+    <tns:serviceAddress>
+      <tns:line1>tns:line1</tns:line1>
+      <tns:line2>tns:line2</tns:line2>
+      <tns:line3>tns:line3</tns:line3>
+      <tns:line4>tns:line4</tns:line4>
+      <tns:postcode>tns:postcode</tns:postcode>
+    </tns:serviceAddress>
+  </tns:servingTarget>
+  <tns:inSupport>
+    <tns:supportingInformation>PS</tns:supportingInformation>
+    <tns:supportingInformation>WS</tns:supportingInformation>
+    <tns:supportingInformation>SC</tns:supportingInformation>
+    <tns:supportingInformation>VS</tns:supportingInformation>
+  </tns:inSupport>
+  <tns:sotSignature>
+    <tns1:flag>true</tns1:flag>
+    <tns1:name>tns1:name</tns1:name>
+  </tns:sotSignature>
+</tns:mcolSetAside>

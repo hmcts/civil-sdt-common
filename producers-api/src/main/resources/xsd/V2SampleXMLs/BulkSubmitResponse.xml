@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bulkResponse>
+    <customerReference>customer_external_reference</customerReference>
+    <sdtBulkReference>sdt_reference</sdtBulkReference>
+    <submittedDate>2001-12-31T12:00:00</submittedDate>
+    <sdtService>SDT</sdtService>
+    <requestCount>10</requestCount>
+    <status code="OK/Error">
+        <error> <!-- only if error found -->
+            <code>code</code>
+            <description>description</description>
+        </error>
+    </status>
+</bulkResponse>

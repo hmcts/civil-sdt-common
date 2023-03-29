@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:submitQueryResponse 
+xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryResponseSchema" 
+xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:mquer="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryResponseSchema ../../../../../main/resources/xsd/SubmitQueryRequestResponse/SubmitQueryResponseTargetAppGeneric.xsd ">
+  <tns:targetAppCustomerId>12345672289112</tns:targetAppCustomerId>
+  <tns:resultCount>0</tns:resultCount>
+  <tns:targetAppDetail>
+  </tns:targetAppDetail>
+  <tns:status code="NOTENUM1">
+    <tns1:error>
+      <tns1:code>abcdefghijklmnopqrstuvwxyz123456789</tns1:code>
+      <tns1:description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel est lacus. Integer ut mi facilisis nisi varius mattis eu sit amet dui. Donec neque purus, rutrum sit amet iaculis nec, faucibus porttitor velit. Integer vel pulvinar nunc aenean suscipit111111111111111111111111</tns1:description>
+    </tns1:error>
+  </tns:status>
+</tns:submitQueryResponse>

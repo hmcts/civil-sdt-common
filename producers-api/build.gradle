@@ -1,0 +1,85 @@
+apply plugin: 'info.solidsoft.pitest'
+
+sourceSets.main.java.srcDirs += "src-gen/main/java"
+
+jar {
+  enabled = true
+  archiveBaseName = 'civil-sdt-producers-api'
+}
+
+dependencyCheck {
+    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':utils')
+    testImplementation project(":domain").sourceSets.unitTest.output
+    testImplementation project(":utils").sourceSets.unitTest.output
+
+    testImplementation project(":domain").sourceSets.integTest.output
+    testImplementation project(":utils").sourceSets.integTest.output
+}
+
+bootJar {
+    enabled = false
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configurations {
+  wsdl2java
+}
+
+dependencies {
+    wsdl2java("javax.jws:javax.jws-api:1.1")
+    wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
+    wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-core:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-spring-boot-starter-jaxws:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-rt-features-logging:${cxfVersion}")
+}
+
+task sdtEndPointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/SdtEndpoint.wsdl"
+  ]
+}
+
+task sdtInternalEndpointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/SdtInternalEndpoint.wsdl"
+  ]
+}
+
+task targetAppInternalEndpointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/TargetAppInternalEndpoint.wsdl"
+  ]
+}
+
+compileJava.dependsOn 'sdtEndPointWsdl2Java'
+compileJava.dependsOn 'sdtInternalEndpointWsdl2Java'
+compileJava.dependsOn 'targetAppInternalEndpointWsdl2Java'
+

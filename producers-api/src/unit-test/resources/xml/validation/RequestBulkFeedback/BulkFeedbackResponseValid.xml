@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkFeedbackResponse xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema" 
+xmlns:rdns="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackResponseSchema ../../../../../main/resources/xsd/RequestBulkFeedback/BulkFeedbackResponse.xsd ">
+  <tns:bulkRequestStatus>
+      <base:status code="Ok">
+          <base:error>
+            <base:code>base code</base:code>
+            <base:description>base description</base:description>
+          </base:error>
+      </base:status>
+      <tns:customerReference>customerReference</tns:customerReference>
+      <tns:sdtBulkReference>12345678901234567890123456789</tns:sdtBulkReference>
+      <tns:submittedDate>2001-12-31T12:00:00</tns:submittedDate>
+      <tns:sdtService>mcol</tns:sdtService>
+      <tns:requestCount>0</tns:requestCount>
+      <tns:bulkStatus code="Completed">
+      </tns:bulkStatus>
+  </tns:bulkRequestStatus>
+  <tns:responses>
+      <tns:response requestId="123" requestType="mcolClaim">
+        <tns:responseDetail>
+            <tns:mcolResponseDetail>
+                <rdns:claimNumber>12345678</rdns:claimNumber>
+                <rdns:issueDate>2001-01-01</rdns:issueDate>
+                <rdns:serviceDate>2001-01-01</rdns:serviceDate>
+                <rdns:warrantNumber>12345678</rdns:warrantNumber>
+                <rdns:enforcingCourtCode>123</rdns:enforcingCourtCode>
+                <rdns:enforcingCourtName>tns enforcingCourtName</rdns:enforcingCourtName>
+                <rdns:fee>0</rdns:fee>
+            </tns:mcolResponseDetail>
+        </tns:responseDetail>
+        <tns:status code="Accepted">
+          <base:error>
+            <base:code>base code</base:code>
+            <base:description>base description</base:description>
+          </base:error>
+        </tns:status>
+      </tns:response>
+  </tns:responses>
+</tns:bulkFeedbackResponse>

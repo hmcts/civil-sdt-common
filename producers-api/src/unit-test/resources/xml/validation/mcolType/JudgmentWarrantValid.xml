@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolJudgmentWarrant xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:tns2="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema ../../../../../main/resources/xsd/RootXSDs/Judgment.xsd ">
+    <tns:mcolJudgment>
+        <tns:claimNumber>12345678</tns:claimNumber>
+        <tns:jointJudgment>true</tns:jointJudgment>
+        <tns:judgmentType>A</tns:judgmentType>
+        <tns:sentParticularsSeparately>true</tns:sentParticularsSeparately>
+        <tns:defendantId>1</tns:defendantId>
+        <tns:defendant1Address>
+          <tns2:line1>tns2 line1</tns2:line1>
+          <tns2:line2>tns2 line2</tns2:line2>
+          <tns2:line3>tns2 line3</tns2:line3>
+          <tns2:line4>tns2 line4</tns2:line4>
+          <tns2:postcode>FL23 2SD</tns2:postcode>
+        </tns:defendant1Address>
+        <tns:defendant1DateOfBirth>2001-01-01</tns:defendant1DateOfBirth>
+        <tns:defendant2Address>
+          <tns2:line1>tns2 line1</tns2:line1>
+          <tns2:line2>tns2 line2</tns2:line2>
+          <tns2:line3>tns2 line3</tns2:line3>
+          <tns2:line4>tns2 line4</tns2:line4>
+          <tns2:postcode>FL23 2SD</tns2:postcode>
+        </tns:defendant2Address>
+        <tns:defendant2DateOfBirth>2001-01-01</tns:defendant2DateOfBirth>
+        <tns:paymentSchedule>
+          <tns:inFullByPayment>
+            <tns:fullByDate>2001-01-01</tns:fullByDate>
+          </tns:inFullByPayment>
+        </tns:paymentSchedule>
+        <tns:interest>0</tns:interest>
+        <tns:solicitorCost>0</tns:solicitorCost>
+        <tns:deductedAmount>0</tns:deductedAmount>
+        <tns:sotSignature>
+            <tns2:flag>true</tns2:flag>
+            <tns2:name>123456789012345678901234567890</tns2:name>
+        </tns:sotSignature>
+    </tns:mcolJudgment>
+  
+  <tns:mcolWarrant>
+    <tns1:claimNumber>12345678</tns1:claimNumber>
+    <tns1:defendantId>1</tns1:defendantId>
+    <tns1:defendantAddress>
+      <tns2:line1>tns2 line1</tns2:line1>
+      <tns2:line2>tns2 line2</tns2:line2>
+      <tns2:line3>tns2 line3</tns2:line3>
+      <tns2:line4>tns2 line4</tns2:line4>
+      <tns2:postcode>FL23 2SD</tns2:postcode>
+    </tns1:defendantAddress>
+    <tns1:balanceOfDebt>0</tns1:balanceOfDebt>
+    <tns1:warrantAmount>0</tns1:warrantAmount>
+    <tns1:solicitorCost>0</tns1:solicitorCost>
+    <tns1:additionalNotes>tns1 additionalNotes</tns1:additionalNotes>
+        <tns1:sotSignature>
+            <tns2:flag>true</tns2:flag>
+            <tns2:name>123456789012345678901234567890</tns2:name>
+        </tns1:sotSignature>
+  </tns:mcolWarrant>
+
+</tns:mcolJudgmentWarrant>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolJudgmentWarrant xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:tns2="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema ../../../../../main/resources/xsd/RootXSDs/Judgment.xsd ">
+  <tns:mcolJudgment>
+  </tns:mcolJudgment>
+  <tns:mcolWarrant>
+  </tns:mcolWarrant>
+</tns:mcolJudgmentWarrant>

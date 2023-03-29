@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolWarrant xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema ../../../../../main/resources/xsd/RootXSDs/Warrant.xsd ">
+    <tns:claimNumber>123456789</tns:claimNumber>
+    <tns:defendantId>5</tns:defendantId>
+    <tns:defendantAddress>
+        <base:line1>1234567890123456789012345678901</base:line1>
+        <base:line2>1234567890123456789012345678901</base:line2>
+        <base:line3>1234567890123456789012345678901</base:line3>
+        <base:line4>1234567890123456789012345678901</base:line4>
+  	  <base:postcode>ABCD12341</base:postcode>
+    </tns:defendantAddress>
+    <tns:balanceOfDebt>9999999999999</tns:balanceOfDebt>
+    <tns:warrantAmount>9999999999999</tns:warrantAmount>
+    <tns:solicitorCost>9999999999999</tns:solicitorCost>
+    <tns:additionalNotes>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffffffffffffffffffffffffffgggggggggggggggggggggggggggggggggggggggggggggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj</tns:additionalNotes>
+    <tns:sotSignature>
+      <base:flag>true</base:flag>
+      <base:name>123456789012345678901234567890</base:name>
+    </tns:sotSignature>
+</tns:mcolWarrant>

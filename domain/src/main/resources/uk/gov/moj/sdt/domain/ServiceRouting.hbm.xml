@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="uk.gov.moj.sdt.domain.ServiceRouting" lazy="false" table="SERVICE_ROUTINGS">
+        <id name="id" column="SERVICE_ROUTINGS_ID" >  
+                  <generator class="sequence" >
+                  	<param name="sequence">ser_rou_seq</param>
+                  </generator>
+        </id>
+        <version name="version" access="field" column="VERSION_NUMBER"/>
+        <many-to-one name="targetApplication" class="uk.gov.moj.sdt.domain.TargetApplication" fetch="join">
+            <column name="TARGET_APPLICATION_ID" />
+        </many-to-one>
+        <many-to-one name="serviceType" class="uk.gov.moj.sdt.domain.ServiceType" fetch="join">
+            <column name="SERVICE_TYPE_ID" />
+        </many-to-one>
+        <property name="webServiceEndpoint" type="java.lang.String">
+            <column name="WEB_SERVICE_ENDPOINT" />
+        </property>
+    </class>
+</hibernate-mapping>

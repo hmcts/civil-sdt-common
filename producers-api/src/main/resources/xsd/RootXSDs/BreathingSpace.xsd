@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema"
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+    elementFormDefault="qualified"
+    version="1.0">
+
+    <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="Base.xsd" />
+
+    <xs:simpleType name="breathingSpaceNotificationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BS"/>
+            <xs:enumeration value="BC"/>
+            <xs:enumeration value="MH"/>
+            <xs:enumeration value="MC"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="breathingSpaceType">
+        <xs:sequence>
+            <xs:element name="claimNumber" type="base:claimNumberType" />
+            <xs:element name="defendantId" type="base:defendantIdType" />
+            <xs:element name="breathingSpaceNotificationType" type="tns:breathingSpaceNotificationType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="mcolBreathingSpace" type="tns:breathingSpaceType"/>
+
+</xs:schema>

@@ -1,0 +1,45 @@
+cvc-maxLength-valid: Value 'claimantReference12345678' with length = '25' is not facet-valid with respect to maxLength '24' for type 'claimantReferenceType'.
+cvc-type.3.1.3: The value 'claimantReference12345678' of element 'tns:claimantReference' is not valid.
+cvc-maxLength-valid: Value 'CLAIM67890123456789012345678901234567890123456789012345678901' with length = '61' is not facet-valid with respect to maxLength '60' for type '#AnonType_nameclaimantType'.
+cvc-type.3.1.3: The value 'CLAIM67890123456789012345678901234567890123456789012345678901' of element 'tns:name' is not valid.
+cvc-pattern-valid: Value '   ' is not facet-valid with respect to pattern '(\s*[^\s]\s*)+' for type '#AnonType_namecorrespondenceDetailType'.
+cvc-type.3.1.3: The value '   ' of element 'tns:name' is not valid.
+cvc-type.3.1.3: The value '1234567890123456789012345678901' of element 'tns:line1' is not valid.
+cvc-type.3.1.3: The value '1234567890123456789012345678901' of element 'tns:line3' is not valid.
+cvc-type.3.1.3: The value '1234567890123456789012345678901' of element 'tns:line4' is not valid.
+cvc-pattern-valid: Value '     ' is not facet-valid with respect to pattern '(\s*[^\s]\s*)+' for type '#AnonType_namedefendantType'.
+cvc-type.3.1.3: The value '     ' of element 'tns:name' is not valid.
+cvc-maxLength-valid: Value 'ABCD12341' with length = '9' is not facet-valid with respect to maxLength '8' for type 'nonUKPostcodeType'.
+cvc-pattern-valid: Value 'ABCD12341' is not facet-valid with respect to pattern '[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z-[CIKMOV]]{2}' for type 'postcodeType'.
+cvc-type.3.1.3: The value 'ABCD12341' of element 'tns:postcode' is not valid.
+cvc-maxLength-valid: Value '1234567890123456789012345678901' with length = '31' is not facet-valid with respect to maxLength '30' for type 'lineType'.
+cvc-type.3.1.3: The value '1234567890123456789012345678901' of element 'tns:line1' is not valid.
+cvc-maxLength-valid: Value '1234567890123456789012345678901' with length = '31' is not facet-valid with respect to maxLength '30' for type 'lineType'.
+cvc-type.3.1.3: The value '1234567890123456789012345678901' of element 'tns:line2' is not valid.
+cvc-type.3.1.3: The value 'ABCD12341' of element 'base:postcode' is not valid.
+cvc-datatype-valid.1.2.1: 'true1' is not a valid value for 'boolean'.
+cvc-type.3.1.3: The value 'true1' of element 'tns:sendParticularsSeparately' is not valid.
+cvc-minInclusive-valid: Value '-1' is not facet-valid with respect to minInclusive '0' for type 'unsignedLong'.
+cvc-type.3.1.3: The value '-1' of element 'tns:dailyAmount' is not valid.
+cvc-datatype-valid.1.2.1: '2001-01-010' is not a valid value for 'date'.
+cvc-type.3.1.3: The value '2001-01-010' of element 'tns:owedDate' is not valid.
+cvc-datatype-valid.1.2.1: '2001-01-010' is not a valid value for 'date'.
+cvc-type.3.1.3: The value '2001-01-010' of element 'tns:claimDate' is not valid.
+cvc-minInclusive-valid: Value '-1' is not facet-valid with respect to minInclusive '0' for type 'unsignedLong'.
+cvc-type.3.1.3: The value '-1' of element 'tns:claimAmountInterestBase' is not valid.
+cvc-minInclusive-valid: Value '-1' is not facet-valid with respect to minInclusive '0' for type 'unsignedLong'.
+cvc-type.3.1.3: The value '-1' of element 'tns:claimAmount' is not valid.
+cvc-minInclusive-valid: Value '-1' is not facet-valid with respect to minInclusive '0' for type 'unsignedLong'.
+cvc-type.3.1.3: The value '-1' of element 'tns:solicitorCost' is not valid.
+cvc-pattern-valid: Value '' is not facet-valid with respect to pattern 'true' for type '#AnonType_flagsotSignatureType'.
+cvc-type.3.1.3: The value '' of element 'base:flag' is not valid.
+cvc-maxLength-valid: Value '1234567890123456789012345678901234567890123456' with length = '46' is not facet-valid with respect to maxLength '45' for type 'particularsType'.
+cvc-type.3.1.3: The value '1234567890123456789012345678901234567890123456' of element 'tns:particulars' is not valid.
+cvc-maxLength-valid: Value '1234567890123456789012345678901' with length = '31' is not facet-valid with respect to maxLength '30' for type 'nonBlankLineType'.
+cvc-maxLength-valid: Value '1234567890123456789012345678901' with length = '31' is not facet-valid with respect to maxLength '30' for type 'nonBlankLineType'.
+cvc-maxLength-valid: Value '1234567890123456789012345678901' with length = '31' is not facet-valid with respect to maxLength '30' for type 'nonBlankLineType'.
+cvc-pattern-valid: Value '   ' is not facet-valid with respect to pattern '(\s*[^\s]\s*)+' for type 'nonBlankLineType'.
+cvc-type.3.1.3: The value '   ' of element 'base:line1' is not valid.
+cvc-type.3.1.3: The value '' of element 'base:line2' is not valid.
+cvc-pattern-valid: Value '' is not facet-valid with respect to pattern '(\s*[^\s]\s*)+' for type 'nonBlankLineType'.
+cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema":line3}'. One of '{"http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema":line2}' is expected.

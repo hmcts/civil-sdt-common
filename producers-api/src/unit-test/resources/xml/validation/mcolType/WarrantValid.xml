@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolWarrant xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema ../../../../../main/resources/xsd/RootXSDs/Warrant.xsd ">
+  <tns:claimNumber>01234567</tns:claimNumber>
+  <tns:defendantId>1</tns:defendantId>
+  <tns:defendantAddress>
+    <base:line1>base line1</base:line1>
+    <base:line2>base line2</base:line2>
+    <base:line3>base line3</base:line3>
+    <base:line4>base line4</base:line4>
+    <base:postcode>PO1 1AN</base:postcode>
+  </tns:defendantAddress>
+  <tns:balanceOfDebt>0</tns:balanceOfDebt>
+  <tns:warrantAmount>0</tns:warrantAmount>
+  <tns:solicitorCost>0</tns:solicitorCost>
+  <tns:additionalNotes>tns additionalNotes</tns:additionalNotes>
+  <tns:sotSignature>
+    <base:flag>true</base:flag>
+    <base:name>123456789012345678901234567890</base:name>
+  </tns:sotSignature>
+</tns:mcolWarrant>

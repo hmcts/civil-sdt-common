@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolClaim xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema ../../../../../main/resources/xsd/RootXSDs/Claim.xsd ">
+  <tns:claimantReference>claimantReference12345678</tns:claimantReference>
+  <tns:claimant>
+    <tns:name>CLAIM67890123456789012345678901234567890123456789012345678901</tns:name>
+    <tns:address>
+      <tns:line1>1234567890123456789012345678901</tns:line1>
+      <tns:line3>1234567890123456789012345678901</tns:line3>
+      <tns:line4>1234567890123456789012345678901</tns:line4>
+      <tns:postcode>ABCD12341</tns:postcode>
+    </tns:address>
+  </tns:claimant>
+  <tns:claimantCorrespondence>
+    <tns:name>   </tns:name>
+    <tns:address>
+      <tns:line1>1234567890123456789012345678901</tns:line1>
+      <tns:line2>1234567890123456789012345678901</tns:line2>
+      <tns:postcode>FL23 2SD</tns:postcode>
+    </tns:address>
+  </tns:claimantCorrespondence>
+  <tns:defendant1>
+    <tns:name>     </tns:name>
+    <tns:address>
+      <base:line1>   </base:line1>
+      <base:line2></base:line2>
+      <base:line3>base line3</base:line3>
+      <base:line4>base line4</base:line4>
+      <base:postcode>ABCD12341</base:postcode>
+    </tns:address>
+  </tns:defendant1>
+  <tns:sendParticularsSeparately>true1</tns:sendParticularsSeparately>
+  <tns:reserveRightToClaimInterest>true</tns:reserveRightToClaimInterest>
+  <tns:interest>
+    <tns:dailyAmount>-1</tns:dailyAmount>
+    <tns:owedDate>2001-01-010</tns:owedDate>
+    <tns:claimDate>2001-01-010</tns:claimDate>
+    <tns:claimAmountInterestBase>-1</tns:claimAmountInterestBase>
+  </tns:interest>
+  <tns:claimAmount>-1</tns:claimAmount>
+  <tns:solicitorCost>-1</tns:solicitorCost>
+  <tns:particulars>1234567890123456789012345678901234567890123456</tns:particulars>
+  <tns:sotSignature>
+    <base:flag></base:flag>
+    <base:name>123456789012345678901234567890</base:name>
+  </tns:sotSignature>
+</tns:mcolClaim>

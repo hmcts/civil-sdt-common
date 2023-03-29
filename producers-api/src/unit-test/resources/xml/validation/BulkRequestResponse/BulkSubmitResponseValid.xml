@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:bulkResponse xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema ../../../../../main/resources/xsd/BulkRequestResponse/BulkSubmitResponse.xsd ">
+  <tns1:status code="Ok">
+    <tns1:error>
+      <tns1:code>tns1 code</tns1:code>
+      <tns1:description>tns1 description</tns1:description>
+    </tns1:error>
+  </tns1:status>
+  <tns:customerReference>customerReference</tns:customerReference>
+  <tns:sdtBulkReference>12345678901234567890123456789</tns:sdtBulkReference>
+  <tns:submittedDate>2001-12-31T12:00:00</tns:submittedDate>
+  <tns:sdtService>mcol</tns:sdtService>
+  <tns:requestCount>0</tns:requestCount>
+</tns:bulkResponse>

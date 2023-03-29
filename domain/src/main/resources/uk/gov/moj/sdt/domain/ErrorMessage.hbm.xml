@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-Jul-2013 15:00:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="uk.gov.moj.sdt.domain.ErrorMessage" lazy="false"
+		table="ERROR_MESSAGES">
+		<id name="id" column="ERROR_MESSAGE_ID">
+			<generator class="sequence">
+				<param name="sequence">msg_log_seq</param>
+			</generator>
+		</id>
+		<version name="version" access="field" column="VERSION_NUMBER" />
+		<property name="errorCode" type="java.lang.String">
+			<column name="ERROR_CODE" />
+		</property>
+		<property name="errorText" type="java.lang.String">
+			<column name="ERROR_TEXT" />
+		</property>
+		<property name="errorDescription" type="java.lang.String">
+			<column name="ERROR_DESCRIPTION" />
+		</property>
+	</class>
+</hibernate-mapping>
+

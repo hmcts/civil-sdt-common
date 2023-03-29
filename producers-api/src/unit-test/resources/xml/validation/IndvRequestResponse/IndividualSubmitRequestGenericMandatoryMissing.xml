@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:individualRequest xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns2="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema" xmlns:tns3="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema" xmlns:tns4="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" xmlns:tns5="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema ../../../../../main/resources/xsd/IndvRequestResponse/IndividualSubmitRequestGeneric.xsd ">
+  <tns:header>
+  </tns:header>
+</tns:individualRequest>

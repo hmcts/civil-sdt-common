@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema" 
+    elementFormDefault="qualified"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+    version="1.0">
+    
+    <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="../RootXSDs/Base.xsd"/>
+    
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="sdtCustomerId" type="base:sdtCustomerIdType"/>
+            <xs:element name="targetApplicationId" type="base:targetApplicationIdType"/>
+            <xs:element name="requestCount" type="xs:long"/>
+            <xs:element name="customerReference" type="base:customerReferenceType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="requestItemType">
+        <xs:choice>
+            <xs:any processContents="lax"/>
+        </xs:choice>
+        <xs:attribute name="requestType" type="base:requestTypeType" use="required"/>
+        <xs:attribute name="requestId" type="base:requestIdType" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="requestsType">
+        <xs:sequence>
+            <xs:element name="request" type="tns:requestItemType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="bulkRequestType">
+        <xs:sequence>
+            <xs:element name="header" type="tns:headerType"/>
+            <xs:element name="requests" type="tns:requestsType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="bulkRequest" type="tns:bulkRequestType"/>
+
+</xs:schema>

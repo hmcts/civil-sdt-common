@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+	elementFormDefault="qualified"
+    version="1.0">
+    
+	<xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="../RootXSDs/Base.xsd"/>
+	
+    <xs:element name="updateResponse" type="tns:updateResponseType" />
+	<xs:complexType name="updateResponseType">
+		<xs:sequence>
+			<xs:element name="status" type="base:statusType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
