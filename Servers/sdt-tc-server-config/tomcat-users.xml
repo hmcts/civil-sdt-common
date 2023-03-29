@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<tomcat-users>
-    <role rolename="manager-script"/>
-    <role rolename="manager-gui"/>
-    <role rolename="manager-status"/>
-    <role rolename="manager-jmx"/>
-    <user name="tc-server-ant" password="tc-server-ant" roles="manager-script,manager-jmx,manager-status"/>
-    <user name="tc-server" password="tc-server" roles="manager-gui,manager-status"/>
-</tomcat-users>

@@ -1,6 +1,0 @@
-<tns:bulkFeedbackRequestType xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkFeedbackRequestSchema" >
-  <tns:header>
-    <tns:sdtCustomerId>12345678</tns:sdtCustomerId>
-    <tns:sdtBulkReference>MCOL_20130722000000_A00000001</tns:sdtBulkReference>
-  </tns:header>
-</tns:bulkFeedbackRequestType>
