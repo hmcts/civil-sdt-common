@@ -1,9 +1,8 @@
+plugins {
+    id 'java-library'
+}
 apply plugin: 'info.solidsoft.pitest'
 
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-domin'
-}
 
 dependencyCheck {
     suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
@@ -15,10 +14,17 @@ dependencies {
     testImplementation project(":utils").sourceSets.integTest.output
 }
 
-bootJar {
-    enabled = false
-}
-
 test {
   useJUnitPlatform()
+}
+
+sourceSets {
+    unitTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
 }

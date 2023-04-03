@@ -1,9 +1,8 @@
+plugins {
+    id 'java-library'
+}
 apply plugin: 'info.solidsoft.pitest'
 
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-services-api'
-}
 
 dependencyCheck {
     suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
@@ -15,12 +14,7 @@ dependencies {
     testImplementation project(":domain").sourceSets.unitTest.output
     testImplementation project(":utils").sourceSets.unitTest.output
 
-    testImplementation project(":domain").sourceSets.integTest.output
     testImplementation project(":utils").sourceSets.integTest.output
-}
-
-bootJar {
-    enabled = false
 }
 
 tasks.withType(Test) {

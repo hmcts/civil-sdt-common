@@ -8,3 +8,10 @@
  */
 
 rootProject.name = 'civil-sdt-common'
+
+include ':domain'
+include ':dao-api'
+include ':handlers-api'
+include ':producers-api'
+include ':services-api'
+include ':utils'

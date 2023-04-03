@@ -1,11 +1,9 @@
+plugins {
+    id 'java-library'
+}
 apply plugin: 'info.solidsoft.pitest'
 
 sourceSets.main.java.srcDirs += "src-gen/main/java"
-
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-producers-api'
-}
 
 dependencyCheck {
     suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
@@ -17,12 +15,7 @@ dependencies {
     testImplementation project(":domain").sourceSets.unitTest.output
     testImplementation project(":utils").sourceSets.unitTest.output
 
-    testImplementation project(":domain").sourceSets.integTest.output
     testImplementation project(":utils").sourceSets.integTest.output
-}
-
-bootJar {
-    enabled = false
 }
 
 test {
