@@ -33,7 +33,7 @@ package uk.gov.moj.sdt.handlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.gov.moj.sdt.validators.exception.api.IBusinessException;
+import uk.gov.moj.sdt.utils.exception.IBusinessException;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.AbstractResponseType;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.ErrorType;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.StatusCodeType;

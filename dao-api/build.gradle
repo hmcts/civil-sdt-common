@@ -1,22 +1,4 @@
-plugins {
-    id 'java-library'
-}
-apply plugin: 'info.solidsoft.pitest'
-
-
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
-}
-
 dependencies {
     implementation project(':domain')
     implementation project(':utils')
-    testImplementation project(":domain").sourceSets.unitTest.output
-    testImplementation project(":utils").sourceSets.unitTest.output
-
-    testImplementation project(":utils").sourceSets.integTest.output
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }

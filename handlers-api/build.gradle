@@ -1,24 +1,9 @@
-plugins {
-    id 'java-library'
-}
-apply plugin: 'info.solidsoft.pitest'
-
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
-}
-
 dependencies {
     implementation project(":domain")
     implementation project(":utils")
     implementation project(":producers-api")
-    testImplementation project(":utils").sourceSets.unitTest.output
-    testImplementation project(":producers-api").sourceSets.unitTest.output
-    testImplementation project(":domain").sourceSets.unitTest.output
 
-    testImplementation project(":utils").sourceSets.integTest.output
-    testImplementation project(":producers-api").sourceSets.integTest.output
-}
-
-sonarqube {
-  skipProject = true
+    testImplementation project(path: ':domain', configuration: 'testOutput')
+    testImplementation project(path: ':producers-api', configuration: 'testOutput')
+    testImplementation project(path: ':utils', configuration: 'testOutput')
 }
