@@ -106,11 +106,10 @@ bootJar {
 dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
-    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
     implementation 'com.google.guava:guava:30.0-jre'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
     implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.23'
     implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
@@ -137,11 +136,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.springframework:spring-test:6.0.7'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
+    testImplementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'junit', module: 'junit'
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    implementation 'org.slf4j:slf4j-api:2.0.7'
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
@@ -169,11 +168,10 @@ subprojects {
     dependencies {
 
         // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
-        implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
         implementation 'com.google.guava:guava:30.0-jre'
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+        implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
         implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
         implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.23'
         implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
@@ -200,11 +198,11 @@ subprojects {
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.springframework:spring-test:6.0.7'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
+        testImplementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: 'junit', module: 'junit'
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
-        implementation 'org.slf4j:slf4j-api:2.0.7'
 
         // This dependency is exported to consumers, that is to say found on their compile classpath.
         api 'org.apache.commons:commons-math3:3.6.1'
@@ -232,6 +230,12 @@ subprojects {
     dependencyCheck {
         suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
     }
+
+    configurations {
+        all {
+            exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+        }
+    }
 }
 
 dependencies {
@@ -250,10 +254,4 @@ tasks.jar {
     enabled = true
     archiveName = 'civil-sdt-common.jar'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-configurations.configureEach {
-    collect { configuration ->
-        configuration.exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
-    }
 }
