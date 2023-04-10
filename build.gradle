@@ -43,7 +43,7 @@ def pomConfig = {
     }
 
     scm {
-        url "https://github.com/hmcts/civil-sdt.git"
+        url "https://github.com/hmcts/civil-sdt-common.git"
     }
 }
 
@@ -254,4 +254,25 @@ tasks.jar {
     enabled = true
     archiveName = 'civil-sdt-common.jar'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+publishing {
+    publications {
+        Main(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId project.group
+            artifactId 'civil-sdt-common'
+            version project.version
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Civil SDT common library')
+                root.appendNode('name', 'Civil SDT Common')
+                root.appendNode('url', gitRepo)
+                root.children().last() + pomConfig
+            }
+        }
+    }
 }
