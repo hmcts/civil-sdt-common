@@ -242,6 +242,15 @@ subprojects {
     }
 }
 
+dependencies {
+    implementation project(':dao-api')
+    implementation project(':domain')
+    implementation project(':handlers-api')
+    implementation project(':producers-api')
+    implementation project(':services-api')
+    implementation project(':utils')
+}
+
 tasks.jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
