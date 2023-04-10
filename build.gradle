@@ -75,6 +75,9 @@ ext.libraries = [
 
 jar {
     archivesBaseName = "civil-sdt-common"
+    baseName = "civil-sdt-common"
+    classifier = ''
+    archiveClassifier = ''
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
