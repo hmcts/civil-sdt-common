@@ -30,6 +30,10 @@ jobs:
     - name: Release
       run: |
         echo "Triggering JitPack build"
+        echo "Git hub repository"
+        echo ${GITHUB_REPOSITORY}
+        echo "Git hub Ref" ${GITHUB_REF}
+        echo ${GITHUB_REF}
         
         PACKAGES_URL="https://jitpack.io/com/github/${GITHUB_REPOSITORY}/${GITHUB_REF#refs/tags/}/"
         PACKAGES_FILE="packages.txt"
