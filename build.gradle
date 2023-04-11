@@ -73,13 +73,6 @@ ext.libraries = [
         ]
 ]
 
-jar {
-    archivesBaseName = "civil-sdt-common"
-    baseName = "civil-sdt-common"
-    classifier = ''
-    archiveClassifier = ''
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -218,6 +211,10 @@ subprojects {
         enabled = false
     }
 
+    jar {
+        enabled = true
+    }
+
     tasks.withType(Test) {
         useJUnitPlatform()
         reports.html.enabled = false
@@ -256,7 +253,8 @@ tasks.jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     enabled = true
-    archiveName = 'civil-sdt-common.jar'
+    archiveClassifier = ''
+    archivesBaseName = "civil-sdt-common"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
