@@ -34,20 +34,6 @@ version buildNumber
 
 def gitRepo = "https://github.com/hmcts/civil-sdt-common.git"
 
-def pomConfig = {
-    licenses {
-        license {
-            name "MIT License"
-            url "http://www.opensource.org/licenses/mit-license.php"
-            distribution "repo"
-        }
-    }
-
-    scm {
-        url "https://github.com/hmcts/civil-sdt-common.git"
-    }
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -83,6 +69,11 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.test.output
+}
+
 tasks.withType(Test) {
     useJUnitPlatform()
 
@@ -94,6 +85,7 @@ tasks.withType(Test) {
 artifacts {
     archives sourcesJar
     archives javadocJar
+    archives testJar
 }
 
 bootJar {
@@ -249,17 +241,22 @@ dependencies {
     api project(':producers-api')
     api project(':services-api')
     api project(':utils')
+
+    testImplementation(project(":domain"))
+    testImplementation(project(":producers-api"))
+    testImplementation(project(":utils"))
 }
 
-allprojects {
-    publishing {
-        publications {
-            "$project.name"(MavenPublication) {
-                groupId project.group
-                artifactId project.name
-                version project.version
-                from components.java
-            }
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact sourcesJar
+            artifact javadocJar
+            artifact testJar
+            version project.version
+            from components.java
         }
     }
 }

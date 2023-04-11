@@ -7,3 +7,14 @@ dependencies {
     testImplementation project(path: ':producers-api', configuration: 'testOutput')
     testImplementation project(path: ':utils', configuration: 'testOutput')
 }
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            from components.java
+        }
+    }
+}

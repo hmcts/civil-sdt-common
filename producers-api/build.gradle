@@ -84,3 +84,25 @@ tasks.register('unit', Test) {
 }
 
 check.dependsOn unit
+
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+artifacts {
+    archives testJar
+}
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact testJar
+            version project.version
+            from components.java
+        }
+    }
+}
