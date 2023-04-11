@@ -146,6 +146,8 @@ dependencies {
 }
 
 subprojects {
+    group 'com.github.hmcts'
+    version buildNumber
     apply plugin: 'java-library'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -213,6 +215,7 @@ subprojects {
 
     jar {
         enabled = true
+        archiveClassifier = ''
     }
 
     tasks.withType(Test) {
@@ -240,41 +243,30 @@ subprojects {
 }
 
 dependencies {
-    implementation project(':dao-api')
-    implementation project(':domain')
-    implementation project(':handlers-api')
-    implementation project(':producers-api')
-    implementation project(':services-api')
-    implementation project(':utils')
+    api project(':dao-api')
+    api project(':domain')
+    api project(':handlers-api')
+    api project(':producers-api')
+    api project(':services-api')
+    api project(':utils')
+}
+
+allprojects {
+    publishing {
+        publications {
+            "$project.name"(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+                from components.java
+            }
+        }
+    }
 }
 
 tasks.jar {
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
     enabled = true
     archiveClassifier = ''
     archivesBaseName = "civil-sdt-common"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-publishing {
-    publications {
-        Main(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            groupId project.group
-            artifactId 'civil-sdt-common'
-            version project.version
-
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'Civil SDT common library')
-                root.appendNode('name', 'Civil SDT Common')
-                root.appendNode('url', gitRepo)
-                root.children().last() + pomConfig
-            }
-        }
-    }
 }
