@@ -1,11 +1,8 @@
+apply plugin: 'info.solidsoft.pitest'
 dependencies {
     implementation project(":domain")
     implementation project(":utils")
     implementation project(":producers-api")
-
-    testImplementation project(path: ':domain', configuration: 'testOutput')
-    testImplementation project(path: ':producers-api', configuration: 'testOutput')
-    testImplementation project(path: ':utils', configuration: 'testOutput')
 }
 
 publishing {

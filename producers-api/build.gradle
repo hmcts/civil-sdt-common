@@ -1,3 +1,4 @@
+apply plugin: 'info.solidsoft.pitest'
 sourceSets.main.java.srcDirs += "src-gen/main/java"
 
 sourceSets {
@@ -21,7 +22,6 @@ dependencies {
     implementation project(':domain')
     implementation project(':utils')
 
-    testImplementation project(path: ':domain', configuration: 'testOutput')
     testImplementation project(path: ':utils', configuration: 'testOutput')
 
     testOutput sourceSets.testUnit.output

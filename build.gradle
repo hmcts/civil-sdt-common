@@ -18,13 +18,12 @@ plugins {
 }
 
 apply plugin: 'java-library'
-apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: "org.sonarqube"
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'info.solidsoft.pitest'
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "1.0.0"
 
@@ -43,7 +42,7 @@ java {
 ext {
     junitVersion           = '5.7.2'
     junitPlatformVersion   = '1.7.2'
-    log4jVersion = '2.17.1'
+    log4jVersion = '2.20.0'
     testcontainers = '1.17.5'
     cxfVersion = '3.5.4'
     jaxwsVersion = "2.3.1"
@@ -122,7 +121,6 @@ dependencies {
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
     testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.7.3'
-    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.springframework:spring-test:6.0.7'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
@@ -141,7 +139,6 @@ subprojects {
     group 'com.github.hmcts'
     version buildNumber
     apply plugin: 'java-library'
-    apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: "org.sonarqube"
     apply plugin: 'org.springframework.boot'
@@ -186,7 +183,6 @@ subprojects {
         testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
         testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
         testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.7.3'
-        testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.springframework:spring-test:6.0.7'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
