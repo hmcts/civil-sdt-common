@@ -1,39 +1,31 @@
 apply plugin: 'info.solidsoft.pitest'
-
 sourceSets.main.java.srcDirs += "src-gen/main/java"
 
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-producers-api'
+sourceSets {
+    testUnit {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
 }
 
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
+configurations {
+    testOutput
+    testOutput.extendsFrom(testUnitImplementation)
+    wsdl2java
 }
 
 dependencies {
     implementation project(':domain')
     implementation project(':utils')
-    testImplementation project(":domain").sourceSets.unitTest.output
-    testImplementation project(":utils").sourceSets.unitTest.output
 
-    testImplementation project(":domain").sourceSets.integTest.output
-    testImplementation project(":utils").sourceSets.integTest.output
-}
+    testImplementation project(path: ':utils', configuration: 'testOutput')
 
-bootJar {
-    enabled = false
-}
+    testOutput sourceSets.testUnit.output
 
-test {
-    useJUnitPlatform()
-}
-
-configurations {
-  wsdl2java
-}
-
-dependencies {
     wsdl2java("javax.jws:javax.jws-api:1.1")
     wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
     wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
@@ -83,3 +75,34 @@ compileJava.dependsOn 'sdtEndPointWsdl2Java'
 compileJava.dependsOn 'sdtInternalEndpointWsdl2Java'
 compileJava.dependsOn 'targetAppInternalEndpointWsdl2Java'
 
+tasks.register('unit', Test) {
+    description = "Runs unit tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+    failFast = true
+}
+
+check.dependsOn unit
+
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+artifacts {
+    archives testJar
+}
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact testJar
+            version project.version
+            from components.java
+        }
+    }
+}

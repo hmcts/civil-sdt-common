@@ -30,7 +30,7 @@
  * LastChangedBy: $ */
 package uk.gov.moj.sdt.test.utils;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;

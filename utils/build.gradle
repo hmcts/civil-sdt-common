@@ -1,18 +1,79 @@
 apply plugin: 'info.solidsoft.pitest'
+sourceSets {
+    testUnit {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
 
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-utils'
+    testIntegration {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/integ-test/java')
+        }
+        resources.srcDir file('src/integ-test/resources')
+    }
 }
 
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
+configurations {
+    testOutput
+    testOutput.extendsFrom(testUnitImplementation)
 }
 
-bootJar {
-    enabled = false
+dependencies {
+    testOutput sourceSets.testUnit.output
 }
 
-test {
-    useJUnitPlatform()
+task integration(type: Test) {
+    description = "Runs integration tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testIntegration.output.classesDirs
+    classpath = sourceSets.testIntegration.runtimeClasspath
+    failFast = true
+}
+
+task unitTest(type: Test) {
+    description = "Runs Tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+    failFast = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+check.dependsOn unitTest
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+task testIntegJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'integ-test'
+    from sourceSets.testIntegration.output
+}
+
+artifacts {
+    archives testJar
+    archives testIntegJar
+}
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact testJar
+            artifact testIntegJar
+            version project.version
+            from components.java
+        }
+    }
 }

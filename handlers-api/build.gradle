@@ -1,34 +1,17 @@
 apply plugin: 'info.solidsoft.pitest'
-
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-handlers-api'
-}
-
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
-}
-
 dependencies {
     implementation project(":domain")
     implementation project(":utils")
     implementation project(":producers-api")
-    implementation project(":validators")
-    testImplementation project(":domain").sourceSets.unitTest.output
-    testImplementation project(":utils").sourceSets.unitTest.output
-    testImplementation project(":producers-api").sourceSets.unitTest.output
-    testImplementation project(":validators").sourceSets.unitTest.output
-
-    testImplementation project(":domain").sourceSets.integTest.output
-    testImplementation project(":utils").sourceSets.integTest.output
-    testImplementation project(":producers-api").sourceSets.integTest.output
-    testImplementation project(":validators").sourceSets.integTest.output
 }
 
-bootJar {
-    enabled = false
-}
-
-sonarqube {
-  skipProject = true
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            from components.java
+        }
+    }
 }
