@@ -33,37 +33,38 @@ package uk.gov.moj.sdt.utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.net.UnknownHostException;
-
-import java.util.List;
 import java.io.OutputStream;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
-public class SdtContextTest extends AbstractSdtUnitTestBase
+class SdtContextTest extends AbstractSdtUnitTestBase
 {
+    private static final String FIELD_CUSTOMER_IDAM_ID = "customerIdamId";
+
     private List<Runnable> synchronisationTasks;
 
     private SdtContext sdtContext;
 
-    Runnable runnableMock;
+    @Mock
+    private Runnable runnableMock;
 
     @BeforeEach
     @Override
-    public void setUp() throws UnknownHostException {
-        runnableMock = Mockito.mock(Runnable.class);
+    public void setUp() {
         sdtContext = SdtContext.getContext();
-
     }
 
-
     @Test
-    void addSynchronisationTaskTest(){
+    void addSynchronisationTaskTest() {
 
         //given
         boolean returnValue = false;
@@ -73,11 +74,10 @@ public class SdtContextTest extends AbstractSdtUnitTestBase
         this.synchronisationTasks = null;
         //then
         assertTrue(returnValue);
-
     }
 
     @Test
-    void addSynchronisationTasksCheckTest(){
+    void addSynchronisationTasksCheckTest() {
 
         //given
 
@@ -88,9 +88,8 @@ public class SdtContextTest extends AbstractSdtUnitTestBase
         assertNull(this.synchronisationTasks);
     }
 
-
     @Test
-    void originalOutputStreamTest(){
+    void originalOutputStreamTest() {
         //given
         OutputStream outputStream = Mockito.mock(OutputStream.class);
 
@@ -102,17 +101,33 @@ public class SdtContextTest extends AbstractSdtUnitTestBase
     }
 
     @Test
-    void clearSynchronisationTasksTest(){
+    void clearSynchronisationTasksTest() {
         //given
-        sdtContext = Mockito.spy(SdtContext.class);
-        //sdtContext.
 
         //when
         sdtContext.clearSynchronisationTasks();
 
         //then
         assertNull(sdtContext.getSynchronisationTasks());
-        verify(sdtContext).clearSynchronisationTasks();
     }
 
+    @Test
+    void setCustomerIdamIdTest() {
+        String testIdamId = "set_test_email@test.com";
+
+        sdtContext.setCustomerIdamId(testIdamId);
+
+        String idamId = (String) getAccessibleField(SdtContext.class, FIELD_CUSTOMER_IDAM_ID, String.class, sdtContext);
+        assertEquals(testIdamId, idamId, "SdtContext customer IDAM id set to unexpected value");
+    }
+
+    @Test
+    void getCustomerIdamIdTest() {
+        String testIdamId = "get_test_email@test.com";
+
+        setAccessibleField(SdtContext.class, FIELD_CUSTOMER_IDAM_ID, String.class, sdtContext, testIdamId);
+
+        String idamId = sdtContext.getCustomerIdamId();
+        assertEquals(testIdamId, idamId, "Unexpected value returned from SdtContext customer IDAM id");
+    }
 }

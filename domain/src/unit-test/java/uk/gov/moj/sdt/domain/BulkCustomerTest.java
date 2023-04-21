@@ -41,6 +41,8 @@ import uk.gov.moj.sdt.domain.api.IBulkCustomer;
 import uk.gov.moj.sdt.domain.api.IBulkCustomerApplication;
 import uk.gov.moj.sdt.domain.api.ITargetApplication;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
+import uk.gov.moj.sdt.utils.visitor.api.ITree;
+import uk.gov.moj.sdt.utils.visitor.api.IVisitor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +52,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Unit tests for {@link BulkCustomer}.
@@ -79,6 +83,7 @@ class BulkCustomerTest extends AbstractSdtUnitTestBase {
 
         bulkCustomer.setBulkCustomerApplications(bulkCustomerApplications);
         bulkCustomer.setId(1L);
+        bulkCustomer.setSdtCustomerId(1L);
     }
 
     /**
@@ -96,8 +101,20 @@ class BulkCustomerTest extends AbstractSdtUnitTestBase {
     void testIBulkCustomer(){
         assertNotNull(bulkCustomer,"BulkCustomer Object should be populated");
         assertEquals(1L, bulkCustomer.getId(), "Id should be populated");
+        assertEquals(1L, bulkCustomer.getSdtCustomerId(), "SdtCustomerId should be populated");
         final String hashcode = Integer.toHexString(bulkCustomer.hashCode());
         assertTrue(bulkCustomer.toString().contains(hashcode),"Object toString should be populated");
+    }
+
+    @Test
+    @DisplayName("Test AbstractDomainObject accept")
+    void testAccept() {
+        IVisitor mockVisitor = mock(IVisitor.class);
+        ITree mockTree = mock(ITree.class);
+
+        bulkCustomer.accept(mockVisitor, mockTree);
+
+        verify(mockVisitor).visit(bulkCustomer, mockTree);
     }
 
     @Test
@@ -111,14 +128,14 @@ class BulkCustomerTest extends AbstractSdtUnitTestBase {
     @Test
     @DisplayName("Test Abstract Domain Object for Persistent Collection type")
     void testGetHashIdForPersistentCollection() {
-        PersistentCollection mockPersistentCollection = Mockito.mock(PersistentCollection.class);
+        PersistentCollection mockPersistentCollection = mock(PersistentCollection.class);
         assertEquals("PersistentCollection", new BulkCustomer().getHashId(mockPersistentCollection));
     }
 
     @Test
     @DisplayName("Test Abstract Domain Object for Hibernate Proxy type")
     void testGetHashIdForHibernateProxy() {
-        HibernateProxy mockHibernateProxy = Mockito.mock(HibernateProxy.class);
+        HibernateProxy mockHibernateProxy = mock(HibernateProxy.class);
         assertEquals("HibernateProxy", new BulkCustomer().getHashId(mockHibernateProxy));
     }
 

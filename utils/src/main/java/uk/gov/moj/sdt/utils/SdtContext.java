@@ -88,6 +88,11 @@ public final class SdtContext {
     private String submitBulkReference;
 
     /**
+     * The customer IDAM id associated with a request.  May be null.
+     */
+    private String customerIdamId;
+
+    /**
      * List to store the synchronisation tasks (commands) that are be executed
      * by the message synchroniser when the transaction is committed.
      */
@@ -197,6 +202,14 @@ public final class SdtContext {
     }
 
     /**
+     * Get the customer IDAM id.
+     * @return The customer IDAM id
+     */
+    public String getCustomerIdamId() {
+        return customerIdamId;
+    }
+
+    /**
      * get synchronisation tasks.
      *
      * @return the list of the synchronisation tasks.
@@ -273,6 +286,14 @@ public final class SdtContext {
      */
     public void setSubmitBulkReference(final String submitBulkReference) {
         this.submitBulkReference = submitBulkReference;
+    }
+
+    /**
+     * Set value of customer IDAM id.
+     * @param customerIdamId The customer IDAM id
+     */
+    public void setCustomerIdamId(final String customerIdamId) {
+        this.customerIdamId = customerIdamId;
     }
 
     /**
