@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.util.ReflectionUtils;
+import uk.gov.moj.sdt.utils.exception.FieldAccessException;
 
 /**
  * Class represents base class for all unit test cases.
@@ -43,6 +44,10 @@ import org.springframework.util.ReflectionUtils;
  * @author Robin Compston
  */
 public abstract class AbstractSdtUnitTestBase {
+
+    private static final String FIELD_NOT_EXIST = "Field %s does not exist";
+
+    private static final String FIELD_NOT_EXIST_NOT_ACCESSIBLE = "Field %s does not exist or is not accessible";
 
     /**
      * Standard JUnit setUp method. Gets run before each test method.
@@ -109,19 +114,54 @@ public abstract class AbstractSdtUnitTestBase {
         Object object = null;
 
         Field field = ReflectionUtils.findField(clazzUnderTest, fieldName);
-        try {
+        if (null == field) {
+            field = ReflectionUtils.findField(clazzUnderTest, fieldName, clazzOfField);
             if (null == field) {
-                field = ReflectionUtils.findField(clazzUnderTest, fieldName, clazzOfField);
+                throw new FieldAccessException(String.format(FIELD_NOT_EXIST, fieldName));
             }
+        }
+        try {
             ReflectionUtils.makeAccessible(field);
             object = ReflectionUtils.getField(field, target);
-            if (null == object) {
-                throw new RuntimeException("Field " + fieldName + " does not exist");
-            }
         } catch (Exception e) {
-            throw new RuntimeException("Field " + fieldName + " does not exist or is not accessible");
+            throw new FieldAccessException(String.format(FIELD_NOT_EXIST_NOT_ACCESSIBLE, fieldName));
+        }
+        if (null == object) {
+            throw new FieldAccessException(String.format(FIELD_NOT_EXIST, fieldName));
         }
         return object;
+    }
+
+    /**
+     * Make a field accessible and set it.
+     * <p>
+     * Scenario: field exists without a setter and is protected or private, or you want to set a field
+     * without using the setter.  This allows you to set the value of that field, e.g. <code>
+     * setAccessibleField(SdtContext.class, "submitBulkReference", String.class, sdtContext, "testbulkref")</code>
+     * </p>
+     *
+     * @param clazzUnderTest The class that owns the field
+     * @param fieldName The field name
+     * @param clazzOfField The field type
+     * @param target The object which has the field
+     * @param value The value to set the field to
+     */
+    public void setAccessibleField(final Class<?> clazzUnderTest, final String fieldName,
+                                   final Class<?> clazzOfField, final Object target, final Object value) {
+
+        Field field = ReflectionUtils.findField(clazzUnderTest, fieldName);
+        if (null == field) {
+            field = ReflectionUtils.findField(clazzUnderTest, fieldName, clazzOfField);
+            if (null == field) {
+                throw new FieldAccessException(String.format(FIELD_NOT_EXIST, fieldName));
+            }
+        }
+        try {
+            ReflectionUtils.makeAccessible(field);
+            ReflectionUtils.setField(field, target, value);
+        } catch (Exception e) {
+            throw new FieldAccessException(String.format(FIELD_NOT_EXIST_NOT_ACCESSIBLE, fieldName));
+        }
     }
 
     /**

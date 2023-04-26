@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Global Parameter Test")
@@ -72,5 +73,18 @@ class GlobalParameterTest extends AbstractSdtUnitTestBase {
         String expected = "MCOL_INDV_REQ_DELAY";
         String actual = globalParameter.toString();
         assertTrue(actual.contains(expected), "Should contain something");
+    }
+
+    @Test
+    @DisplayName("Test ParameterKey enum order")
+    void testGlobalParameterKeys() {
+        assertEquals(0, IGlobalParameter.ParameterKey.DATA_RETENTION_PERIOD.ordinal());
+        assertEquals(1, IGlobalParameter.ParameterKey.TARGET_APP_TIMEOUT.ordinal());
+        assertEquals(2, IGlobalParameter.ParameterKey.MAX_FORWARDING_ATTEMPTS.ordinal());
+        assertEquals(3, IGlobalParameter.ParameterKey.MAX_CONCURRENT_INDV_REQ.ordinal());
+        assertEquals(4, IGlobalParameter.ParameterKey.INDV_REQ_DELAY.ordinal());
+        assertEquals(5, IGlobalParameter.ParameterKey.MAX_CONCURRENT_QUERY_REQ.ordinal());
+        assertEquals(6, IGlobalParameter.ParameterKey.CONTACT_DETAILS.ordinal());
+        assertEquals(7, IGlobalParameter.ParameterKey.TARGET_APP_RESP_TIMEOUT.ordinal());
     }
 }
