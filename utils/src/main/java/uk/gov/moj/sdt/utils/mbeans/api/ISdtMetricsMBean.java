@@ -151,30 +151,9 @@ public interface ISdtMetricsMBean {
     String getLastRefStats();
 
     /**
-     * Get the current active performance logging string.
-     *
-     * @return the current active performance logging string.
-     */
-    String getPerformanceLoggingString();
-
-    /**
-     * Get the current active performance logging flags.
-     *
-     * @return the current active performance logging flags.
-     */
-    short getPerformanceLoggingFlags();
-
-    /**
      * Reset all metrics to initial value.
      */
     void reset();
-
-    /**
-     * Set the value of the performance logging flags.
-     *
-     * @param performanceLoggingFlags new value of performance logging flags.
-     */
-    void setPerformanceLoggingFlags(short performanceLoggingFlags);
 
     /**
      * Increment count of bulk submits.
