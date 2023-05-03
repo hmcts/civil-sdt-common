@@ -35,7 +35,6 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.moj.sdt.utils.logging.PerformanceLogger;
 import uk.gov.moj.sdt.utils.visitor.api.IVisitable;
 import uk.gov.moj.sdt.utils.visitor.api.IVisitor;
 
@@ -216,24 +215,8 @@ public final class VisitableTreeWalker extends AbstractTreeWalker {
      *                      class name of the visitor class.
      */
     public static void walk(final IVisitable target, final String visitorSuffix) {
-        if (PerformanceLogger.isPerformanceEnabled(PerformanceLogger.LOGGING_POINT_12)) {
-            final String detail = "\n\n\ttarget=" + target.toString() + "\n";
-
-            // Write message to 'performance.log' for this logging point.
-            PerformanceLogger.log(VisitableTreeWalker.class, PerformanceLogger.LOGGING_POINT_12,
-                    "Start tree walker for " + visitorSuffix, detail);
-        }
-
         // Create instance for this thread and call it.
         final VisitableTreeWalker visitableTreeWalker = new VisitableTreeWalker();
         visitableTreeWalker.walkTree(target, visitorSuffix);
-
-        if (PerformanceLogger.isPerformanceEnabled(PerformanceLogger.LOGGING_POINT_13)) {
-            final String detail = "\n\n\ttarget=" + target.toString() + "\n";
-
-            // Write message to 'performance.log' for this logging point.
-            PerformanceLogger.log(VisitableTreeWalker.class, PerformanceLogger.LOGGING_POINT_13,
-                    "End tree walker for " + visitorSuffix, detail);
-        }
     }
 }

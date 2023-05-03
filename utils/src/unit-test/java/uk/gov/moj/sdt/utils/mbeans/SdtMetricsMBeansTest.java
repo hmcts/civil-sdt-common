@@ -92,7 +92,6 @@ class SdtMetricsMBeansTest{
         sdtMetricsMBean.upDatabaseReadsCount();
         sdtMetricsMBean.downDomainObjectsCount();
         sdtMetricsMBean.upDatabaseWritesCount();
-        sdtMetricsMBean.setPerformanceLoggingFlags((short)3);
         sdtMetricsMBean.upBulkSubmitCount();
         sdtMetricsMBean.addSubmitQueryTime(1000000L);
         sdtMetricsMBean.upSubmitQueryCount();
@@ -116,7 +115,6 @@ class SdtMetricsMBeansTest{
         verify(sdtMetricsMBean).upDatabaseReadsCount();
         verify(sdtMetricsMBean).downDomainObjectsCount();
         verify(sdtMetricsMBean).upDatabaseWritesCount();
-        verify(sdtMetricsMBean).setPerformanceLoggingFlags((short)3);
         verify(sdtMetricsMBean).upBulkSubmitCount();
         verify(sdtMetricsMBean).addSubmitQueryTime(1000000L);
         verify(sdtMetricsMBean).upSubmitQueryCount();

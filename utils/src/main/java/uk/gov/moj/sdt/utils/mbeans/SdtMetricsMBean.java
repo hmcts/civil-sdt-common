@@ -34,7 +34,6 @@ package uk.gov.moj.sdt.utils.mbeans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import uk.gov.moj.sdt.utils.logging.PerformanceLogger;
 import uk.gov.moj.sdt.utils.mbeans.api.ICustomerCounter;
 import uk.gov.moj.sdt.utils.mbeans.api.ISdtMetricsMBean;
 
@@ -115,11 +114,6 @@ public final class SdtMetricsMBean implements ISdtMetricsMBean {
      * Constant to convert nanoseconds to milliseconds.
      */
     private static final long NANO_TO_MILLI = 1000000;
-
-    /**
-     * Current active value of performance logging flags which control what performance logging points are active.
-     */
-    private short performanceLoggingFlags;
 
     /**
      * Count of all bulk submits.
@@ -1528,23 +1522,6 @@ public final class SdtMetricsMBean implements ISdtMetricsMBean {
     }
 
     @Override
-    public String getPerformanceLoggingString() {
-        return "Performance logging flags: "
-                + PerformanceLogger.pad(Integer.toBinaryString(this.getPerformanceLoggingFlags()), true,
-                "0", PerformanceLogger.FLAG_BIT_LENGTH);
-    }
-
-    @Override
-    public short getPerformanceLoggingFlags() {
-        return this.performanceLoggingFlags;
-    }
-
-    @Override
-    public void setPerformanceLoggingFlags(final short performanceLoggingFlags) {
-        this.performanceLoggingFlags = performanceLoggingFlags;
-    }
-
-    @Override
     public void updateBulkCustomerCount(final String customer) {
         getCustomerCounter().updateBulkCustomerCount(customer);
     }
@@ -1594,7 +1571,6 @@ public final class SdtMetricsMBean implements ISdtMetricsMBean {
             output.write(getDatabaseReadsStats() + "\n");
             output.write(getDatabaseWritesStats() + "\n");
             output.write(getErrorStats() + "\n");
-            output.write(getPerformanceLoggingString() + "\n");
             output.close();
         } catch (final IOException e) {
             e.printStackTrace();
