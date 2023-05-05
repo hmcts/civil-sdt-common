@@ -31,15 +31,17 @@
 
 package uk.gov.moj.sdt.domain;
 
-import uk.gov.moj.sdt.domain.api.IServiceRequest;
-
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import uk.gov.moj.sdt.domain.api.IServiceRequest;
 
 /**
  * Audit log for incoming and outgoing request.
@@ -87,13 +89,17 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      * The incoming message.
      */
     @Column(name = "REQUEST_PAYLOAD")
-    private String requestPayload;
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] requestPayload;
 
     /**
      * The outgoing message.
      */
     @Column(name = "RESPONSE_PAYLOAD")
-    private String responsePayload;
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] responsePayload;
 
     /**
      * The SDT generated bulk reference.
@@ -159,7 +165,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public void setRequestPayload(final String requestPayload) {
-        this.requestPayload = requestPayload;
+        this.requestPayload = requestPayload == null ? null : requestPayload.getBytes();
     }
 
     /**
@@ -170,7 +176,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public void setResponsePayload(final String responsePayload) {
-        this.responsePayload = responsePayload;
+        this.responsePayload = responsePayload == null ? null : responsePayload.getBytes();
     }
 
     /**
@@ -232,7 +238,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public String getRequestPayload() {
-        return this.requestPayload;
+        return requestPayload == null ? null : new String(requestPayload);
     }
 
     /**
@@ -242,7 +248,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public String getResponsePayload() {
-        return this.responsePayload;
+        return responsePayload == null ? null : new String(responsePayload);
     }
 
     /**

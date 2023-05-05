@@ -86,7 +86,7 @@ public final class DBUnitUtility {
     /**
      * Map of database connections for all schemas (one each).
      */
-    private static Map<String, IDatabaseConnection> allConnections = new HashMap<String, IDatabaseConnection>();
+    private static Map<String, IDatabaseConnection> allConnections = new HashMap<>();
 
     /**
      * Private constructor to hide what is a utility class with only static

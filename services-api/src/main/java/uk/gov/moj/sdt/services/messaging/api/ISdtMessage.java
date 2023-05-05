@@ -75,6 +75,10 @@ public interface ISdtMessage {
      */
     void setEnqueueLoggingId(final long enqueueLoggingId);
 
+    Boolean isCaseOffLine();
+
+    void setCaseOffLine(Boolean caseOffLine);
+
     /**
      * Represent class as String.
      *
