@@ -36,7 +36,6 @@
  */
 package uk.gov.moj.sdt.domain;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -84,7 +83,7 @@ class SubmitQueryRequestTest extends AbstractSdtUnitTestBase {
         serviceRequest.setBulkCustomerId("1234");
         serviceRequest.setBulkReference("BulkRef01");
         serviceRequest.setRequestType("ReqType");
-        serviceRequest.setRequestPayload("PayLoad");
+        serviceRequest.setRequestPayload("PayLoad".getBytes());
         serviceRequest.setRequestDateTime(LocalDateTime.now());
     }
 

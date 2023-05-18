@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.moj.sdt.domain.api.IServiceRequest;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,17 +59,19 @@ class ServiceRequestTest extends AbstractSdtUnitTestBase {
 
     LocalDateTime responseDateTime = LocalDateTime.now();
 
+    private static final String BULK_REF_01 = "BulkRef01";
+
     @BeforeEach
     @Override
     public void setUpLocalTests() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setBulkCustomerId("1234");
-        serviceRequest.setBulkReference("BulkRef01");
+        serviceRequest.setBulkReference(BULK_REF_01);
         serviceRequest.setRequestType("ReqType");
-        serviceRequest.setRequestPayload("Request Payload");
+        serviceRequest.setRequestPayload("Request Payload".getBytes());
         serviceRequest.setRequestDateTime(requestDateTime);
         serviceRequest.setResponseDateTime(responseDateTime);
-        serviceRequest.setResponsePayload("Response Payload");
+        serviceRequest.setResponsePayload("Response Payload".getBytes());
         serviceRequest.setServerHostName("SDT_MOCK_HOSTNAME");
         serviceRequest.setId(1L);
     }
@@ -76,17 +79,19 @@ class ServiceRequestTest extends AbstractSdtUnitTestBase {
     @DisplayName("Test Service Request")
     @Test
     void testServiceRequest() {
-        String expected = "BulkRef01";
+        String expected = BULK_REF_01;
         String actual = serviceRequest.toString();
         assertTrue(actual.contains(expected), "Should contain something");
         assertNotNull(serviceRequest, "ServiceRequest Object should be populated");
         assertEquals("1234", serviceRequest.getBulkCustomerId(), "BulkCustomerId is not equal");
-        assertEquals("BulkRef01", serviceRequest.getBulkReference(), "Bulk Reference is not equal");
+        assertEquals(BULK_REF_01, serviceRequest.getBulkReference(), "Bulk Reference is not equal");
         assertEquals("ReqType", serviceRequest.getRequestType(), "Request Type is not equal");
-        assertEquals("Request Payload", serviceRequest.getRequestPayload(), "Request Payload is not equal");
+        assertEquals("Request Payload", new String(serviceRequest.getRequestPayload(), StandardCharsets.UTF_8),
+                "Request Payload is not equal");
         assertEquals(requestDateTime, serviceRequest.getRequestDateTime(), "Request Date Time is not equal");
         assertEquals(responseDateTime, serviceRequest.getResponseDateTime(), "Response Date Time is not equal");
-        assertEquals("Response Payload", serviceRequest.getResponsePayload(), "Response Payload is not equal");
+        assertEquals("Response Payload", new String(serviceRequest.getResponsePayload(), StandardCharsets.UTF_8),
+                "Response Payload is not equal");
         assertEquals("SDT_MOCK_HOSTNAME", serviceRequest.getServerHostName(), "Server Host Name is not equal");
         assertEquals(1L, serviceRequest.getId(), "Id is not equal");
     }

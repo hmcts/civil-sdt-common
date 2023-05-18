@@ -1,34 +1,3 @@
-/* Copyrights and Licenses
- *
- * Copyright (c) 2012-2013 by the Ministry of Justice. All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
- * - Redistributions of source code must retain the above copyright notice, this list of conditions
- * and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice, this list of
- * conditions and the following disclaimer in the documentation and/or other materials
- * provided with the distribution.
- * - All advertising materials mentioning features or use of this software must display the
- * following acknowledgment: "This product includes Money Claims OnLine."
- * - Products derived from this software may not be called "Money Claims OnLine" nor may
- * "Money Claims OnLine" appear in their names without prior written permission of the
- * Ministry of Justice.
- * - Redistributions of any form whatsoever must retain the following acknowledgment: "This
- * product includes Money Claims OnLine."
- * This software is provided "as is" and any expressed or implied warranties, including, but
- * not limited to, the implied warranties of merchantability and fitness for a particular purpose are
- * disclaimed. In no event shall the Ministry of Justice or its contributors be liable for any
- * direct, indirect, incidental, special, exemplary, or consequential damages (including, but
- * not limited to, procurement of substitute goods or services; loss of use, data, or profits;
- * or business interruption). However caused any on any theory of liability, whether in contract,
- * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
- * software, even if advised of the possibility of such damage.
- *
- * $Id: $
- * $LastChangedRevision: $
- * $LastChangedDate: $
- * $LastChangedBy: $ */
-
 package uk.gov.moj.sdt.domain;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +6,6 @@ import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
 
-import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.AWAITING_DATA;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.FORWARDED;
@@ -100,6 +70,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * For warrant requests this will be the date of issue.
      * If the request was not successfully processed this field will be blank. Formatted as DDMMYYYY.
      */
+    @Column(name = "ISSUED_DATE")
     private LocalDateTime issuedDate;
 
     /**
@@ -150,20 +121,19 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Target Application Response for Individual Request processing.
      */
     @Column(name = "TARGET_APPLICATION_RESPONSE")
-    private String targetApplicationResponse;
+    private byte[] targetApplicationResponse;
 
     /**
      * Error log.
      */
-    @OneToOne(cascade = CascadeType.ALL, targetEntity= ErrorLog.class)
-    @JoinColumn(name="ERROR_LOG_ID")
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = ErrorLog.class, mappedBy = "individualRequest")
     private IErrorLog errorLog;
 
     /**
      * XML request payload.
      */
     @Column(name = "INDIVIDUAL_PAYLOAD")
-    private String requestPayload;
+    private byte[] requestPayload;
 
     /**
      * Internal system error.
@@ -275,12 +245,12 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
     }
 
     @Override
-    public String getRequestPayload() {
+    public byte[] getRequestPayload() {
         return requestPayload;
     }
 
     @Override
-    public void setRequestPayload(final String requestPayload) {
+    public void setRequestPayload(final byte[] requestPayload) {
         this.requestPayload = requestPayload;
     }
 
@@ -295,12 +265,12 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
     }
 
     @Override
-    public String getTargetApplicationResponse() {
+    public byte[] getTargetApplicationResponse() {
         return targetApplicationResponse;
     }
 
     @Override
-    public void setTargetApplicationResponse(final String targetApplicationResponse) {
+    public void setTargetApplicationResponse(final byte[] targetApplicationResponse) {
         this.targetApplicationResponse = targetApplicationResponse;
     }
 
@@ -477,9 +447,13 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
         sb.append(", updatedDate=").append(this.getUpdatedDate());
         sb.append(", completedDate=").append(this.getCompletedDate());
         sb.append(", forwardingAttempts=").append(this.getForwardingAttempts());
-        sb.append(", targetApplicationResponse=").append(this.getTargetApplicationResponse());
+        sb.append(", targetApplicationResponse=").append(
+                null == this.getTargetApplicationResponse() ? "" :
+                new String(this.getTargetApplicationResponse(), StandardCharsets.UTF_8));
         sb.append(", errorLog=").append(this.getErrorLog());
-        sb.append(", requestPayload=").append(this.getRequestPayload());
+        sb.append(", requestPayload=").append(
+                null == this.getRequestPayload() ? "" :
+                new String(this.getRequestPayload(), StandardCharsets.UTF_8));
         sb.append(", internalSystemError=").append(this.getInternalSystemError());
         sb.append(", requestType=").append(this.getRequestType());
         sb.append(", deadLetter=").append(this.isDeadLetter());

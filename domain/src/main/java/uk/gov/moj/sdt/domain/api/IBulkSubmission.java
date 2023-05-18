@@ -172,14 +172,14 @@ public interface IBulkSubmission extends IDomainObject {
      *
      * @return xml payload
      */
-    String getPayload();
+    byte[] getPayload();
 
     /**
      * Set the XML payload.
      *
      * @param bs xml payload
      */
-    void setPayload(final String bs);
+    void setPayload(final byte[] bs);
 
     /**
      * Get list of individual request.

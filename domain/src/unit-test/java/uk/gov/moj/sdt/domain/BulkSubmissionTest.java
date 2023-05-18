@@ -42,6 +42,7 @@ import uk.gov.moj.sdt.domain.api.IServiceRequest;
 import uk.gov.moj.sdt.domain.api.ITargetApplication;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,9 @@ class BulkSubmissionTest extends AbstractSdtUnitTestBase {
 
     private ITargetApplication mockTargetApplication;
 
-    private  final String PAYLOAD = "Payload";
+    private static final String PAYLOAD = "Payload";
+
+    private static final String ERROR = "ERROR";
 
     private final LocalDateTime createdDate = LocalDateTime.now();
 
@@ -74,7 +77,7 @@ class BulkSubmissionTest extends AbstractSdtUnitTestBase {
         mockBulkCustomer = Mockito.mock(IBulkCustomer.class);
         mockTargetApplication = Mockito.mock(ITargetApplication.class);
         bulkSubmission = new BulkSubmission();
-        bulkSubmission.setErrorCode("ERROR");
+        bulkSubmission.setErrorCode(ERROR);
         bulkSubmission.setServiceRequest(mockServiceRequest);
         bulkSubmission.setBulkCustomer(mockBulkCustomer);
         bulkSubmission.setTargetApplication(mockTargetApplication);
@@ -82,7 +85,7 @@ class BulkSubmissionTest extends AbstractSdtUnitTestBase {
         bulkSubmission.setCreatedDate(createdDate);
         bulkSubmission.setNumberOfRequest(1L);
         bulkSubmission.setId(1L);
-        bulkSubmission.setPayload(PAYLOAD);
+        bulkSubmission.setPayload(PAYLOAD.getBytes());
         bulkSubmission.setErrorText("This is an Error");
 
     }
@@ -101,7 +104,7 @@ class BulkSubmissionTest extends AbstractSdtUnitTestBase {
             IBulkSubmission.BulkRequestStatus.COMPLETED.getStatus()
         );
 
-        assertEquals("ERROR", bulkSubmission.getErrorCode(), "Error code should be set");
+        assertEquals(ERROR, bulkSubmission.getErrorCode(), "Error code should be set");
         assertEquals(mockServiceRequest, bulkSubmission.getServiceRequest());
         assertEquals(mockTargetApplication, bulkSubmission.getTargetApplication());
         assertEquals(mockBulkCustomer, bulkSubmission.getBulkCustomer());
@@ -123,14 +126,14 @@ class BulkSubmissionTest extends AbstractSdtUnitTestBase {
         bulkSubmission.markAsValidated();
         //then
         assertNotEquals("Validated", bulkSubmission.getSubmissionStatus());
-        assertEquals(PAYLOAD, bulkSubmission.getPayload());
+        assertEquals(PAYLOAD, new String(bulkSubmission.getPayload(), StandardCharsets.UTF_8));
 
     }
 
     @DisplayName("Test Bulk Submission toString")
     @Test
     void testBulkSubmissionToString(){
-        assertTrue(bulkSubmission.toString().contains("ERROR"), "Should contain something");
+        assertTrue(bulkSubmission.toString().contains(ERROR), "Should contain something");
     }
 
     @DisplayName("Test Bulk Submission getId")
