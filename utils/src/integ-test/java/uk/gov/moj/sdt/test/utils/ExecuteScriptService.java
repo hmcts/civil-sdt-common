@@ -1,17 +1,17 @@
 package uk.gov.moj.sdt.test.utils;
 
+import java.util.concurrent.Future;
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.util.concurrent.Future;
 
 @Service("ExecuteScriptService")
 public class ExecuteScriptService implements IExecuteScriptService {
@@ -21,7 +21,8 @@ public class ExecuteScriptService implements IExecuteScriptService {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecuteScriptService.class);
 
-    @Inject
+
+    @Autowired
     protected DataSource dataSource;
 
     public boolean executeScript(Resource script) {
