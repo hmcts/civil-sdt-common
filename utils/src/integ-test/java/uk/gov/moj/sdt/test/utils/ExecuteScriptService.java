@@ -49,7 +49,7 @@ public class ExecuteScriptService implements IExecuteScriptService {
         } catch (ScriptException e) {
             return new AsyncResult<>(false);
         }
-        LOGGER.info("Done with script {}...", script.getFilename());
+        LOGGER.info("Done with script {}", script.getFilename());
         return new AsyncResult<>(true);
     }
 }
