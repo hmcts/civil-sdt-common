@@ -24,6 +24,7 @@ public class ExecuteScriptService implements IExecuteScriptService {
     @Autowired
     protected DataSource dataSource;
 
+    @Override
     public boolean executeScript(Resource script) {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script);
         boolean success = true;
