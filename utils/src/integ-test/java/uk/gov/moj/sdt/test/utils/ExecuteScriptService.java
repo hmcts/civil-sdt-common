@@ -21,7 +21,6 @@ public class ExecuteScriptService implements IExecuteScriptService {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecuteScriptService.class);
 
-
     @Autowired
     protected DataSource dataSource;
 
