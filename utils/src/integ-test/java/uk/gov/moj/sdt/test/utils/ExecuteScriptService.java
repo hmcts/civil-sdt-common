@@ -32,7 +32,7 @@ public class ExecuteScriptService implements IExecuteScriptService {
             databasePopulator.execute(dataSource);
         } catch (ScriptException e) {
             success = false;
-            LOGGER.error("Error executing script , script: {}. Error: {}",
+            LOGGER.error("Error executing script: {}. Error: {}",
                     script.getFilename(), e.getMessage(), e);
         }
         return success;
