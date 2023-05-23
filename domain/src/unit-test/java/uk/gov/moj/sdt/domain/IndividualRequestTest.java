@@ -263,7 +263,7 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
     }
 
     @Test
-    @DisplayName("Test Request Individual System Error")
+    @DisplayName("Test Request Internal System Error")
     void testIndividualRequestSystemError(){
         individualRequest.setInternalSystemError("Internal System Error");
         assertEquals("Internal System Error", individualRequest.getInternalSystemError(),"Internal System error should be populated");
