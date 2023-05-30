@@ -59,7 +59,7 @@ class SdtMetricsMBeansTest{
 
     @BeforeEach
     public void setUpLocalTests() {
-         sdtMetricsMBean = new SdtMetricsMBean();
+         sdtMetricsMBean = new SdtMetricsMBean(new CustomerCounter());
          managementFactoryMock = Mockito.spy(ManagementFactory.class);
 
     }
@@ -67,7 +67,7 @@ class SdtMetricsMBeansTest{
     @Test
     void sdtMBeanCreateTest(){
         //given/when
-        sdtMetricsMBean = new SdtMetricsMBean();
+        sdtMetricsMBean = new SdtMetricsMBean(new CustomerCounter());
         //then
         assertNotNull(sdtMetricsMBean,OBJECT_SHOULD_BE_CREATED);
     }
@@ -75,7 +75,8 @@ class SdtMetricsMBeansTest{
     @Test
     void testReset() {
         //Given
-        sdtMetricsMBean = Mockito.spy(SdtMetricsMBean.class);
+        SdtMetricsMBean testBean = new SdtMetricsMBean(new CustomerCounter());
+        sdtMetricsMBean = Mockito.spy(testBean);
         sdtMetricsMBean.upRequestQueueLength();
         sdtMetricsMBean.upDomainObjectsCount();
         //When
@@ -142,7 +143,7 @@ class SdtMetricsMBeansTest{
     @Test
     void getTimeTest(){
          //given
-         sdtMetricsMBean = new SdtMetricsMBean();
+         sdtMetricsMBean = new SdtMetricsMBean(new CustomerCounter());
           managementFactoryMock = Mockito.spy(ManagementFactory.class);
          //when
         String actual = sdtMetricsMBean.getOsStats();
