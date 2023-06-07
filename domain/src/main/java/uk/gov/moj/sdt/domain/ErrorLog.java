@@ -34,7 +34,6 @@ package uk.gov.moj.sdt.domain;
 import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,6 +43,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * Error log.
@@ -66,7 +66,7 @@ public class ErrorLog extends AbstractDomainObject implements IErrorLog {
      * Individual request, null for error raised on bulk file.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = IndividualRequest.class)
-    @JoinColumn(name="INDIVIDUAL_REQUEST_ID")
+    @JoinColumn(name="INDIVIDUAL_REQUEST_ID", unique = true, nullable = false)
     private IIndividualRequest individualRequest;
 
     /**

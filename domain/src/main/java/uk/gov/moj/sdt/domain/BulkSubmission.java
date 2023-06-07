@@ -145,7 +145,7 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
      * XML payload.
      */
     @Column(name = "BULK_PAYLOAD")
-    private String payload;
+    private byte[] payload;
 
     /**
      * List of individual requests.
@@ -258,12 +258,12 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
     }
 
     @Override
-    public String getPayload() {
+    public byte[] getPayload() {
         return payload;
     }
 
     @Override
-    public void setPayload(final String payload) {
+    public void setPayload(final byte[] payload) {
         this.payload = payload;
     }
 
