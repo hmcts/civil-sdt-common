@@ -1,0 +1,108 @@
+apply plugin: 'info.solidsoft.pitest'
+sourceSets.main.java.srcDirs += "src-gen/main/java"
+
+sourceSets {
+    testUnit {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
+}
+
+configurations {
+    testOutput
+    testOutput.extendsFrom(testUnitImplementation)
+    wsdl2java
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':utils')
+
+    testImplementation project(path: ':utils', configuration: 'testOutput')
+
+    testOutput sourceSets.testUnit.output
+
+    wsdl2java("javax.jws:javax.jws-api:1.1")
+    wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
+    wsdl2java("javax.xml.ws:jaxws-api:${jaxwsVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-core:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-spring-boot-starter-jaxws:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}")
+    wsdl2java("org.apache.cxf:cxf-rt-features-logging:${cxfVersion}")
+}
+
+task sdtEndPointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/SdtEndpoint.wsdl"
+  ]
+}
+
+task sdtInternalEndpointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/SdtInternalEndpoint.wsdl"
+  ]
+}
+
+task targetAppInternalEndpointWsdl2Java(type: JavaExec) {
+  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  classpath = configurations.wsdl2java
+  args = [
+    "-d", "src-gen/main/java",
+    "-fe", "jaxws21",
+    "-b", "${projectDir}/${wsdlXsdResourcesDir}/jaxb-bindings.xml",
+    "${projectDir}/${wsdlXsdResourcesDir}/wsdl/TargetAppInternalEndpoint.wsdl"
+  ]
+}
+
+compileJava.dependsOn 'sdtEndPointWsdl2Java'
+compileJava.dependsOn 'sdtInternalEndpointWsdl2Java'
+compileJava.dependsOn 'targetAppInternalEndpointWsdl2Java'
+
+tasks.register('unit', Test) {
+    description = "Runs unit tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+    failFast = true
+}
+
+check.dependsOn unit
+
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+artifacts {
+    archives testJar
+}
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact testJar
+            version project.version
+            from components.java
+        }
+    }
+}
