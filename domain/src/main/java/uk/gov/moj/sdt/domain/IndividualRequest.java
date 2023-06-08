@@ -1,37 +1,8 @@
-/* Copyrights and Licenses
- *
- * Copyright (c) 2012-2013 by the Ministry of Justice. All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
- * - Redistributions of source code must retain the above copyright notice, this list of conditions
- * and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice, this list of
- * conditions and the following disclaimer in the documentation and/or other materials
- * provided with the distribution.
- * - All advertising materials mentioning features or use of this software must display the
- * following acknowledgment: "This product includes Money Claims OnLine."
- * - Products derived from this software may not be called "Money Claims OnLine" nor may
- * "Money Claims OnLine" appear in their names without prior written permission of the
- * Ministry of Justice.
- * - Redistributions of any form whatsoever must retain the following acknowledgment: "This
- * product includes Money Claims OnLine."
- * This software is provided "as is" and any expressed or implied warranties, including, but
- * not limited to, the implied warranties of merchantability and fitness for a particular purpose are
- * disclaimed. In no event shall the Ministry of Justice or its contributors be liable for any
- * direct, indirect, incidental, special, exemplary, or consequential damages (including, but
- * not limited to, procurement of substitute goods or services; loss of use, data, or profits;
- * or business interruption). However caused any on any theory of liability, whether in contract,
- * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
- * software, even if advised of the possibility of such damage.
- *
- * $Id: $
- * $LastChangedRevision: $
- * $LastChangedDate: $
- * $LastChangedBy: $ */
-
 package uk.gov.moj.sdt.domain;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,8 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
@@ -101,7 +72,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * For warrant requests this will be the date of issue.
      * If the request was not successfully processed this field will be blank. Formatted as DDMMYYYY.
      */
-    @Transient
+    @Column(name = "ISSUED_DATE")
     private LocalDateTime issuedDate;
 
     /**
@@ -159,7 +130,8 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
     /**
      * Error log.
      */
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL, targetEntity= ErrorLog.class)
+    @JoinColumn(name="ERROR_LOG_ID")
     private IErrorLog errorLog;
 
     /**
@@ -281,13 +253,13 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
     }
 
     @Override
-    public String getRequestPayload() {
-        return requestPayload == null ? null : new String(requestPayload);
+    public byte[] getRequestPayload() {
+        return requestPayload;
     }
 
     @Override
-    public void setRequestPayload(final String requestPayload) {
-        this.requestPayload = requestPayload == null ? null : requestPayload.getBytes();
+    public void setRequestPayload(final byte[] requestPayload) {
+        this.requestPayload = requestPayload;
     }
 
     @Override
@@ -301,13 +273,13 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
     }
 
     @Override
-    public String getTargetApplicationResponse() {
-        return targetApplicationResponse == null ? null : new String(targetApplicationResponse);
+    public byte[] getTargetApplicationResponse() {
+        return targetApplicationResponse;
     }
 
     @Override
-    public void setTargetApplicationResponse(final String targetApplicationResponse) {
-        this.targetApplicationResponse = targetApplicationResponse == null ? null : targetApplicationResponse.getBytes();
+    public void setTargetApplicationResponse(final byte[] targetApplicationResponse) {
+        this.targetApplicationResponse = targetApplicationResponse;
     }
 
     @Override
@@ -483,9 +455,13 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
         sb.append(", updatedDate=").append(this.getUpdatedDate());
         sb.append(", completedDate=").append(this.getCompletedDate());
         sb.append(", forwardingAttempts=").append(this.getForwardingAttempts());
-        sb.append(", targetApplicationResponse=").append(this.getTargetApplicationResponse());
+        sb.append(", targetApplicationResponse=").append(
+                null == this.getTargetApplicationResponse() ? "" :
+                new String(this.getTargetApplicationResponse(), StandardCharsets.UTF_8));
         sb.append(", errorLog=").append(this.getErrorLog());
-        sb.append(", requestPayload=").append(this.getRequestPayload());
+        sb.append(", requestPayload=").append(
+                null == this.getRequestPayload() ? "" :
+                new String(this.getRequestPayload(), StandardCharsets.UTF_8));
         sb.append(", internalSystemError=").append(this.getInternalSystemError());
         sb.append(", requestType=").append(this.getRequestType());
         sb.append(", deadLetter=").append(this.isDeadLetter());

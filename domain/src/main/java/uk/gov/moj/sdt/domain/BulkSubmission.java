@@ -262,13 +262,13 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
     }
 
     @Override
-    public String getPayload() {
-        return payload == null ? null : new String(payload);
+    public byte[] getPayload() {
+        return payload;
     }
 
     @Override
-    public void setPayload(final String payload) {
-        this.payload = payload == null ? null : payload.getBytes();
+    public void setPayload(final byte[] payload) {
+        this.payload = payload;
     }
 
     @Override

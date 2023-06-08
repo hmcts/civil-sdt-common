@@ -39,6 +39,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Type;
 import uk.gov.moj.sdt.domain.api.IServiceRequest;
@@ -59,7 +60,6 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
 
     @Column(name = "VERSION_NUMBER")
     private int version;
-
 
     /**
      * The time the request is received.
@@ -143,7 +143,6 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
     @Override
     public void setBulkCustomerId(final String bulkCustomerId) {
         this.bulkCustomerId = bulkCustomerId;
-
     }
 
     /**
@@ -161,22 +160,22 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      * set request payload.
      *
      * @param requestPayload the incoming message.
-     * @see uk.gov.moj.sdt.domain.api.IServiceRequest#setRequestPayload(String)
+     * @see uk.gov.moj.sdt.domain.api.IServiceRequest#setRequestPayload(byte[])
      */
     @Override
-    public void setRequestPayload(final String requestPayload) {
-        this.requestPayload = requestPayload == null ? null : requestPayload.getBytes();
+    public void setRequestPayload(final byte[] requestPayload) {
+        this.requestPayload = requestPayload;
     }
 
     /**
      * set response payload.
      *
      * @param responsePayload the outgoing message.
-     * @see uk.gov.moj.sdt.domain.api.IServiceRequest#setResponsePayload(String)
+     * @see uk.gov.moj.sdt.domain.api.IServiceRequest#setResponsePayload(byte[])
      */
     @Override
-    public void setResponsePayload(final String responsePayload) {
-        this.responsePayload = responsePayload == null ? null : responsePayload.getBytes();
+    public void setResponsePayload(final byte[] responsePayload) {
+        this.responsePayload = responsePayload;
     }
 
     /**
@@ -189,7 +188,6 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
     public void setBulkReference(final String bulkReference) {
         this.bulkReference = bulkReference;
     }
-
 
     /**
      * get request date time.
@@ -237,8 +235,8 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      * @return request payload
      */
     @Override
-    public String getRequestPayload() {
-        return requestPayload == null ? null : new String(requestPayload);
+    public byte[] getRequestPayload() {
+        return requestPayload;
     }
 
     /**
@@ -247,8 +245,8 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      * @return response payload
      */
     @Override
-    public String getResponsePayload() {
-        return responsePayload == null ? null : new String(responsePayload);
+    public byte[] getResponsePayload() {
+        return responsePayload;
     }
 
     /**

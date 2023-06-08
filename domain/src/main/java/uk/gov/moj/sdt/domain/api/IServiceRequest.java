@@ -123,14 +123,14 @@ public interface IServiceRequest extends IDomainObject {
      *
      * @param requestPayload the entire message including SOAP headers.
      */
-    void setRequestPayload(final String requestPayload);
+    void setRequestPayload(final byte[] requestPayload);
 
     /**
      * Retrieve the payload.
      *
      * @return the request payload.
      */
-    String getRequestPayload();
+    byte[] getRequestPayload();
 
     /**
      * The entire outgoing message must be saved and so will be considered the
@@ -142,14 +142,14 @@ public interface IServiceRequest extends IDomainObject {
      *
      * @param responsePayload the entire message including SOAP headers.
      */
-    void setResponsePayload(final String responsePayload);
+    void setResponsePayload(final byte[] responsePayload);
 
     /**
      * Retrieve the payload.
      *
      * @return the response payload.
      */
-    String getResponsePayload();
+    byte[] getResponsePayload();
 
     /**
      * The SDT generated Bulk Reference will only ever be available on certain
