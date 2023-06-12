@@ -43,6 +43,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -56,6 +57,7 @@ public class ServiceRouting extends AbstractDomainObject implements IServiceRout
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "srv_req_seq")
+    @SequenceGenerator(name="srv_req_seq", sequenceName = "srv_req_seq", allocationSize = 1)
     @Column(name = "SERVICE_ROUTINGS_ID")
     private long id;
 

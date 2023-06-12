@@ -50,6 +50,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -64,6 +65,7 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_sub_seq")
+    @SequenceGenerator(name="bulk_sub_seq", sequenceName = "bulk_sub_seq", allocationSize = 1)
     @Column(name = "BULK_SUBMISSION_ID")
     private long id;
 

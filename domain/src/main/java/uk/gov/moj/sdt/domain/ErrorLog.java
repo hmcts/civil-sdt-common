@@ -42,6 +42,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -56,6 +57,7 @@ public class ErrorLog extends AbstractDomainObject implements IErrorLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "err_log_seq")
+    @SequenceGenerator(name="err_log_seq", sequenceName = "err_log_seq", allocationSize = 1)
     @Column(name = "ERROR_LOG_ID")
     private long id;
 

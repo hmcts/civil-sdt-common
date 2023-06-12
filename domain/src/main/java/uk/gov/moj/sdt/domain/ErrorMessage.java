@@ -38,6 +38,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -51,6 +52,7 @@ public class ErrorMessage extends AbstractDomainObject implements IErrorMessage 
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "err_mesg_seq")
+    @SequenceGenerator(name="err_mesg_seq", sequenceName = "err_mesg_seq", allocationSize = 1)
     @Column(name = "ERROR_MESSAGE_ID")
     private long id;
 

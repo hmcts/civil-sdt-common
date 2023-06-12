@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ind_req_seq")
+    @SequenceGenerator(name="ind_req_seq", sequenceName = "ind_req_seq", allocationSize = 1)
     @Column(name = "INDIVIDUAL_REQUEST_ID")
     private long id;
 
