@@ -83,4 +83,8 @@ public interface IBulkCustomer extends IDomainObject {
      * @return return bulk customer application that this customer can work with.
      */
     IBulkCustomerApplication getBulkCustomerApplication(String targetApplicationCode);
+
+    Boolean getReadyForAlternateService();
+
+    void setReadyForAlternateService(Boolean readyForAlternateService);
 }
