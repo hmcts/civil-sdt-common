@@ -6,6 +6,7 @@ import uk.gov.moj.sdt.utils.cmc.exception.CMCException;
 import uk.gov.moj.sdt.utils.cmc.xml.XmlElementValueReader;
 
 import static uk.gov.moj.sdt.utils.cmc.RequestType.BREATHING_SPACE;
+import static uk.gov.moj.sdt.utils.cmc.RequestType.CLAIM;
 import static uk.gov.moj.sdt.utils.cmc.RequestType.CLAIM_STATUS_UPDATE;
 import static uk.gov.moj.sdt.utils.cmc.RequestType.JUDGMENT;
 import static uk.gov.moj.sdt.utils.cmc.RequestType.JUDGMENT_WARRANT;
@@ -25,7 +26,15 @@ public class RequestTypeXmlNodeValidator {
         this.xmlReader = xmlReader;
     }
 
-    public boolean isCMCRequestType(String requestType, String requestPayload, String xmlNodeName, boolean throwException) {
+    public boolean isCMCClaimRequest(String requestType, Boolean readyForAlternateSubmission) {
+        return (requestType != null && CLAIM.getType().equalsIgnoreCase(requestType)
+                && (readyForAlternateSubmission != null && readyForAlternateSubmission));
+    }
+
+    public boolean isCMCRequestType(String requestType,
+                                    String requestPayload,
+                                    String xmlNodeName,
+                                    boolean throwException) {
         if (isCCDReference(requestPayload, xmlNodeName)) {
             if (!isValidRequestType(requestType) && throwException) {
                 throw new CMCException(String.format("Request Type: %s not supported", requestType));
