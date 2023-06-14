@@ -56,8 +56,8 @@ import javax.persistence.Table;
 public class ServiceRouting extends AbstractDomainObject implements IServiceRouting {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "srv_req_seq")
-    @SequenceGenerator(name="srv_req_seq", sequenceName = "srv_req_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ser_rou_seq")
+    @SequenceGenerator(name="ser_rou_seq", sequenceName = "ser_rou_seq", allocationSize = 1)
     @Column(name = "SERVICE_ROUTINGS_ID")
     private long id;
 
