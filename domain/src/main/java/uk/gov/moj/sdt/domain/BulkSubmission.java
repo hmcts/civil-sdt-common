@@ -31,12 +31,6 @@
 
 package uk.gov.moj.sdt.domain;
 
-import uk.gov.moj.sdt.domain.api.IBulkCustomer;
-import uk.gov.moj.sdt.domain.api.IBulkSubmission;
-import uk.gov.moj.sdt.domain.api.IIndividualRequest;
-import uk.gov.moj.sdt.domain.api.IServiceRequest;
-import uk.gov.moj.sdt.domain.api.ITargetApplication;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +42,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import uk.gov.moj.sdt.domain.api.IBulkCustomer;
+import uk.gov.moj.sdt.domain.api.IBulkSubmission;
+import uk.gov.moj.sdt.domain.api.IIndividualRequest;
+import uk.gov.moj.sdt.domain.api.IServiceRequest;
+import uk.gov.moj.sdt.domain.api.ITargetApplication;
 
 /**
  * For a Submit Bulk Request, the SDT application records the
@@ -146,6 +148,8 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
     /**
      * XML payload.
      */
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "BULK_PAYLOAD")
     private byte[] payload;
 

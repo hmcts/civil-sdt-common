@@ -1,11 +1,7 @@
 package uk.gov.moj.sdt.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import uk.gov.moj.sdt.domain.api.IBulkSubmission;
-import uk.gov.moj.sdt.domain.api.IErrorLog;
-import uk.gov.moj.sdt.domain.api.IIndividualRequest;
-import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
-
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Type;
+import uk.gov.moj.sdt.domain.api.IBulkSubmission;
+import uk.gov.moj.sdt.domain.api.IErrorLog;
+import uk.gov.moj.sdt.domain.api.IIndividualRequest;
+import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.AWAITING_DATA;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.FORWARDED;
@@ -123,18 +125,23 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Target Application Response for Individual Request processing.
      */
     @Column(name = "TARGET_APPLICATION_RESPONSE")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] targetApplicationResponse;
 
     /**
      * Error log.
      */
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = ErrorLog.class, mappedBy = "individualRequest")
+    @OneToOne(cascade = CascadeType.ALL, targetEntity= ErrorLog.class)
+    @JoinColumn(name="ERROR_LOG_ID")
     private IErrorLog errorLog;
 
     /**
      * XML request payload.
      */
     @Column(name = "INDIVIDUAL_PAYLOAD")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] requestPayload;
 
     /**
@@ -153,6 +160,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Flags whether message is dead letter i.e. cannot be processed due to unknown problem and requires further
      * investigation.
      */
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     @Column(name = "DEAD_LETTER")
     private boolean deadLetter;
 

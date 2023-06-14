@@ -31,6 +31,7 @@
 
 package uk.gov.moj.sdt.domain;
 
+import org.hibernate.annotations.Type;
 import uk.gov.moj.sdt.domain.api.IServiceRequest;
 
 import javax.persistence.Column;
@@ -38,6 +39,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -88,12 +90,16 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      * The incoming message.
      */
     @Column(name = "REQUEST_PAYLOAD")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] requestPayload;
 
     /**
      * The outgoing message.
      */
     @Column(name = "RESPONSE_PAYLOAD")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] responsePayload;
 
     /**
@@ -231,7 +237,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public byte[] getRequestPayload() {
-        return this.requestPayload;
+        return requestPayload;
     }
 
     /**
@@ -241,7 +247,7 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
      */
     @Override
     public byte[] getResponsePayload() {
-        return this.responsePayload;
+        return responsePayload;
     }
 
     /**

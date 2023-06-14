@@ -154,6 +154,8 @@ public interface IErrorMessage extends IDomainObject {
         /**
          * Client data error.
          */
-        CUST_XML_ERR
+        CUST_XML_ERR,
+
+        INVALID_CMC_REQUEST
     }
 }

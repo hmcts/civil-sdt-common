@@ -76,6 +76,12 @@ public final class SdtContext {
     private String rawOutXml;
 
     /**
+     * The claim defences concatenated summary results XML from submitQuery stored to be picked up
+     * just before completing the final raw output xml.
+     */
+    private String claimDefencesSummaryResultsXml;
+
+    /**
      * The id of the service request row used to log the contents of the inbound and outbound XML. The outbound
      * intercepter has to read the inbound service request in order to add the outbound xml and it uses this property to
      * locate it.
@@ -114,10 +120,9 @@ public final class SdtContext {
     private Map<String, String> targetApplicationRespMap = new HashMap<>();
 
     /**
-     * Constructor for {@link com.sun.jmx.snmp.ThreadContext}.
+     * Constructor.
      */
-    private SdtContext() {
-    }
+    private SdtContext() { }
 
     /**
      * Adds an task for synchronisation to the synchronisation list.
@@ -181,6 +186,15 @@ public final class SdtContext {
      */
     public String getRawOutXml() {
         return rawOutXml;
+    }
+
+    /**
+     * Retrieve the Claim Defences summary results XML.
+     *
+     * @return claimDefencesSummaryResultsXml for the outbound message.
+     */
+    public String getClaimDefencesSummaryResultsXml() {
+        return claimDefencesSummaryResultsXml;
     }
 
     /**
@@ -268,6 +282,15 @@ public final class SdtContext {
      */
     public void setRawOutXml(final String rawOutXml) {
         this.rawOutXml = rawOutXml;
+    }
+
+    /**
+     * Set the claim defences summary results XML to be part of the outbound message.
+     *
+     * @param claimDefencesSummaryResultsXml the outbound message intercepted by CXF.
+     */
+    public void setClaimDefencesSummaryResultsXml(final String claimDefencesSummaryResultsXml) {
+        this.claimDefencesSummaryResultsXml = claimDefencesSummaryResultsXml;
     }
 
     /**

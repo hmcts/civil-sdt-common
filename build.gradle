@@ -6,6 +6,7 @@ plugins {
 
     id 'checkstyle'
     id 'jacoco'
+    id "io.freefair.lombok" version "6.5.1"
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.github.ben-manes.versions' version '0.44.0'
     id 'org.owasp.dependencycheck' version '8.0.2'
@@ -40,6 +41,7 @@ java {
 }
 
 ext {
+    lombokVersion = '1.18.24'
     junitVersion           = '5.7.2'
     junitPlatformVersion   = '1.7.2'
     log4jVersion = '2.20.0'
@@ -93,6 +95,10 @@ bootJar {
 
 dependencies {
 
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.0-jre'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
@@ -108,6 +114,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
     implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
@@ -155,6 +162,10 @@ subprojects {
 
     dependencies {
 
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+        implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+        testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
         // This dependency is used internally, and not exposed to consumers on their own compile classpath.
         implementation 'com.google.guava:guava:30.0-jre'
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
@@ -170,6 +181,7 @@ subprojects {
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
         implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
             exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
         }
