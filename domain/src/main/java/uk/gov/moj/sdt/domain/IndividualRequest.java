@@ -160,7 +160,6 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Flags whether message is dead letter i.e. cannot be processed due to unknown problem and requires further
      * investigation.
      */
-    @Type(type = "org.hibernate.type.NumericBooleanType")
     @Column(name = "DEAD_LETTER")
     private boolean deadLetter;
 
