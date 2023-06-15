@@ -45,6 +45,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -58,6 +59,7 @@ public class TargetApplication extends AbstractDomainObject implements ITargetAp
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tar_app_seq")
+    @SequenceGenerator(name="tar_app_seq", sequenceName = "tar_app_seq", allocationSize = 1)
     @Column(name ="TARGET_APPLICATION_ID")
     private long id;
 

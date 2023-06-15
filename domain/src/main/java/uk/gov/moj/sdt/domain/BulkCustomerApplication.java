@@ -43,6 +43,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -56,6 +57,7 @@ public class BulkCustomerApplication extends AbstractDomainObject implements IBu
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_cust_app_seq")
+    @SequenceGenerator(name="bulk_cust_app_seq", sequenceName = "bulk_cust_app_seq", allocationSize = 1)
     @Column(name = "BULK_CUSTOMER_APPLICATIONS_ID")
     private long id;
 
