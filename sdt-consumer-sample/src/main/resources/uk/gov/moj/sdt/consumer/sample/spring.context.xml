@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ 		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+           <list>
+               <value>classpath:uk/gov/moj/sdt/consumer/sample/client.properties</value>
+           </list>
+         </property>
+    </bean>
+	
+	<bean id="jaxWsProxyFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass"
+			value="uk.gov.moj.sdt.ws._2013.sdt.sdtendpoint.ISdtEndpointPortType" />
+		<property name="address"
+			value="http://${server.hostname}:${server.portnumber}/producers/service/sdtapi" />
+	</bean>
+
+	<bean id="sdtEndpoint"
+		class="uk.gov.moj.sdt.ws._2013.sdt.sdtendpoint.ISdtEndpointPortType"
+		factory-bean="jaxWsProxyFactory" factory-method="create">
+	</bean>
+
+    <bean id="jaxWsProxyFactoryComx" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+        <property name="serviceClass"
+            value="uk.gov.moj.sdt.ws._2013.sdt.sdtendpoint.ISdtEndpointPortType" />
+        <property name="address"
+            value="http://${server.hostname}:${server.portnumber}/producers-comx/service/sdtapi" />
+    </bean>
+
+    <bean id="sdtComxEndpoint"
+        class="uk.gov.moj.sdt.ws._2013.sdt.sdtendpoint.ISdtEndpointPortType"
+        factory-bean="jaxWsProxyFactoryComx" factory-method="create">
+    </bean>
+
+    <bean id="bulkRequestClient"  class="uk.gov.moj.sdt.consumer.sample.SubmitBulkRequestClient">
+        <!-- <property name="sdtEndpoint" ref="sdtEndpoint"/> -->
+        <!--  Uncomment to switch to Commissioning -->
+        <property name="sdtEndpoint" ref="sdtComxEndpoint"/>  
+    </bean>
+
+    <bean id="bulkFeedbackClient"  class="uk.gov.moj.sdt.consumer.sample.BulkFeedbackClient">
+        <!-- <property name="sdtEndpoint" ref="sdtEndpoint"/> -->
+        <!--  Uncomment to switch to Commissioning -->
+        <property name="sdtEndpoint" ref="sdtComxEndpoint"/>  
+    </bean>
+
+</beans>

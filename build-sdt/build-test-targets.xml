@@ -1,0 +1,742 @@
+<!-- ===========================================================================
+ = sdt Project
+ =
+ = Name:        build-test-targets.xml
+ = Description: Top level build file to define test targets. 
+ =
+ = $Revision: $
+ = $Author: $
+ = $Date: $
+ = $URL: $
+ =
+ = Copyright Logica UK Ltd. 2012
+ =========================================================================== -->
+
+<project name="test-targets" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+
+	<!-- Check if unit test src directory exists and set indicator property -->
+	<available filepath="." file="${unit.test.src.dir}" type="dir" property="unit.test.src.exists" />
+	<!-- Check if unit test resources directory exists and set indicator property -->
+	<available filepath="." file="${unit.test.resources.dir}" type="dir" property="unit.test.resources.exists" />
+	<!-- Check if unit test filters directory exists and set indicator property -->
+	<available filepath="." file="${unit.test.filters.dir}" type="dir" property="unit.test.filters.exists" />
+	<!-- Check if unit test webapp directory exists and set indicator property -->
+	<available filepath="." file="${unit.test.webapp.dir}" type="dir" property="unit.test.webapp.exists" />
+
+	<!-- Check if integ test src directory exists and set indicator property -->
+	<available filepath="." file="${integ.test.src.dir}" type="dir" property="integ.test.src.exists" />
+	<!-- Check if integ test resources directory exists and set indicator property -->
+	<available filepath="." file="${integ.test.resources.dir}" type="dir" property="integ.test.resources.exists" />
+	<!-- Check if integ test filters directory exists and set indicator property -->
+	<available filepath="." file="${integ.test.filters.dir}" type="dir" property="integ.test.filters.exists" />
+	<!-- Check if integ test webapp directory exists and set indicator property -->
+	<available filepath="." file="${integ.test.webapp.dir}" type="dir" property="integ.test.webapp.exists" />
+	
+	<!-- Check if end-to-end test src directory exists and set indicator property -->
+	<available filepath="." file="${endtoend.test.src.dir}" type="dir" property="endtoend.test.src.exists" />
+	<!-- Check if end-to-end test resources directory exists and set indicator property -->
+	<available filepath="." file="${endtoend.test.resources.dir}" type="dir" property="endtoend.test.resources.exists" />
+	<!-- Check if end-to-end test filters directory exists and set indicator property -->
+	<available filepath="." file="${endtoend.test.filters.dir}" type="dir" property="endtoend.test.filters.exists" />
+	<!-- Check if end-to-end test webapp directory exists and set indicator property -->
+	<available filepath="." file="${endtoend.test.webapp.dir}" type="dir" property="endtoend.test.webapp.exists" />
+	
+	<!-- Check if main resources directory exists and set indicator property -->
+	<available filepath="." file="${resources.dir}" type="dir" property="main.resources.exists" />
+
+	<!-- Define set of properties to be passed to junit to satisfy unresolved property values in test 
+        code and code being tested (if not in app server) -->
+	<propertyset id="sdt-properties">
+		<propertyref prefix="sdt" />
+	</propertyset>
+	<propertyset id="js-properties">
+		<propertyref prefix="js" />
+	</propertyset>
+	<propertyset id="javax-properties">
+		<propertyref prefix="javax" />
+	</propertyset>
+	<propertyset id="all-runtime-properties">
+		<propertyset refid="sdt-properties" />
+		<propertyset refid="js-properties" />
+		<propertyset refid="javax-properties" />
+	</propertyset>
+
+	<!-- Test initialisation - ensure that test-reports directory is present -->
+	<target name="init-tests">
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${unit.test.classes.dir}" />
+		<mkdir dir="${integ.test.classes.dir}" />
+		<mkdir dir="${endtoend.test.classes.dir}"/>
+		<mkdir dir="${lib.test.dir}" />
+		<mkdir dir="${junit.unit.test-reports.dir}" />
+		<mkdir dir="${junit.unit.output.dir}" />
+		<mkdir dir="${junit.integ.test-reports.dir}" />
+		<mkdir dir="${junit.integ.output.dir}" />
+		<mkdir dir="${junit.endtoend.test-reports.dir}"/>
+		<mkdir dir="${junit.endtoend.output.dir}"/>
+		<mkdir dir="${coverage.dir}" />
+	</target>
+
+	<!-- Delete all test artefacts -->
+	<target name="clean-tests" description="Cleanup the test build and output directories">
+		<delete dir="${junit.unit.test-reports.dir}" />
+		<delete dir="${junit.unit.output.dir}" />
+		<delete dir="${junit.integ.test-reports.dir}" />
+		<delete dir="${junit.integ.output.dir}" />
+		<delete dir="${junit.endtoend.test-reports.dir}"/>
+		<delete dir="${junit.endtoend.output.dir}"/>
+		<delete dir="${junit.test-results.dir}" />
+		<delete dir="${test-logs.dir}" />
+		<delete dir="${unit.test.classes.dir}" />
+		<delete dir="${integ.test.classes.dir}" />
+		<delete dir="${endtoend.test.classes.dir}"/>
+		<delete dir="${lib.test.dir}" />
+		<delete dir="${coverage.dir}" />
+	</target>
+
+	<!-- Compile all unit test source -->
+	<target name="compile-unit-tests" if="unit.test.src.exists" depends="init-tests" description="Compile test src directories">
+		<if>
+			<available file="${integ.test.classes.dir}" type="dir" />
+			<then>
+				<javac debug="${javac.debug}" srcdir="${unit.test.src.dir}" destdir="${unit.test.classes.dir}" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+					<!-- May be classes in integ test which we need -->
+					<classpath>
+						<path refid="build.unit.test.classpath" />
+						<pathelement path="${integ.test.classes.dir}" />
+					</classpath>
+				</javac>
+			</then>
+			<else>
+				<javac debug="${javac.debug}" srcdir="${unit.test.src.dir}" destdir="${unit.test.classes.dir}" classpathref="build.unit.test.classpath" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+				</javac>
+			</else>
+		</if>
+	</target>
+
+	<!-- Copy unit test src resources -->
+	<target name="-copy-unit-test-src-resources" if="unit.test.src.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir="${unit.test.src.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy unit test 'resources' resources -->
+	<target name="-copy-unit-test-resources-resources" if="unit.test.resources.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir="${unit.test.resources.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir="${unit.test.resources.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy unit test filters resources -->
+	<target name="-copy-unit-test-filters-resources" if="unit.test.filters.exists" depends="init-tests" description="Copy any resources in the filters directory">
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir="${unit.test.filters.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir="${unit.test.filters.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy unit test webapp resources. This must run after the compile. -->
+	<target name="-copy-unit-test-webapp-resources" if="unit.test.webapp.exists" depends="init-tests, compile-unit-tests" description="Copy any resources in the WEB-INF directory">
+		<copy todir="${unit.test.classes.dir}" overwrite="true">
+			<fileset dir=".">
+				<!-- Upper case needed ! -->
+				<include name="${unit.test.webapp.dir}/**/*.xml" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+	</target>
+
+	<!-- Assemble unit test artefacts -->
+	<target name="dist-unit-tests" if="unit.test.src.exists" depends="compile-unit-tests, -copy-unit-test-src-resources, -copy-unit-test-resources-resources, 
+				-copy-unit-test-filters-resources, -copy-unit-test-webapp-resources" description="Generate the unit test distribution" />
+
+	<!-- Runs unit tests from the current test bundle. If this is not a unit test bundle then nothing is executed. -->
+	<target name="run-unit-tests" depends="dist-tests" description="Run unit tests associated with this module">
+
+		<!-- Run the tests with JaCoCo for code coverage -->
+        <jacoco:coverage destfile="${coverage.dir}/jacoco.exec" excludes="*Mock*:*Test*">
+    		<junit fork="yes" forkmode="once" errorproperty="tests.error" failureproperty="tests.failed" dir="${basedir}">
+    			<jvmarg value="-Xms1024M" />
+    			<jvmarg value="-Xmx1024M" />
+    			<jvmarg value="-XX:MaxPermSize=256M" />
+    
+    			<syspropertyset refid="all-runtime-properties" />
+    
+    			<classpath>
+    				<pathelement location="${unit.test.classes.dir}" />
+    				<pathelement location="${classes.dir}" />
+    				<path refid="build.unit.test.classpath" />
+    			</classpath>
+    
+    			<batchtest todir="${junit.unit.output.dir}">
+    				<fileset dir="${unit.test.classes.dir}">
+    					<include name="**/*Test.class" />
+    					<exclude name="**/Abstract*.class" />
+    				</fileset>
+    			</batchtest>
+    
+    			<!-- write to output files -->
+    			<formatter type="xml" />
+    
+    			<!-- write to console also -->
+    			<formatter type="brief" usefile="false" />
+    		</junit>
+		</jacoco:coverage>
+
+		<antcall target="generate-unit-test-reports" />
+        <available file="${coverage.dir}/jacoco.exec" property="coverage.report.exists" />
+		<antcall target="generate-jacoco-coverage-reports" />
+	</target>
+
+	<!-- Generate unit test reports from junit results -->
+	<target name="generate-unit-test-reports">
+
+		<!-- Keep a record of the properties -->
+		<echoproperties destfile="${junit.unit.test-reports.dir}/ant.properties" prefix="" />
+
+		<!-- Format the reports produced by the junit tests -->
+		<junitreport todir="${junit.unit.test-reports.dir}">
+			<fileset dir=".">
+				<include name="**/${junit.unit.output.dir}/TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.unit.test-reports.dir}" />
+		</junitreport>
+
+		<!-- Also, package up the log files -->
+		<mkdir dir="${test-logs.dir}" />
+		<copy todir="${test-logs.dir}">
+			<fileset dir=".">
+				<include name="*/${junit.unit.output.dir}/*.log" />
+			</fileset>
+			<mapper type="regexp" from="^(.+)[\\/]${junit.unit.output.dir}[/\\](.+)\.log$$" to="\1-\2.log" />
+		</copy>
+
+		<!-- Finally, why not report on coverage, too? -->
+		<!-- <antcall target="report-coverage" /> -->
+
+		<antcall target="-echo-junit-error" />
+		<antcall target="-echo-junit-failure" />
+
+	</target>
+
+	<!-- Compile all integ test source -->
+	<target name="compile-integ-tests" if="integ.test.src.exists" depends="init-tests" description="Compile test src directories">
+		<if>
+			<available file="${unit.test.classes.dir}" type="dir" />
+			<then>
+				<javac debug="${javac.debug}" srcdir="${integ.test.src.dir}" destdir="${integ.test.classes.dir}" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+					<!-- May be classes in unit test which we need -->
+					<classpath>
+						<path refid="build.integ.test.classpath" />
+						<pathelement path="${unit.test.classes.dir}" />
+					</classpath>
+				</javac>
+			</then>
+			<else>
+				<javac debug="${javac.debug}" srcdir="${integ.test.src.dir}" destdir="${integ.test.classes.dir}" classpathref="build.integ.test.classpath" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+				</javac>
+			</else>
+		</if>
+	</target>
+
+	<!-- Copy integ test src resources -->
+	<target name="-copy-integ-test-src-resources" if="integ.test.src.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir="${integ.test.src.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy integ test 'resources' resources -->
+	<target name="-copy-integ-test-resources-resources" if="integ.test.resources.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir="${integ.test.resources.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir="${integ.test.resources.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- Copy main 'resources' resources-->
+	<target name="-copy-main-resources-resources" if="main.resources.exists" depends="init-tests" description="Copy any main resources in the src directory">
+			<copy todir="${integ.test.classes.dir}" overwrite="true">
+				<fileset dir="${resources.dir}" casesensitive="false">
+					<include name="**/*.xml" />
+					<include name="**/*.properties" />
+				</fileset>	
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+				</filterchain>
+				<mapper type="glob" from="*" to="*" />
+			</copy>
+		
+			<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+				<fileset dir="${resources.dir}" casesensitive="false">
+					<include name="**/*.xml" />
+					<include name="**/*.properties" />
+				</fileset>	
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+				</filterchain>
+				<mapper type="glob" from="*" to="*" />
+			</copy>
+
+			<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+			<copy todir="${integ.test.classes.dir}" overwrite="true">
+				<fileset dir="${resources.dir}" casesensitive="false">
+					<include name="**/*" />
+					<exclude name="**/*.xml" />
+					<exclude name="**/*.properties" />
+					<exclude name="**/*.template" />
+					<exclude name="**/*.dtd" />
+					<exclude name="**/*.xsd" />
+					<exclude name="**/.svn/**" />
+				</fileset>
+			</copy>
+		
+			<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+			<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+				<fileset dir="${resources.dir}" casesensitive="false">
+					<include name="**/*" />
+					<exclude name="**/*.xml" />
+					<exclude name="**/*.properties" />
+					<exclude name="**/*.template" />
+					<exclude name="**/*.dtd" />
+					<exclude name="**/*.xsd" />
+					<exclude name="**/.svn/**" />
+				</fileset>
+			</copy>
+	</target>
+
+	<!-- Copy integ test filters resources -->
+	<target name="-copy-integ-test-filters-resources" if="integ.test.filters.exists" depends="init-tests" description="Copy any resources in the filters directory">
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir="${integ.test.filters.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir="${integ.test.filters.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy integ test webapp resources. This must run after the compile. -->
+	<target name="-copy-integ-test-webapp-resources" if="integ.test.webapp.exists" depends="init-tests, compile-integ-tests" description="Copy any resources in the WEB-INF directory">
+		<copy todir="${integ.test.classes.dir}" overwrite="true">
+			<fileset dir=".">
+				<!-- Upper case needed ! -->
+				<include name="${integ.test.webapp.dir}/**/*.xml" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+	</target>
+
+	<!-- Assemble integ test artefacts -->
+	<target name="dist-integ-tests" if="integ.test.src.exists" depends="compile-integ-tests, -copy-integ-test-src-resources, -copy-integ-test-resources-resources, 
+		-copy-main-resources-resources, -copy-integ-test-filters-resources, -copy-integ-test-webapp-resources" description="Generate the distribution" />
+
+	<!-- Runs integ tests from the current test bundle. If this is not a integ test bundle then nothing is executed. -->
+	<target name="run-integration-tests" depends="dist-tests" description="Run integ tests associated with this module">
+
+        <!-- Run the tests with JaCoCo for code coverage -->
+        <jacoco:coverage destfile="${coverage.dir}/jacoco.exec" excludes="*Mock*:*Test*">
+    		<junit fork="yes" forkmode="once" errorproperty="tests.error" failureproperty="tests.failed" dir="${basedir}">
+    			<jvmarg value="-Xms1024M" />
+    			<jvmarg value="-Xmx1024M" />
+    			<jvmarg value="-XX:MaxPermSize=256M" />
+    
+    			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8008" />
+    
+    			<syspropertyset refid="all-runtime-properties" />
+    
+    			<classpath>
+    				<pathelement location="${integ.test.classes.dir}" />
+    				<pathelement location="${classes.dir}" />
+    				<fileset dir="${lib.test.dir}">
+                        <include name="**/*.jar"/>
+                        <include name="**/producers-commissioning-test.jar"/>
+    				</fileset>
+    				<path refid="build.integ.test.classpath" />
+    			</classpath>
+    
+    			<batchtest todir="${junit.integ.output.dir}">
+    				<fileset dir="${integ.test.classes.dir}">
+    					<include name="**/*Test.class" />
+    					<exclude name="**/Abstract*.class" />
+    				</fileset>
+    			</batchtest>
+    
+    			<!-- write to output files -->
+    			<formatter type="xml" />
+    
+    			<!-- write to console also -->
+    			<formatter type="brief" usefile="false" />
+    		</junit>
+        </jacoco:coverage>
+
+		<antcall target="generate-integ-test-reports" />
+		<available file="${coverage.dir}/jacoco.exec" property="coverage.report.exists" />
+		<antcall target="generate-jacoco-coverage-reports" />
+
+	</target>
+
+	<!-- Generate integ test reports from junit results -->
+	<target name="generate-integ-test-reports">
+
+		<!-- Keep a record of the properties -->
+		<echoproperties destfile="${junit.integ.test-reports.dir}/ant.properties" prefix="" />
+
+		<!-- Format the reports produced by the junit tests -->
+		<junitreport todir="${junit.integ.test-reports.dir}">
+			<fileset dir=".">
+				<include name="**/${junit.integ.output.dir}/TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.integ.test-reports.dir}" />
+		</junitreport>
+
+		<!-- Also, package up the log files -->
+		<mkdir dir="${test-logs.dir}" />
+		<copy todir="${test-logs.dir}">
+			<fileset dir=".">
+				<include name="*/${junit.integ.output.dir}/*.log" />
+			</fileset>
+			<mapper type="regexp" from="^(.+)[\\/]${junit.integ.output.dir}[/\\](.+)\.log$$" to="\1-\2.log" />
+		</copy>
+
+		<!-- Finally, why not report on coverage, too? -->
+		<!-- <antcall target="report-coverage" /> -->
+
+		<antcall target="-echo-junit-error" />
+		<antcall target="-echo-junit-failure" />
+
+	</target>
+
+	<!-- Compile all end to end test source -->
+	<target name="compile-endtoend-tests" if="endtoend.test.src.exists" depends="init-tests" description="Compile test src directories">
+		<if>
+			<available file="${unit.test.classes.dir}" type="dir" />
+			<then>
+				<javac debug="${javac.debug}" srcdir="${endtoend.test.src.dir}" destdir="${endtoend.test.classes.dir}" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+					<!-- May be classes in unit test which we need -->
+					<classpath>
+						<path refid="build.endtoend.test.classpath" />
+						<pathelement path="${unit.test.classes.dir}" />
+					</classpath>
+				</javac>
+			</then>
+			<else>
+				<javac debug="${javac.debug}" srcdir="${endtoend.test.src.dir}" destdir="${endtoend.test.classes.dir}" classpathref="build.endtoend.test.classpath" includeAntRuntime="true">
+					<compilerarg line="-encoding ISO-8859-1" />
+				</javac>
+			</else>
+		</if>
+	</target>
+
+	<!-- Copy end to end test src resources -->
+	<target name="-copy-endtoend-test-src-resources" if="endtoend.test.src.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir="${endtoend.test.src.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy end to end test 'resources' resources -->
+	<target name="-copy-endtoend-test-resources-resources" if="endtoend.test.resources.exists" depends="init-tests" description="Copy any resources in the src directory">
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir="${endtoend.test.resources.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir="${endtoend.test.resources.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+		
+	<!-- Copy end to end test filters resources -->
+	<target name="-copy-endtoend-test-filters-resources" if="endtoend.test.filters.exists" depends="init-tests" description="Copy any resources in the filters directory">
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir="${endtoend.test.filters.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+				<include name="**/*.xsd" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+
+		<!-- Do not apply filtering to any binary files or else they will be corrupted -->
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir="${endtoend.test.filters.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.template" />
+				<exclude name="**/*.dtd" />
+				<exclude name="**/*.xsd" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy end to end test webapp resources. This must run after the compile. -->
+	<target name="-copy-endtoend-test-webapp-resources" if="endtoend.test.webapp.exists" depends="init-tests, compile-endtoend-tests" description="Copy any resources in the WEB-INF directory">
+		<copy todir="${endtoend.test.classes.dir}" overwrite="true">
+			<fileset dir=".">
+				<!-- Upper case needed ! -->
+				<include name="${endtoend.test.webapp.dir}/**/*.xml" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*" to="*" />
+		</copy>
+	</target>
+
+	<!-- Assemble end to end test artefacts -->
+	<target name="dist-endtoend-tests" if="endtoend.test.src.exists" depends="compile-endtoend-tests, -copy-endtoend-test-src-resources, -copy-endtoend-test-resources-resources, 
+		-copy-main-resources-resources, -copy-endtoend-test-filters-resources, -copy-endtoend-test-webapp-resources" description="Generate the distribution" />
+
+	<!-- Runs end to end tests from the current test bundle. If this is not a end to end test bundle then nothing is executed. -->
+	<target name="run-endtoend-tests" depends="dist-tests" description="Run end to end tests associated with this module">
+
+		<!-- Run the tests -->
+		<!-- NOTE: Tests are run without JaCoCo because actual code to be tested is being executed on the server. -->
+		<junit fork="yes" forkmode="once" errorproperty="tests.error" failureproperty="tests.failed" dir="${basedir}">
+			<jvmarg value="-Xms1024M" />
+			<jvmarg value="-Xmx1024M" />
+			<jvmarg value="-XX:MaxPermSize=256M" />
+
+			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8008" />
+
+			<syspropertyset refid="all-runtime-properties" />
+
+			<classpath>
+				<pathelement location="${endtoend.test.classes.dir}" />
+				<pathelement location="${classes.dir}" />
+				<fileset dir="${lib.test.dir}">
+				     <include name="**/*.jar"/>
+				</fileset>
+				<path refid="build.endtoend.test.classpath" />
+			</classpath>
+
+			<batchtest todir="${junit.endtoend.output.dir}">
+				<fileset dir="${endtoend.test.classes.dir}">
+					<include name="**/*Test.class" />
+					<exclude name="**/Abstract*.class" />
+				</fileset>
+			</batchtest>
+
+			<!-- write to output files -->
+			<formatter type="xml" />
+
+			<!-- write to console also -->
+			<formatter type="brief" usefile="false" />
+		</junit>
+
+		<antcall target="generate-endtoend-test-reports" />
+		<available file="${coverage.dir}/jacoco.exec" property="coverage.report.exists" />
+		<antcall target="generate-jacoco-coverage-reports" />
+
+	</target>
+
+	<!-- Generate end to end test reports from junit results -->
+	<target name="generate-endtoend-test-reports">
+
+		<!-- Keep a record of the properties -->
+		<echoproperties destfile="${junit.endtoend.test-reports.dir}/ant.properties" prefix="" />
+
+		<!-- Format the reports produced by the junit tests -->
+		<junitreport todir="${junit.endtoend.test-reports.dir}">
+			<fileset dir=".">
+				<include name="**/${junit.endtoend.output.dir}/TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.endtoend.test-reports.dir}" />
+		</junitreport>
+
+		<!-- Also, package up the log files -->
+		<mkdir dir="${test-logs.dir}" />
+		<copy todir="${test-logs.dir}">
+			<fileset dir=".">
+				<include name="*/${junit.endtoend.output.dir}/*.log" />
+			</fileset>
+			<mapper type="regexp" from="^(.+)[\\/]${junit.endtoend.output.dir}[/\\](.+)\.log$$" to="\1-\2.log" />
+		</copy>
+
+		<!-- Finally, why not report on coverage, too? -->
+		<!-- <antcall target="report-coverage" /> -->
+
+		<antcall target="-echo-junit-error" />
+		<antcall target="-echo-junit-failure" />
+
+	</target>
+
+	<!-- Build unit and integ test jar file -->
+	<target name="dist-tests" depends="dist-unit-tests, dist-integ-tests, dist-endtoend-tests" description="Generate the test distribution">
+        <jar jarfile="${lib.test.dir}/${dist.test.jar}" basedir="${unit.test.classes.dir}" />
+        <jar update="true" jarfile="${lib.test.dir}/${dist.test.jar}" basedir="${integ.test.classes.dir}" />
+		<jar update="true" jarfile="${lib.test.dir}/${dist.test.jar}" basedir="${endtoend.test.classes.dir}" />
+	</target>
+
+	<target name="-echo-junit-error" if="tests.error">
+		<!-- <fail message="An error occurred in the JUnit tests - see test results for more details." /> -->
+	</target>
+
+	<target name="-echo-junit-failure" if="tests.failed">
+		<!-- <fail message="The JUnit tests failed - see test results for more details." /> -->
+	</target>
+
+	<!-- Generate JaCoCo reports-->
+    <target name="generate-jacoco-coverage-reports" if="coverage.report.exists">
+        <jacoco:report>
+        	<executiondata>
+                <fileset dir="${coverage.dir}">
+                    <include name="*.exec" />
+                </fileset>
+        	</executiondata>
+        	<structure name="${ant.project.name}">
+    	        <classfiles>
+    	            <fileset dir="${classes.dir}"/>
+    	        </classfiles>
+    	        <sourcefiles encoding="UTF-8">
+    	            <fileset dir="${src.dir}"/>
+    	        </sourcefiles>
+        	</structure>
+        	
+        	<html destdir="${basedir}/${coverage.dir}"/>
+        	<csv destfile="${basedir}/${coverage.dir}/coverage.csv"/>
+			<xml destfile="${basedir}/${coverage.dir}/coverage.xml" />
+        </jacoco:report>
+    </target>
+
+</project>
+

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema"
+    xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema" 
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+    xmlns:wnt="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" 
+    elementFormDefault="qualified"
+    version="1.0">
+
+    <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="Base.xsd"/>
+    <xs:import namespace="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema" schemaLocation="Warrant.xsd"/>
+    
+    <xs:simpleType name="judgmentTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A"/>
+            <xs:enumeration value="D"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="instalmentFrequencyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="W"/>
+            <xs:enumeration value="F"/>
+            <xs:enumeration value="M"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="instalmentPaymentType">
+        <xs:sequence>
+            <xs:element name="amount" type="xs:unsignedLong"/>
+            <xs:element name="frequency" type="tns:instalmentFrequencyType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fullPaymentType">
+        <xs:sequence>
+            <xs:element name="fullByDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="immediatePaymentType"/>
+
+    <xs:complexType name="paymentScheduleType">
+        <xs:choice>
+            <xs:element name="inFullByPayment" type="tns:fullPaymentType"/>
+            <xs:element name="instalment" type="tns:instalmentPaymentType"/>
+            <xs:element name="immediatePayment" type="tns:immediatePaymentType"/>
+        </xs:choice>
+    </xs:complexType>
+ 
+    <xs:simpleType name="payeeLineType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+            <xs:maxLength value="35" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="payeeAddressType">
+        <xs:sequence>
+            <xs:element name="line1" type="tns:payeeLineType" />
+            <xs:element name="line2" type="tns:payeeLineType" />
+            <xs:element name="line3" type="tns:payeeLineType" minOccurs="0" />
+            <xs:element name="line4" type="tns:payeeLineType" minOccurs="0" />
+            <xs:element name="line5" type="tns:payeeLineType" minOccurs="0" />
+            <xs:element name="postcode" type="base:postcodeType" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="payeeType">
+        <xs:sequence>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="70"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="address" type="tns:payeeAddressType"/>
+            <xs:element name="telephoneNumber" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9][\d-]{0,13}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="dxNumber" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="35"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="faxNumber" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="24"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="email" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="254"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="pcm" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="reference" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="24"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankAccountNumber" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="8"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankAccountHolder" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="70"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankSortCode" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="8"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankName" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankInfo1" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankInfo2" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="slipCodeline1" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="58"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="slipCodeline2" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="58"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="giroAccountNumber" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="8"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="giroTransCode1" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="9"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="giroTransCode2" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="9"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="apacsTransCode" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="mcolJudgmentType">
+        <xs:sequence>
+            <xs:element name="claimNumber" type="base:claimNumberType"/>
+            <xs:element name="jointJudgment" type="xs:boolean"/>
+            <xs:element name="judgmentType" type="tns:judgmentTypeType"/>
+            <xs:element name="sentParticularsSeparately" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="defendantId" type="base:defendantIdType" minOccurs="0"/>
+            <xs:element name="defendant1Address" type="base:addressType" minOccurs="0"/>
+            <xs:element name="defendant1DateOfBirth" type="xs:date" minOccurs="0"/>
+            <xs:element name="defendant2Address" type="base:addressType" minOccurs="0"/>
+            <xs:element name="defendant2DateOfBirth" type="xs:date" minOccurs="0"/>
+            <xs:element name="paymentSchedule" type="tns:paymentScheduleType"/>
+            <xs:element name="interest" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="solicitorCost" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="deductedAmount" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="claimAmountAdmitted" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="courtFee" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="legalCosts" type="xs:unsignedLong" minOccurs="0"/>
+            <xs:element name="payee" type="tns:payeeType" minOccurs="0"/>
+            <xs:element name="sotSignature" type="base:sotSignatureType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="mcolJudgment" type="tns:mcolJudgmentType"/>
+    
+    <xs:complexType name="judgmentWarrantType">
+        <xs:sequence>
+            <xs:element name="mcolJudgment" type="tns:mcolJudgmentType"/>
+            <xs:element name="mcolWarrant" type="wnt:warrantType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="mcolJudgmentWarrant" type="tns:judgmentWarrantType"/>
+
+</xs:schema>

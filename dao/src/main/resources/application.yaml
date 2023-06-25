@@ -1,0 +1,21 @@
+spring:
+  aop:
+    proxy-target-class: false
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  datasource:
+    username: ${SDT_DB_USERNAME:civil_sdt}
+    hikari:
+      maximum-pool-size: ${SDT_DB_MAX_POOL_SIZE:5}
+      connection-timeout: '60000'
+    url: jdbc:postgresql://${SDT_DB_HOST:localhost}:${SDT_DB_PORT:5432}/${SDT_DB_NAME:civil_sdt}${SDT_DB_OPTIONS:}
+    type: com.zaxxer.hikari.HikariDataSource
+    password: ${SDT_DB_PASSWORD:test}
+  jpa:
+    database: postgresql
+  flyway:
+    ignore-missing-migrations: 'true'
+    baseline-version: '0001'
+    out-of-order: 'false'
+    baseline-on-migrate: 'true'

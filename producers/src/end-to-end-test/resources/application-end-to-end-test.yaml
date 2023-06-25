@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${SDT_DB_HOST:localhost}:${SDT_DB_PORT:5432}/${SDT_DB_NAME:civil_sdt}${SDT_DB_OPTIONS:}
+    username: ${SDT_DB_USERNAME:postgres}
+    password: ${SDT_DB_PASSWORD:test}
+    javax.persistence.schema-generation.database.action: drop-and-create
+  jpa:
+    database: postgresql
+  flyway:
+    enabled: false
+  activemq:
+    packages:
+      trust-all: true
+    in-memory: true
+    pool:
+      enabled: false
+  jms:
+    servicebus:
+      internal:
+        targetAppQueue:
+          MCOL: ${CIVIL_SDT_QUEUE:Test1Queue}
+          MCOLS: ${CIVIL_SDT_QUEUE:Test1Queue}
+          TEST1: ${CIVIL_SDT_QUEUE:Test1Queue}
+      connection-string: ${CIVIL_SDT_SERVICEBUS_CONNECTION_STRING:Endpoint=sb://destination1.servicebus.windows.net;SharedAccessKeyName=[KEYNAME];SharedAccessKey=[KEY]}
+      enabled: false
+sdt:
+  tx-timeout:
+    default:  1000
+  service:
+    config:
+      concurrentConsumers: ${CONCURRENT_CONSUMERS:1}
+      maxConcurrentConsumers: ${MAX_CONCURRENT_CONSUMERS:5}
+      receiveTimeout: ${RECEIVE_TIMEOUT:30000}
+      idleTaskExecutionLimit:  ${IDLE_TASK_EXECUTION_LIMIT:10}
+      idleConsumerLimit:  ${IDLE_CONSUMER_LIMIT:5}
+  retry-send:
+    cron: ${RETRY_SEND_CRON:0 0 * * * ?}
+  purge:
+    cron: ${PURGE_SCHEDULE_CRON:0 10 5 * * ?}
+    commitInterval: ${PURGE_COMMIT_INTERVAL:1000}
+#-------------------------------
+
+# port number of the tc server
+# host name of the server
+server:
+  portnumber: ${SDT_PORT:4550}
+  hostname: ${SERVER_HOST:localhost}
+
+systemPropertiesModeName: SYSTEM_PROPERTIES_MODE_OVERRIDE
+ignoreResourceNotFound: true
+ignoreUnresolvablePlaceholders: true
+

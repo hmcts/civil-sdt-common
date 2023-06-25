@@ -1,0 +1,16 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for civil-sdt app
+name: civil-sdt
+home: https://github.com/hmcts/civil-sdt
+version: 0.0.13
+maintainers:
+  - name: HMCTS SDT team
+dependencies:
+  - name: java
+    version: 4.0.13
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+  - name: servicebus
+    version: 1.0.4
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: servicebus.enabled

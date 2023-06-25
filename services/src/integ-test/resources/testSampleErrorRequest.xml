@@ -1,0 +1,21 @@
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+   <s:Header>
+      <ActivityId CorrelationId="cdaabd8b-c812-43f1-bff2-1a09dec9ec28" xmlns="http://schemas.microsoft.com/2004/09/ServiceModel/Diagnostics">deb0c112-4e70-46e4-9729-4c0a46a45f72</ActivityId>
+   </s:Header>
+   <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <submitQueryRequest xmlns="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema">
+         <header>
+            <sdtCustomerId>12345678</sdtCustomerId>
+            <targetApplicationId>MCOL</targetApplicationId>
+         </header>
+         <criteria>
+            <criterion criteriaType="mcolDefenceCriteria">
+               <mcolDefenceCriteria>
+                  <fromDate xmlns="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema">2015-05-12T06:30:50.503</fromDate>
+                  <toDate xmlns="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema">2015-05-13T06:30:53.1002163Z</toDate>
+               </mcolDefenceCriteria>
+            </criterion>
+         </criteria>
+      </submitQueryRequest>
+   </s:Body>
+</s:Envelope>

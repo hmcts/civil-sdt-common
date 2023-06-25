@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+		<!-- SQL dialect -->
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+
+		<!-- <property name="cache.provider_class">com.clssi.lcmg.core.util.NoCacheProvider</property> -->
+		<!-- <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property> -->
+		<!-- <property name="cache.use_query_cache">true</property> -->
+
+		<!-- NEVER CHANGE THIS PROPERTY TO 'true'. USE A LOCAL log4j2.xml TO OUTPUT 
+			EVERYTHING YOU WISH TO LOG -->
+		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.format_sql">true</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<property name="hibernate.use_sql_comments">true</property>		
+		<property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
+	</session-factory>
+</hibernate-configuration>

@@ -1,0 +1,36 @@
+spring:
+  jms:
+    servicebus:
+      internal:
+        targetAppQueue:
+          TEST1: ${CIVIL_SDT_QUEUE:civil_sdt_inbound}
+      connection-string: ${CIVIL_SDT_SERVICEBUS_CONNECTION_STRING:Endpoint=sb://hmc-servicebus-demo.servicebus.windows.net/;SharedAccessKeyName=[KEYNAME];SharedAccessKey=[KEY]}
+
+  aop:
+    proxy-target-class: false
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  datasource:
+    url: jdbc:tc:postgresql:11:///civil_sdt_integ?stringtype=unspecified
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: ${SDT_DB_USERNAME:postgres}
+    password: ${SDT_DB_PASSWORD:test}
+  jpa:
+    show-sql: true
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+    ignore-migration-patterns: true
+sdt:
+  tx-timeout:
+    default:  1000
+  service:
+    config:
+      concurrentConsumers: ${CONCURRENT_CONSUMERS:1}
+      maxConcurrentConsumers: ${MAX_CONCURRENT_CONSUMERS:5}
+      receiveTimeout: ${RECEIVE_TIMEOUT:30000}
+      idleTaskExecutionLimit:  ${IDLE_TASK_EXECUTION_LIMIT:10}
+      idleConsumerLimit:  ${IDLE_CONSUMER_LIMIT:5}

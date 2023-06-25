@@ -1,0 +1,9 @@
+<tns:updateRequest xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateRequestSchema" xmlns:tns1="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+  <tns:header>
+    <tns:sdtRequestId>MCOL-10012013010101-100099999-0000002</tns:sdtRequestId>
+  </tns:header>
+  <tns:targetAppDetail>
+    <ANY-ELEMENT/>
+  </tns:targetAppDetail>
+  <tns:status code="Accepted"/>
+</tns:updateRequest>

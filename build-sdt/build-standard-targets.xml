@@ -1,0 +1,560 @@
+<!-- =========================================================================== 
+    = sdt Project 
+    = 
+    = Name: build-standard-targets.xml 
+    = Description: Top level build file to define standard targets. 
+    = 
+    = $Revision: $ 
+    = $Author: $ 
+    = $Date: $ 
+    = $URL: $  
+    = 
+    = Copyright Logica UK Ltd. 2012 
+    =========================================================================== -->
+
+<project name="build-standard-targets" basedir=".">
+
+	<!-- Check if wsdl directory exists and set indicator property -->
+	<available filepath="." file="${resources.dir}/wsdl" type="dir" property="wsdl.exists" />
+	<!-- Check if src directory exists and set indicator property -->
+	<available filepath="." file="${src.dir}" type="dir" property="src.exists" />
+	<!-- Check if src-gen directory exists and set indicator property -->
+	<available filepath="." file="${src-gen.dir}" type="dir" property="src-gen.exists" />
+    <!-- Check if src-gen-work.dir directory exists and set indicator property -->
+    <available filepath="." file="${src-gen-work.dir}" type="dir" property="src-gen-work.exists" />
+	<!-- Check if resources directory exists and set indicator property -->
+	<available filepath="." file="${resources.dir}" type="dir" property="resources.exists" />
+	<!-- Check if resources directory exists and set indicator property -->
+	<available filepath="." file="${test.resources.dir}" type="dir" property="test-resources.exists" />
+	<!-- Check if mock-resources directory exists and set indicator property -->
+	<available filepath="." file="${mock-resources.dir}" type="dir" property="mock-resources.exists" />
+	<!-- Check if filters directory exists and set indicator property -->
+	<available filepath="." file="${filters.dir}" type="dir" property="filters.exists" />
+	<!-- Check if filters directory exists and set indicator property -->
+	<available filepath="." file="${test.filters.dir}" type="dir" property="test.filters.exists" />
+	<!-- Check if META-INF directory exists and set indicator property -->
+	<available filepath="." file="${meta-inf.dir}" type="dir" property="meta-inf.exists" />
+	<!-- Check if WEB-INF directory exists and set indicator property -->
+	<available filepath="." file="${web-inf.dir}" type="dir" property="web-inf.exists" />
+	<!-- Check if lib directory exists -->
+	<available filepath="." file="lib" type="dir" property="lib.exists" />
+	<!-- Check if grails-app directory exists -->
+	<available filepath="." file="grails-app" type="dir" property="grails-app.exists" />
+
+	<!-- General initialisation - ensure build directory (for classes) and dist 
+        directory (for jar) are present if they do not already exist -->
+	<target name="init" description="Create the distribution dirs">
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${lib.app.dir}" />
+	</target>
+
+	<!-- Delete the build and distribution folders -->
+	<target name="clean" description="Cleanup the distribution dirs">
+		<delete dir="${classes.dir}" />
+		<delete dir="${target.dir}" />
+		<delete dir="${test-results.dir}" />
+		<if>
+			<available file="logs" type="dir" />
+			<then>
+				<delete>
+					<fileset dir="logs" includes="*.log" />
+				</delete>
+			</then>
+		</if>
+	</target>
+
+	<!-- Delete the build and distribution folders -->
+	<target name="clean-src-gen-work" description="Cleanup the src-gen-work dirs">
+		<delete dir="${src-gen-work.dir}/uk" />
+        <delete dir="${src-gen-work.dir}/org" />
+	</target>
+
+	<!-- Copies <any name>.template files to <any name> substituting any matching properties in memory -->
+	<target name="configure-property-files" description="Copies files in the project with the pattern '*.template' to '*', dropping the .template suffix">
+		<echo level="info" message="Templatising all configuration files" />
+		<copy todir="${basedir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="**/*.template" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+
+		<if>
+			<available file="${src.dir}/${log4j.config.filename}" type="file" />
+			<then>
+				<copy tofile="${src.dir}/log4j2.xml" overwrite="true">
+					<fileset dir="${src.dir}" casesensitive="false">
+						<include name="${log4j.config.filename}" />
+					</fileset>
+				</copy>
+			</then>
+		</if>
+	</target>
+
+	<target name="generate-from-wsdl" if="wsdl.exists" depends="clean-src-gen-work" description="Generate CXF files from wsdl">
+		<!-- TODO - find way of collecting up all wsdl files using wild card -->
+        <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true" jvm="${java1.7-exec}">
+            <arg value="-d" />
+            <arg value="${src-gen-work.dir}" />
+            <arg value="-frontend" />
+            <arg value="jaxws21" />
+            <arg value="-b" />
+            <arg value="${resources.dir}/jaxb-bindings.xml" />
+            <arg value="${resources.dir}/wsdl/SdtEndpoint.wsdl" />
+            <classpath>
+                <path refid="cxf.classpath" />
+            </classpath>
+        </java>
+        <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true" jvm="${java1.7-exec}">
+            <arg value="-d" />
+            <arg value="${src-gen-work.dir}" />
+            <arg value="-frontend" />
+            <arg value="jaxws21" />
+            <arg value="-b" />
+            <arg value="${resources.dir}/jaxb-bindings.xml" />
+            <arg value="${resources.dir}/wsdl/SdtInternalEndpoint.wsdl" />
+            <classpath>
+                <path refid="cxf.classpath" />
+            </classpath>
+        </java>
+        <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true" jvm="${java1.7-exec}">
+            <arg value="-d" />
+            <arg value="${src-gen-work.dir}" />
+            <arg value="-frontend" />
+            <arg value="jaxws21" />
+            <arg value="-b" />
+            <arg value="${resources.dir}/jaxb-bindings.xml" />
+            <arg value="${resources.dir}/wsdl/TargetAppInternalEndpoint.wsdl" />
+            <classpath>
+                <path refid="cxf.classpath" />
+            </classpath>
+        </java>
+	</target>
+	
+   <target name="generate-from-wsdl-client" if="wsdl.exists" depends="clean-src-gen-work" description="Generate CXF files from wsdl">
+        <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true" jvm="${java1.7-exec}">
+            <arg value="-d" />
+            <arg value="${src-gen-work.dir}" />
+            <arg value="-frontend" />
+            <arg value="jaxws21" />
+            <arg value="-b" />
+            <arg value="${resources.dir}/jaxb-bindings.xml" />
+            <arg value="${resources.dir}/wsdl/SdtEndpointDist.wsdl" />
+            <classpath>
+                <path refid="cxf.classpath" />
+            </classpath>
+        </java>
+    </target>
+
+
+	<!-- Compile all src/main/java source -->
+	<target name="-compile-src-gen" if="src-gen.exists" depends="init" description="Compile src directories">
+		<javac executable="${javac1.7-exec}" fork="yes" target="${java1.7}" source="${java1.7}" debug="${javac.debug}" srcdir="${src-gen.dir}" destdir="${classes.dir}" classpathref="build.src-gen.classpath" includeAntRuntime="false">
+			<compilerarg line="-encoding ISO-8859-1" />
+		</javac>
+	</target>
+
+	<!-- Compile all src/main/java source -->
+	<target name="-compile-src" depends="init" description="Compile src directories">
+		<if>
+			<available file="${src.dir}" type="dir" />
+			<then>
+				<javac executable="${javac1.7-exec}" fork="yes" target="${java1.7}" source="${java1.7}" debug="${javac.debug}" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="build.src.classpath" includeAntRuntime="false">
+					<compilerarg line="-encoding ISO-8859-1" />
+				</javac>
+			</then>
+		</if>
+	</target>
+
+	<!-- Compile all grails source -->
+	<target name="-compile-grails" if="grails-app.exists" depends="init" description="Compile grails directories">
+		<javac executable="${javac1.7-exec}" fork="yes" target="${java1.7}" source="${java1.7}" debug="${javac.debug}" srcdir="${grails.dir}" destdir="${classes.dir}" classpathref="build.src.classpath" includeAntRuntime="false" />
+	</target>
+
+	<!-- Compile all src/main/java source -->
+	<target name="compile" depends="-compile-src-gen, -compile-src, -compile-grails" description="Compile all directories">
+		<if>
+			<available file="${src.dir}" type="dir" />
+			<then>
+				<javac executable="${javac1.7-exec}" fork="yes" target="${java1.7}" source="${java1.7}" debug="${javac.debug}" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="build.src.classpath" includeAntRuntime="false" />
+			</then>
+		</if>
+	</target>
+
+	<!-- Copy src resources -->
+	<target name="-copy-src-resources" if="src.exists" depends="init" description="Copy any resources in the src directory">
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${src.dir}" casesensitive="false">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.template" />
+				<include name="**/*.dtd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy 'resources' resources -->
+	<target name="-copy-resources-resources" if="resources.exists" depends="init" description="Copy any resources in the src directory">
+		<!-- Copy all files with names unchanged, apart from .template files -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${resources.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+
+		<!-- Copy .template files and drop the .template suffix. These contain unresolved property names which
+            are essential in the deployed environment. Note that the non .template equivalent files have already 
+            been templatized by now by the configure-property-files target so that they are available in the 
+            Eclipse bin directory. These must be overwritten by the .template version in the target directory 
+            from which deployment is done. -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${resources.dir}" casesensitive="false">
+				<include name="**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+	</target>
+
+	<!-- Copy 'mock-resources' resources -->
+	<target name="-copy-mock-resources-resources" if="mock-resources.exists" depends="init" description="Copy any mock-resources in the src directory">
+		<!-- Copy all files with names unchanged, apart from .template files -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${mock-resources.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+
+		<!-- Copy .template files and drop the .template suffix. These contain unresolved property names which
+            are essential in the deployed environment. Note that the non .template equivalent files have already 
+            been templatized by now by the configure-property-files target so that they are available in the 
+            Eclipse bin directory. These must be overwritten by the .template version in the target directory 
+            from which deployment is done. -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${mock-resources.dir}" casesensitive="false">
+				<include name="**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+	</target>
+
+	<!-- Copy filters resources -->
+	<target name="-copy-filters-resources" if="filters.exists" depends="init" description="Copy any resources in the filters directory">
+		<!-- Copy all files with names unchanged, apart from .template files -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${filters.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+
+		<!-- Copy .template files and drop the .template suffix. These contain unresolved property names which
+            are essential in the deployed environment. Note that the non .template equivalent files have already 
+            been templatized by now by the configure-property-files target so that they are available in the 
+            Eclipse bin directory. These must be overwritten by the .template version in the target directory 
+            from which deployment is done. -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${filters.dir}" casesensitive="false">
+				<include name="**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+
+		<!-- Copy sdt.template files and drop the .template suffix. Because this has a mixture of build time 
+		    and runtime resolved properties, it has to be templatized at build time but left with quoted properties 
+		    which are resolved at runtime. -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${filters.dir}" casesensitive="false">
+				<include name="**/sdt.properties.template" />
+			</fileset>
+            <filterchain>
+                <filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+            </filterchain>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+	</target>
+
+	<!-- Copy meta-inf resources -->
+	<target name="-copy-meta-inf-resources" if="meta-inf.exists" depends="init" description="Copy any resources in the meta-inf directory">
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir=".">
+				<include name="META-INF/**/*.xml" />
+				<include name="META-INF/**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Copy WEB-INF resources -->
+	<target name="-copy-web-inf-resources" if="web-inf.exists" depends="init" description="Copy any resources in the WEB-inf directory">
+		<!-- Copy all files with names unchanged, apart from .template files -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${web-inf.dir}" casesensitive="false">
+				<include name="**/*" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+
+		<!-- Copy .template files and drop the .template suffix. These contain unresolved property names which
+            are essential in the deployed environment. Note that the non .template equivalent files have already 
+            been templatized by now by the configure-property-files target so that they are available in the 
+            Eclipse bin directory. These must be overwritten by the .template version in the target directory 
+            from which deployment is done. -->
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${web-inf.dir}" casesensitive="false">
+				<include name="**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+	</target>
+
+	<!-- Copy lib resources -->
+	<target name="-copy-lib-resources" if="lib.exists" depends="init" description="Copy any resources in the lib directory">
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir=".">
+				<include name="lib/**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Build jar file -->
+	<target name="dist" depends="init, compile, -copy-src-resources, -copy-resources-resources, -copy-mock-resources-resources, -copy-filters-resources, 
+        -copy-meta-inf-resources, -copy-web-inf-resources, -copy-lib-resources" description="Generate the distribution">
+
+		<!-- Buld any extra artefacts needed by this project, e.g. WAR file -->
+		<ant antfile="build-extras.xml" dir="." target="dist-extras" inheritrefs="true" inheritAll="true" />
+
+        <!-- Build standard distribution artefact - JAR file -->
+        <jar jarfile="${lib.app.dir}/${dist.jar}" basedir="${classes.dir}" />
+	</target>
+
+	
+	
+	
+	<!-- Deploy a war file to tc-server application server -->
+	<target name="-deploy-to-tc-server" if="tc-server.exists" description="Deploy to tc-server application server">
+		<!-- We need to deploy them one at a time -->
+		<foreach target="-deploy-tc-server" param="war.path">
+			<path id="lib.path.ref">
+				<fileset dir="${target.dir}">
+					<include name="*.war" />
+				</fileset>
+			</path>
+		</foreach>
+	</target>
+
+	<!-- Deploys a single war file to the path /${war.name} -->
+	<target name="-deploy-tc-server">
+		<basename property="war.name" file="${war.path}" suffix=".war" />
+		<!--		
+        <trycatch>
+			<try>
+				<stop-tomcat url="${tomcat.admin.url}" username="${tomcat.admin.user}" password="${tomcat-manager-password}" path="/${war.name}" />
+			</try>
+			<catch>
+				<echo>/${war.name} stop failed.</echo>
+			</catch>
+		</trycatch-->
+		<!--trycatch>
+			<try>
+				<undeploy failonerror="no" url="${tomcat.admin.url}" username="${tomcat.admin.user}" password="${tomcat.admin.password}" path="/${war.name}" />
+			</try>
+			<catch>
+				<echo>/${war.name} undeploy failed.</echo>
+			</catch>
+		</trycatch-->
+		<!--start-tomcat url="${tomcat.admin.url}" username="${tomcat.admin.user}" password="${tomcat-manager-password}" path="/${war.name}" />
+        <deploy-tomcat url="${tomcat.admin.url}" update="true" username="${tomcat.admin.user}" password="${tomcat.admin.password}" path="/${war.name}" war="${war.path}" /-->
+		<!-- Deploy to tc-server -->
+		<copy todir="${app.server.webapps.dir}" overwrite="true">
+			<fileset dir="${target.dir}">
+				<include name="*.war" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Deploy an EAR file to oas application server -->
+	<target name="-deploy-to-oas" if="oas.exists" description="Deploy to oas application server">
+		<if>
+			<available file="${oc4j.deploy.dir}/${app.meta-inf}" type="dir" />
+			<then>
+				<!-- Delete the ear to be sure we create new one -->
+				<delete file="${target.dir}/${deployable.component}" />
+				<delete dir="${oc4j.deploy.dir}/META-INF" quiet="true" />
+
+				<mkdir dir="${oc4j.deploy.dir}/META-INF" />
+				<copy todir="${oc4j.deploy.dir}/META-INF">
+					<fileset dir="${oc4j.deploy.dir}/${app.meta-inf}" />
+				</copy>
+
+				<echo level="info" message="zip: ${target.dir}/${deployable.component} from ./target/${ant.project.name}.war" />
+				<zip destfile="${target.dir}/${deployable.component}">
+					<fileset dir="./target" includes="${ant.project.name}.war" />
+					<fileset dir="${oc4j.deploy.dir}">
+						<include name="**/META-INF/*.*" />
+					</fileset>
+				</zip>
+
+				<antcall target="-deploy-oc4j" />
+				<!-- following lines may be redundant - this is only necessary because of a bug in OAS, following an ORACLE patch to OC4J (see Darran) -->
+				<!--sshexec host="${oc4j.host}" username="oracle" keyfile="/home/tc-server/.ssh/id_rsa" command="/etc/init.d/${oas.instance} stop" /-->
+				<!--sshexec host="${oc4j.host}" username="oracle" keyfile="/home/tc-server/.ssh/id_rsa" command="/etc/init.d/${oas.instance} start" /-->
+				<!--antcall target="-deploy-oc4j" /-->
+			</then>
+		</if>
+	</target>
+
+	<!-- several of these values are set in the individual build-extras files allowing the deployment of multiple apps-->
+	<target name="-deploy-oc4j">
+		<java jar="${oc4j.client.jar}" fork="true" failonerror="false" maxmemory="128m">
+			<arg value="${oc4j.uri}" />
+			<arg value="oc4jadmin" />
+			<arg value="${oc4j.password}" />
+			<arg value="-deploy" />
+			<arg value="-file" />
+			<arg value="${target.dir}/${deployable.component}" />
+			<arg value="-deploymentName" />
+			<arg value="${deployed.appname}" />
+			<arg value="-deploymentPlan" />
+			<arg value="${oc4j.deploy.dir}/${plan.dat}" />
+			<classpath>
+				<pathelement location="${oc4j.client.jar}" />
+			</classpath>
+		</java>
+	</target>
+
+	<!-- several of these values are set in the individual build-extras files allowing the undeployment of multiple apps-->
+	<target name="-undeploy-oc4j">
+		<!-- Call the OC4J command to deploy to OC4J/OAS -->
+		<java jar="${oc4j.client.jar}" fork="true" failonerror="false" maxmemory="128m">
+			<arg value="${oc4j.uri}" />
+			<arg value="oc4jadmin" />
+			<arg value="${oc4j.password}" />
+			<arg value="-undeploy" />
+			<arg value="${deployed.appname}" />
+			<classpath>
+				<pathelement location="${oc4j.client.jar}" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="-deploy-remote-copy" if="remote-copy.exists" depends="-prepare-ear" description="Remote copy the deployed file to the target area">
+        <!-- Copy the war file to the remote host directory. -->
+        <ant antfile="build-extras.xml" dir="." target="deploy-extras" inheritrefs="true" inheritAll="true" />
+
+		<!-- Copy the war file to the remote host directory. -->
+		<sshexec host="${remote.copy.host}" username="${remote.copy.user}" password="${remote.copy.password}" command="mkdir -p ${remote.copy.dir}/${application.version}.${buildNumber}" trust="true" failonerror="true" />
+		<scp file="${target.dir}/${deployable.component}" todir="${remote.copy.user}:${remote.copy.password}@${remote.copy.host}:${remote.copy.dir}/${application.version}.${buildNumber}/${deployable.component}" trust="true" failonerror="false" />
+	</target>
+
+	<target name="-deploy-remote-tc-server" if="remote-tc-server.exists" description="Remote copy to the autodeploy folder of the tc-server(can be reused to for WebLogic">
+		<echo>Copying the war to the remote Application server Hot Deploy directory</echo>
+
+		<!-- Copy the war file to the remote host directory. -->
+		<ant antfile="build-extras.xml" dir="." target="deploy-extras" inheritrefs="true" inheritAll="true" />
+
+		<sshexec host="${remote.deploy.host}" username="${remote.deploy.user}" password="${remote.deploy.password}" command="mkdir -p ${remote.deploy.dir}/${application.version}.${buildNumber}" trust="true" failonerror="true" />
+		<scp file="${target.dir}/${component.name}" todir="${remote.deploy.user}:${remote.deploy.password}@${remote.deploy.host}:${remote.deploy.dir}/${application.version}.${buildNumber}/" trust="true" failonerror="true" />
+
+	</target>
+
+    <!-- Deploy an EAR file to weblogic application server -->
+    <target name="-deploy-to-weblogic" if="weblogic.exists" depends="-prepare-ear" description="Deploy to weblogic application server">
+        <if>
+            <available file="${weblogic.deploy.dir}/${app.meta-inf}" type="dir" />
+            <then>
+                <antcall target="-deploy-weblogic" />
+            </then>
+        </if>
+    </target>
+
+    <!-- several of these values are set in the individual build-extras files allowing the deployment of multiple apps-->
+    <target name="-deploy-weblogic">
+        <!--wldeploy action="undeploy" verbose="true" debug="true"
+        	name="${deployed.appname}" 
+            user="${weblogic.user}" 
+        	password="${weblogic.password}"
+            adminurl="${weblogic.adminurl}"
+        	targets="${weblogic.targets}"
+        /-->
+        <wldeploy action="deploy" verbose="true" debug="true" remote="true"
+            upload="true"
+        	name="${deployed.appname}" 
+            source="${target.dir}/${deployable.component}"
+            user="${weblogic.user}" 
+        	password="${weblogic.password}"
+            adminurl="${weblogic.adminurl}"
+        	targets="${weblogic.targets}"
+        />
+    </target>
+
+    <!-- Prepare an EAR file for the component -->
+    <target name="-prepare-ear">
+    <if>
+        <available file="${weblogic.deploy.dir}/${app.meta-inf}" type="dir" />
+        <then>
+            <!-- Delete the ear to be sure we create new one -->
+            <delete file="${target.dir}/${deployable.component}" />
+            <delete dir="${weblogic.deploy.dir}/META-INF" quiet="true" />
+
+            <mkdir dir="${weblogic.deploy.dir}/META-INF" />
+            <copy todir="${weblogic.deploy.dir}/META-INF">
+                <fileset dir="${weblogic.deploy.dir}/${app.meta-inf}" />
+            </copy>
+
+            <echo level="info" message="zip: ${target.dir}/${deployable.component} from ./target/${component.name}" />
+            <zip destfile="${target.dir}/${deployable.component}">
+                <fileset dir="./target" includes="${component.name}" />
+                <fileset dir="${weblogic.deploy.dir}">
+                    <include name="**/META-INF/*.*" />
+                </fileset>
+            </zip>
+        </then>
+    </if>
+    </target>
+
+	<!-- Deploy a WAR file to application server -->
+	<target name="deploy" depends="-deploy-to-tc-server, -deploy-to-oas, -deploy-remote-copy, -deploy-remote-tc-server, -deploy-to-weblogic" description="Deploy to application server">
+		<!-- deploy any extra artefacts needed by this project, e.g. zip file -->
+		<ant antfile="build-extras.xml" dir="." target="deploy-extras" inheritrefs="true" inheritAll="true" />
+	</target>
+
+	<!-- Generate EAR file to upload to Nexus -->
+	<target name="generate-ear" depends="" description="Generate EAR file">
+		<!-- generate EAR file to deploy to nexus using existing target -->
+		<antcall target="-prepare-ear" />
+	</target>
+
+    <!-- Prepare distribution artefacts for web services -->
+    <target name="dist-ws-contract" description="Prepare distribution artefacts for web services">
+        <!-- Prepare distribution artefacts for web servies needed by this project, e.g. zip file -->
+        <ant antfile="build-extras.xml" dir="." target="dist-ws-contract-extras" inheritrefs="true" inheritAll="true" />
+    </target>
+
+	<!-- Run checkstyle -->
+	<target name="checkstyle" depends="" description="Generate checkstyle report">
+	</target>
+
+	<!-- Run diagnostics report -->
+	<target name="diagnostics" depends="init" description="Output diagnostics of ANT">
+		<diagnostics />
+	</target>
+
+	<!-- Generate javadoc code documentation -->
+	<target name="generate_javadoc" if="src.exists" depends="init" description="Generate code documentation for this module">
+		<mkdir dir="${javadoc.dir}/${ant.project.name}" />
+		<javadoc sourcepath="${src.dir}//" destdir="${javadoc.dir}/${ant.project.name}" classpath="${src.dir}" author="true" version="true" use="true" windowtitle="${ant.project.name} API" />
+	</target>
+
+	<!-- Echo properties used by ANT -->
+	<target name="echoproperties" depends="init" description="List ANT properties">
+		<echoproperties />
+	</target>
+
+</project>
+
+

@@ -1,0 +1,23 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+    xmlns:ureq="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateRequestSchema"
+    xmlns:uresp="http://ws.sdt.moj.gov.uk/2013/sdt/IndividualUpdateResponseSchema">
+    <soap:Body>
+        <ureq:updateRequest
+            xmlns:ns4="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema">
+            <ureq:header>
+                <ureq:sdtRequestId>SDT_REQ_TEST_1</ureq:sdtRequestId>
+            </ureq:header>
+            <ureq:targetAppDetail>
+                <ureq:mcolResponseDetail>
+                    <ns4:claimNumber>A4XN5331</ns4:claimNumber>
+                    <ns4:issueDate>2014-06-26Z</ns4:issueDate>
+                    <ns4:serviceDate>2014-07-01Z</ns4:serviceDate>
+                    <ns4:fee>10500</ns4:fee>
+                    <ns4:judgmentWarrantStatus></ns4:judgmentWarrantStatus>
+                </ureq:mcolResponseDetail>
+            </ureq:targetAppDetail>
+            <ureq:status code="Accepted" />
+        </ureq:updateRequest>
+    </soap:Body>
+</soap:Envelope>

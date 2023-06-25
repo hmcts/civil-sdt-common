@@ -1,0 +1,29 @@
+spring:
+  activemq:
+    in-memory: true
+    pool:
+      enabled: false
+  jms:
+    servicebus:
+      internal:
+        targetAppQueue:
+          MCOL: ${CIVIL_SDT_QUEUE}
+      enabled: false
+  aop:
+    proxy-target-class: false
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  datasource:
+    url: jdbc:tc:postgresql:11:///civil_sdt_integ?stringtype=unspecified
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: ${SDT_DB_USERNAME:postgres}
+    password: ${SDT_DB_PASSWORD:test}
+  jpa:
+    show-sql: true
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+    ignore-migration-patterns: true

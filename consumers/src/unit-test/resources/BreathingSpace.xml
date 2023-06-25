@@ -1,0 +1,5 @@
+<bul:mcolBreathingSpace xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema">
+  <brthsp:claimNumber xmlns:brthsp="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema">H0PR0001</brthsp:claimNumber>
+  <brthsp:defendantId xmlns:brthsp="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema">1</brthsp:defendantId>
+  <brthsp:breathingSpaceNotificationType xmlns:brthsp="http://ws.sdt.moj.gov.uk/2013/mcol/BreathingSpaceSchema">BC</brthsp:breathingSpaceNotificationType>
+</bul:mcolBreathingSpace>

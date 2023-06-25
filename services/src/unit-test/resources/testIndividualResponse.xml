@@ -1,0 +1,27 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ind="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema" 
+xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:mresp="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" >
+   <soap:Header/>
+   <soap:Body>
+      <ind:individualResponse>
+         <ind:header>
+            <ind:sdtRequestId>SDT_REQ_TEST_1</ind:sdtRequestId>
+         </ind:header>
+         <ind:targetAppDetail>
+            <ind:mcolResponseDetail>
+                <mresp:claimNumber>21346546</mresp:claimNumber>
+                <mresp:issueDate>2001-01-01</mresp:issueDate>
+                <mresp:serviceDate>2001-01-01</mresp:serviceDate>
+                <mresp:warrantNumber>12345678</mresp:warrantNumber>
+                <mresp:enforcingCourtCode>123</mresp:enforcingCourtCode>
+                <mresp:enforcingCourtName>Court Code</mresp:enforcingCourtName>
+                <mresp:fee>0</mresp:fee>
+                <mresp:judgmentWarrantStatus>tns:additionalStatus</mresp:judgmentWarrantStatus>
+            </ind:mcolResponseDetail>
+         </ind:targetAppDetail>
+         <ind:status code="Initially Accepted">
+         </ind:status>
+      </ind:individualResponse>
+   </soap:Body>
+</soap:Envelope>
+                      

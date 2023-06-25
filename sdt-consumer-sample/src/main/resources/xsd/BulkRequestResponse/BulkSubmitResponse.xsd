@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/BulkResponseSchema" 
+    xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+    elementFormDefault="qualified"
+    version="1.0">
+    
+	<xs:import namespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" schemaLocation="../RootXSDs/Base.xsd"/>
+    
+    <xs:complexType name="bulkResponseType">
+        <xs:complexContent>
+            <xs:extension base="base:abstractResponseType">
+                <xs:sequence>
+                    <xs:element name="customerReference" type="base:customerReferenceType"/>
+                    <xs:element name="sdtBulkReference" type="base:sdtBulkReferenceType" minOccurs="0"/>
+                    <xs:element name="submittedDate" type="xs:dateTime"/>
+                    <xs:element name="sdtService" type="xs:string"/>
+                    <xs:element name="requestCount" type="xs:long"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="bulkResponse" type="tns:bulkResponseType"/>
+    
+</xs:schema>

@@ -1,0 +1,15 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ind="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvResponseSchema" 
+xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:mresp="http://ws.sdt.moj.gov.uk/2013/mcol/ResponseDetailSchema" >
+   <soap:Header/>
+   <soap:Body>
+      <ind:individualResponse>
+         <ind:header>
+            <ind:sdtRequestId>SDT_REQ_TEST_1</ind:sdtRequestId>
+         </ind:header>
+         <ind:status code="Initially Accepted">
+         </ind:status>
+      </ind:individualResponse>
+   </soap:Body>
+</soap:Envelope>
+                      

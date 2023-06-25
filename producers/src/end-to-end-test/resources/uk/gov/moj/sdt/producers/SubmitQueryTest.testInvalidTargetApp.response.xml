@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:submitQueryResponse xmlns="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+    xmlns:ns2="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryResponseSchema">
+    <status code="Error">
+        <error>
+            <code>CUST_NOT_SETUP</code>
+            <description>The Bulk Customer organisation is not setup to
+                send Service Request messages to the xxxx. Please
+                contact tbc for assistance.</description>
+        </error>
+    </status>
+    <ns2:sdtCustomerId>12345678</ns2:sdtCustomerId>
+    <ns2:sdtService>SDT</ns2:sdtService>
+    <ns2:resultCount>0</ns2:resultCount>
+    <ns2:results/>
+</ns2:submitQueryResponse>

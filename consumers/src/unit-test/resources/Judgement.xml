@@ -1,0 +1,94 @@
+<!--You have a CHOICE of the next 5 items at this level-->
+<bul:mcolJudgment
+  xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema"
+  xmlns:cla="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema"
+  xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+  xmlns:jud="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema"
+  xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema"
+  xmlns:war="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema">
+  <jud:claimNumber>9QZ00005</jud:claimNumber>
+  <jud:jointJudgment>false</jud:jointJudgment>
+  <jud:judgmentType>A</jud:judgmentType>
+  <!--Optional:-->
+  <jud:sentParticularsSeparately>true</jud:sentParticularsSeparately>
+  <!--Optional:-->
+  <jud:defendantId>1</jud:defendantId>
+  <!--Optional:-->
+  <jud:defendant1Address>
+    <bas:line1>defendant1Address line1</bas:line1>
+    <bas:line2>defendant1Address line2</bas:line2>
+    <!--Optional:-->
+    <bas:line3>defendant1Address line3</bas:line3>
+    <!--Optional:-->
+    <bas:line4>defendant1Address line4</bas:line4>
+    <bas:postcode>RG42 2DL</bas:postcode>
+  </jud:defendant1Address>
+  <!--Optional:-->
+  <jud:defendant1DateOfBirth>1960-10-10</jud:defendant1DateOfBirth>
+  <jud:paymentSchedule>
+    <!--You have a CHOICE of the next 3 items at this level-->
+    <jud:immediatePayment/>
+  </jud:paymentSchedule>
+  <!--Optional:-->
+  <jud:interest>99999</jud:interest>
+  <!--Optional:-->
+  <jud:solicitorCost>5000</jud:solicitorCost>
+  <!--Optional:-->
+  <jud:deductedAmount>10000000</jud:deductedAmount>
+  <!--Optional:-->
+  <jud:payee>
+    <jud:name>payee name</jud:name>
+    <jud:address>
+      <jud:line1>payee line1</jud:line1>
+      <jud:line2>payee line2</jud:line2>
+      <!--Optional:-->
+      <jud:line3>payee line3</jud:line3>
+      <!--Optional:-->
+      <jud:line4>payee line4</jud:line4>
+      <!--Optional:-->
+      <jud:line5>payee line5</jud:line5>
+      <!--Optional:-->
+      <jud:postcode>RG42 2DL</jud:postcode>
+    </jud:address>
+    <!--Optional:-->
+    <jud:telephoneNumber>12345678901234</jud:telephoneNumber>
+    <!--Optional:-->
+    <jud:dxNumber>payee dx number</jud:dxNumber>
+    <!--Optional:-->
+    <jud:faxNumber>payee fx number</jud:faxNumber>
+    <!--Optional:-->
+    <jud:email>payee email</jud:email>
+    <!--Optional:-->
+    <jud:pcm>12</jud:pcm>
+    <!--Optional:-->
+    <jud:reference>payee reference</jud:reference>
+    <!--Optional:-->
+    <jud:bankAccountNumber>123456789012345678</jud:bankAccountNumber>
+    <!--Optional:-->
+    <jud:bankAccountHolder>payee bank account holder</jud:bankAccountHolder>
+    <!--Optional:-->
+    <jud:bankSortCode>12345678</jud:bankSortCode>
+    <!--Optional:-->
+    <jud:bankName>payee bank name</jud:bankName>
+    <!--Optional:-->
+    <jud:bankInfo1>payee bank info1</jud:bankInfo1>
+    <!--Optional:-->
+    <jud:bankInfo2>payee bank info2</jud:bankInfo2>
+    <!--Optional:-->
+    <jud:slipCodeline1>payee slip code line1</jud:slipCodeline1>
+    <!--Optional:-->
+    <jud:slipCodeline2>payee slip code line2</jud:slipCodeline2>
+    <!--Optional:-->
+    <jud:giroAccountNumber>12345678</jud:giroAccountNumber>
+    <!--Optional:-->
+    <jud:giroTransCode1>123456789</jud:giroTransCode1>
+    <!--Optional:-->
+    <jud:giroTransCode2>12</jud:giroTransCode2>
+    <!--Optional:-->
+    <jud:apacsTransCode>12</jud:apacsTransCode>
+  </jud:payee>
+  <jud:sotSignature>
+    <bas:flag>true</bas:flag>
+    <bas:name>sotSignature</bas:name>
+  </jud:sotSignature>
+</bul:mcolJudgment>

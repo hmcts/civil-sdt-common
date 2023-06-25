@@ -1,0 +1,47 @@
+<!-- ===========================================================================
+ = SDT
+ =
+ = Name:        build.xml
+ = Description: Build file for a specific project.
+ =
+ = $Revision: $
+ = $Author: $
+ = $Date: $
+ = $URL: $
+ =
+ = Copyright Logica UK Ltd. 2012
+ =========================================================================== -->
+
+<project name="Servers" basedir="." default="configure-tc-server-property-files">
+
+	<import file="../build-sdt/build.xml"/>
+
+	<!-- Copies <any name>.template files to <any name> substituting any matching properties in memory and placing result in bin directory for Eclipse -->
+    <target name="configure-tc-server-property-files" depends="init" description="Fixes properties in resources files in the bin directory">
+        <echo>${basedir}</echo>
+        <copy todir="." overwrite="true">
+            <fileset dir="." casesensitive="false">
+                <include name="**/*.template" />
+            </fileset>
+            <filterchain>
+                <filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+            </filterchain>
+            <mapper type="glob" from="*.template" to="*" />
+        </copy>
+    </target>
+
+	<!-- Copies <any name>.template files to <any name> substituting any matching properties in memory and placing result in src directory for build -->
+	<target name="configure-property-files" description="Copies files in the project with the pattern '*.template' to '*', dropping the .template suffix">
+		<echo level="info" message="Templatising all configuration files" />
+		<copy todir="${basedir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="**/*.template" />
+			</fileset>
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ExpandProperties" />
+			</filterchain>
+			<mapper type="glob" from="*.template" to="*" />
+		</copy>
+	</target>
+
+</project>

@@ -1,0 +1,7 @@
+<bul:mcolClaimStatusUpdate xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema">
+<cla1:claimNumber xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema">1676030589543579</cla1:claimNumber>
+<cla1:defendantId xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema">1</cla1:defendantId>
+<cla1:notificationType xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema">WD</cla1:notificationType>
+<cla1:paidInFullDate xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema">2022-10-23</cla1:paidInFullDate>
+<cla1:section38Compliancy xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema">true</cla1:section38Compliancy>
+</bul:mcolClaimStatusUpdate>

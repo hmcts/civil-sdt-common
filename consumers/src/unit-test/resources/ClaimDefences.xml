@@ -1,0 +1,16 @@
+  <sub:submitQueryRequest xmlns:sub="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema"
+                              xmlns:quer="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema">
+      <sub:header>
+        <sub:sdtCustomerId>12345678</sub:sdtCustomerId>
+        <sub:targetApplicationId>mcol</sub:targetApplicationId>
+        <sub:queryReference>optional</sub:queryReference>
+      </sub:header>
+      <sub:criteria>
+        <sub:criterion criteriaType="mcolDefenceCriteria">
+          <sub:mcolDefenceCriteria>
+            <quer:fromDate>2009-12-01</quer:fromDate>
+            <quer:toDate>2009-12-02</quer:toDate>
+          </sub:mcolDefenceCriteria>
+        </sub:criterion>
+      </sub:criteria>
+    </sub:submitQueryRequest>

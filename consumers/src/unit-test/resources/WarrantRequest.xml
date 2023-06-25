@@ -1,0 +1,25 @@
+<bul:mcolWarrant xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/IndvRequestSchema"
+                 xmlns:war="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema"
+                 xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema">
+  <war:claimNumber>9QZ00003</war:claimNumber>
+  <war:defendantId>1</war:defendantId>
+  <war:defendantAddress>
+    <bas:line1>defendant1Address line1</bas:line1>
+    <bas:line2>defendant1Address line1</bas:line2>
+    <!--Optional:-->
+    <bas:line3>defendant1Address line1</bas:line3>
+    <!--Optional:-->
+    <bas:line4>defendant1Address line1</bas:line4>
+    <bas:postcode>RG42 2DL</bas:postcode>
+  </war:defendantAddress>
+  <war:balanceOfDebt>50000</war:balanceOfDebt>
+  <war:warrantAmount>10000</war:warrantAmount>
+  <!--Optional:-->
+  <war:solicitorCost>5</war:solicitorCost>
+  <!--Optional:-->
+  <war:additionalNotes>additional notes</war:additionalNotes>
+  <war:sotSignature>
+    <bas:flag>true</bas:flag>
+    <bas:name>sotSignature</bas:name>
+  </war:sotSignature>
+</bul:mcolWarrant>

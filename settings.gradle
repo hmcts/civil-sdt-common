@@ -1,0 +1,20 @@
+rootProject.name = 'civil-sdt'
+
+include 'consumers'
+include 'dao'
+include 'handlers'
+include 'interceptors'
+include 'producers'
+include 'services'
+include 'transformers'
+include 'validators'
+
+dependencyResolutionManagement {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+      url 'https://jitpack.io'
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:sub="http://ws.sdt.moj.gov.uk/2013/sdt/targetApp/SubmitQueryResponseSchema" 
+xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+xmlns:mquer="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema">
+   <soap:Header/>
+   <soap:Body>
+      <sub:submitQueryResponse>
+         <sub:targetAppCustomerId>MCOL12345678</sub:targetAppCustomerId>
+         <sub:resultCount>1</sub:resultCount>
+         <sub:targetAppDetail>
+            <sub:mcolDefenceDetail>
+                <mquer:claimNumber>13548968</mquer:claimNumber>
+                <mquer:defendant defendantId="1">
+                    <mquer:filedDate>2001-12-31T12:00:00</mquer:filedDate>
+                    <mquer:responseType>DE</mquer:responseType>
+                </mquer:defendant>
+             </sub:mcolDefenceDetail>
+         </sub:targetAppDetail>
+         <sub:status code="Ok">
+         </sub:status>
+      </sub:submitQueryResponse>
+   </soap:Body>
+</soap:Envelope>

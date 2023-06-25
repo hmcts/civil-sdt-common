@@ -1,0 +1,5 @@
+ <sub:mcolDefenceCriteria xmlns:sub="http://ws.sdt.moj.gov.uk/2013/sdt/SubmitQueryRequestSchema"
+                                   xmlns:quer="http://ws.sdt.moj.gov.uk/2013/mcol/QuerySchema">
+    <quer:fromDate>2009-12-01T00:00:00</quer:fromDate>
+    <quer:toDate>2009-12-02T00:00:00</quer:toDate>
+ </sub:mcolDefenceCriteria>

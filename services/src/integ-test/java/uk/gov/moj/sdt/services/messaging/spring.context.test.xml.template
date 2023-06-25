@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+	">
+	
+	<import resource="classpath*:\uk\gov\moj\sdt\messaging\spring.hibernate.test.xml" />
+	
+	<!-- The following port is deliberately wrong -->
+	<amq:connectionFactory id="amqConnectionFactoryBad" brokerURL="tcp://localhost:55555">
+		<!-- List of packages that are permitted to be used in object messages.  Add value elements for additional packages. -->
+		<amq:trustedPackages>
+			<value>${sdt.amq.trusted.package.messaging}</value>
+		</amq:trustedPackages>
+	</amq:connectionFactory>
+	
+	<bean id="connectionFactoryBad" class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactoryBad"/>
+		<property name="sessionCacheSize" value="100"/>
+	</bean>
+	
+	<bean id="jmsTemplateBad" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactoryBad"/>
+	</bean>
+	
+	<bean id="uk.gov.moj.sdt.services.messaging.api.IMessageWriterBad" 
+		class="uk.gov.moj.sdt.services.messaging.MessageWriter">
+		<constructor-arg ref="jmsTemplateBad"/>
+		<property name="queueNameMap">
+			<map>
+				<entry key="TEST1" value="Test1Queue"/>
+			</map>
+		</property>
+ 	</bean>
+	
+		
+	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${sdt.jms.broker.url}">
+		<!-- List of packages that are permitted to be used in object messages.  Add value elements for additional packages. -->
+		<amq:trustedPackages>
+			<value>${sdt.amq.trusted.package.messaging}</value>
+		</amq:trustedPackages>
+ 	</amq:connectionFactory>
+	
+	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory"/>
+		<property name="sessionCacheSize" value="100"/>
+	</bean>
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory"/>
+	</bean>
+	
+	<bean id="uk.gov.moj.sdt.services.messaging.api.IMessageWriter" 
+		class="uk.gov.moj.sdt.services.messaging.MessageWriter">
+		<constructor-arg ref="jmsTemplate"/>
+        <property name="queueNameMap">
+			<map>
+				<entry key="MCOL" value="McolQueue"/>
+				<entry key="TEST1" value="Test1Queue"/>
+				<entry key="MCOLS" value="McolsQueue"/>
+			</map>
+		</property>
+	</bean>
+				
+	<bean id="messageListener"  class="org.springframework.jms.listener.adapter.MessageListenerAdapter" lazy-init="true" scope="prototype">
+		<constructor-arg>
+			<bean class="uk.gov.moj.sdt.services.messaging.IndividualRequestMdb">
+				<property name="targetAppSubmissionService" ref="uk.gov.moj.sdt.services.api.ITargetApplicationSubmissionService"/>
+			</bean>
+		</constructor-arg>
+		<property name="defaultListenerMethod" value="readMessage"/>
+		<property name="messageConverter"><null/></property>
+	</bean>
+	
+	<bean id="messageListenerContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer"
+		depends-on="transactionManager" lazy-init="true">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="cacheLevel" value="3"/>
+		<property name="autoStartup" value="true"/>
+		<property name="destinationName" value="McolsQueue"/>
+		<property name="messageListener" ref="messageListener" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="concurrentConsumers" value="1"/>
+		<property name="maxConcurrentConsumers" value="1"/>
+		<property name="receiveTimeout" value="30000"/>
+		<property name="idleTaskExecutionLimit" value="1"/>
+		<property name="idleConsumerLimit" value="1"/>
+	</bean>
+	
+	<bean id="messageListenerContainerMCol"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer"
+		depends-on="transactionManager" lazy-init="true">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="cacheLevel" value="3"/>
+		<property name="destinationName" value="McolQueue"/>
+		<property name="messageListener" ref="messageListener" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="concurrentConsumers" value="1"/>
+		<property name="maxConcurrentConsumers" value="1"/>
+		<property name="receiveTimeout" value="30000"/>
+		<property name="idleTaskExecutionLimit" value="1"/>
+		<property name="idleConsumerLimit" value="1"/>
+	</bean>
+				
+</beans>

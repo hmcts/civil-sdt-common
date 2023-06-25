@@ -1,0 +1,90 @@
+<bul:bulkRequest xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema"
+                 xmlns:cla="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema"
+                 xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+                 xmlns:jud="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema"
+                 xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema"
+                 xmlns:war="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema">
+    <bul:header>
+        <bul:sdtCustomerId>12341531</bul:sdtCustomerId>
+        <bul:targetApplicationId>mcol</bul:targetApplicationId>
+        <bul:requestCount>1</bul:requestCount>
+        <bul:customerReference>MIcustomerReference24037000</bul:customerReference>
+    </bul:header>
+    <bul:requests>
+        <!--1 to 2000 repetitions:-->
+        <bul:request requestId="requestIdmax40PA24037000" requestType="mcolClaim">
+            <!--You have a CHOICE of the next 5 items at this level-->
+            <bul:mcolClaim>
+                <!--Optional:-->
+                <cla:claimantReference>MI2403180025</cla:claimantReference>
+                <!--Optional:-->
+                <!--Optional:-->
+                <cla:claimantCorrespondence>
+                    <cla:name>Moriliat idowusml30 Correspond</cla:name>
+                    <cla:address>
+                        <cla:line1>Testingclaimantaddress line1</cla:line1>
+                        <cla:line2>Testingclaimantaddress line2</cla:line2>
+                        <!--Optional:-->
+                        <cla:postcode>KT22 7LP</cla:postcode>
+                    </cla:address>
+                </cla:claimantCorrespondence>
+                <cla:defendant1>
+                    <cla:name>defendant1Moriliat IdowumS name not longer than 60characters</cla:name>
+                    <cla:address>
+                        <bas:line1>defendant address line 111111</bas:line1>
+                        <bas:line2>defendant address line 222222</bas:line2>
+                        <!--Optional:-->
+                        <bas:line3>defendantaddress line 3333333</bas:line3>
+                        <!--Optional:-->
+                        <bas:line4>defendantaddress line 4444444</bas:line4>
+                        <bas:postcode>KT22 7LP</bas:postcode>
+                    </cla:address>
+                </cla:defendant1>
+                <!--Optional:-->
+                <cla:defendant2>
+                    <cla:name>defendant2Moriliat IdowumS name not longer than 60characters</cla:name>
+                    <cla:address>
+                        <bas:line1>defendant2address line 111111</bas:line1>
+                        <bas:line2>defendant2address line 222222</bas:line2>
+                        <!--Optional:-->
+                        <bas:line3>defendantaddress line 3333333</bas:line3>
+                        <!--Optional:-->
+                        <bas:line4>defendantaddress line 4444444</bas:line4>
+                        <bas:postcode>KT22 7LP</bas:postcode>
+                    </cla:address>
+                </cla:defendant2>
+                <cla:sendParticularsSeparately>1</cla:sendParticularsSeparately>
+                <cla:reserveRightToClaimInterest>1</cla:reserveRightToClaimInterest>
+                <!--Optional:-->
+                <cla:interest>
+                    <cla:dailyAmount>1844</cla:dailyAmount>
+                    <cla:owedDate>2014-03-10</cla:owedDate>
+                    <cla:claimDate>2014-03-15</cla:claimDate>
+                    <cla:claimAmountInterestBase>99999</cla:claimAmountInterestBase>
+                </cla:interest>
+                <cla:claimAmount>18446</cla:claimAmount>
+                <!--Optional:-->
+                <!--1 to 24 repetitions:-->
+                <cla:particulars>rent 01 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 02 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 03 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 04 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 05 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 06 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 07 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 08 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 09 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 10 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 11 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 12 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 13 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 14 maximum up to 45 characters in length</cla:particulars>
+                <cla:particulars>rent 15 maximum up to 45 characters in length</cla:particulars>
+                <cla:sotSignature>
+                    <bas:flag>true</bas:flag>
+                    <bas:name>MI</bas:name>
+                </cla:sotSignature>
+            </bul:mcolClaim>
+        </bul:request>
+    </bul:requests>
+</bul:bulkRequest>

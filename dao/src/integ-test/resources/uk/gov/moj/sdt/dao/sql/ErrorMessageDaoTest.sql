@@ -1,0 +1,5 @@
+insert into ERROR_MESSAGES (ERROR_MESSAGE_ID, ERROR_CODE, ERROR_TEXT,  ERROR_DESCRIPTION, VERSION_NUMBER)
+values (1, 1001, 'Invalid Reference Id', 'Error on response', 0);
+
+insert into ERROR_MESSAGES (ERROR_MESSAGE_ID, ERROR_CODE, ERROR_TEXT,  ERROR_DESCRIPTION, VERSION_NUMBER)
+values (2, 1002, 'Invalid SDT Id', 'Error on Invalid id', 0);

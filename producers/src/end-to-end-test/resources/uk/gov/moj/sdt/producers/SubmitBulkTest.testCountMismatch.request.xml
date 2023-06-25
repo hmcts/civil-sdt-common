@@ -1,0 +1,28 @@
+<bul:bulkRequest xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema"
+                 xmlns:cla="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema"
+                 xmlns:bas="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+                 xmlns:jud="http://ws.sdt.moj.gov.uk/2013/mcol/JudgmentSchema"
+                 xmlns:cla1="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimStatusUpdateSchema"
+                 xmlns:war="http://ws.sdt.moj.gov.uk/2013/mcol/WarrantSchema">
+    <bul:header>
+        <bul:sdtCustomerId>12345678</bul:sdtCustomerId>
+        <bul:targetApplicationId>mcol</bul:targetApplicationId>
+        <bul:requestCount>2</bul:requestCount>
+        <bul:customerReference>abc1223481</bul:customerReference>
+    </bul:header>
+    <bul:requests>
+        <!--1 or more repetitions: -->
+        <bul:request requestType="mcolClaimStatusUpdate"
+                     requestId="1">
+            <!--You have a CHOICE of the next 5 items at this level -->
+            <bul:mcolClaimStatusUpdate>
+                <cla1:claimNumber>claim123</cla1:claimNumber>
+                <!--Optional: -->
+                <cla1:defendantId>1</cla1:defendantId>
+                <cla1:notificationType>MP</cla1:notificationType>
+                <!--Optional: -->
+                <cla1:paidInFullDate>2012-01-01</cla1:paidInFullDate>
+            </bul:mcolClaimStatusUpdate>
+        </bul:request>
+    </bul:requests>
+</bul:bulkRequest>
