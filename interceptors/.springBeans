@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[2.9.0.201203011806-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[true]]></enableImports>
+	<configs>
+		<config>src/main/java/uk/gov/moj/sdt/interceptors/enricher/spring.context.xml</config>
+		<config>src/main/java/uk/gov/moj/sdt/interceptors/in/spring.context.xml</config>
+		<config>src/main/java/uk/gov/moj/sdt/interceptors/out/spring.context.xml</config>
+		<config>src/main/java/uk/gov/moj/sdt/interceptors/spring.context.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

@@ -1,22 +1,42 @@
 apply plugin: 'info.solidsoft.pitest'
 
-jar {
-  enabled = true
-  archiveBaseName = 'civil-sdt-interceptors'
+sourceSets {
+    testUnit {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
 }
 
-dependencyCheck {
-    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
+configurations {
+    testOutput
+    testOutput.extendsFrom(testUnitImplementation)
+}
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+artifacts {
+    archives testJar
 }
 
 dependencies {
-    implementation project(':dao')
+    implementation project(':domain')
+    implementation project(':utils')
 }
 
-bootJar {
-    enabled = false
-}
-
-test {
-    useJUnitPlatform()
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            from components.java
+        }
+    }
 }

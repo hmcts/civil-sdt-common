@@ -135,7 +135,8 @@ public class SubmitQueryEnricher extends AbstractSdtEnricher {
         String outXml = newXml;
 
         Pattern resultsPattern = Pattern.compile("<(qresp|ns2)\\:results\\/>|<(qresp|ns2)\\:results.*\\>.*<\\/(qresp|ns2)\\:results\\>");
-        String replacementXml = SdtContext.getContext().getClaimDefencesSummaryResultsXml();
+//        String replacementXml = SdtContext.getContext().getClaimDefencesSummaryResultsXml();
+        String replacementXml = "";
 
         if (null != outXml && !outXml.isEmpty() && null != replacementXml && !replacementXml.isEmpty()
                 && resultsPattern.matcher(outXml).find()) {

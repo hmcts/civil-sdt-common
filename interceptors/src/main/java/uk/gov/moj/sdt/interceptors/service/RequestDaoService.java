@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.moj.sdt.dao.ServiceRequestDao;
 import uk.gov.moj.sdt.domain.ServiceRequest;
 import uk.gov.moj.sdt.domain.api.IServiceRequest;
 import uk.gov.moj.sdt.utils.SdtContext;
@@ -21,11 +20,11 @@ public class RequestDaoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestDaoService.class);
 
-    private ServiceRequestDao serviceRequestDao;
+    private IPersistServiceRequest persistServiceRequest;
 
     @Autowired
-    public RequestDaoService(ServiceRequestDao serviceRequestDao) {
-        this.serviceRequestDao = serviceRequestDao;
+    public RequestDaoService(IPersistServiceRequest persistServiceRequest) {
+        this.persistServiceRequest = persistServiceRequest;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -37,7 +36,7 @@ public class RequestDaoService {
         // Prepare log message for Hibernate.
         final IServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setBulkCustomerId(extractBulkCustomerId(rawXml));
-        serviceRequest.setRequestPayload(rawXml.getBytes());
+        serviceRequest.setRequestPayload(rawXml);
         serviceRequest.setRequestDateTime(LocalDateTime.now());
         serviceRequest.setRequestType(extractRequestType(rawXml));
 
@@ -45,7 +44,7 @@ public class RequestDaoService {
         final String hostName = ServerHostName.getHostName();
         serviceRequest.setServerHostName(hostName);
 
-        serviceRequestDao.persist(serviceRequest);
+        persistServiceRequest.persist(serviceRequest);
 
         // Retrieve the id assigned in by Hibernate and store it for the outbound service interceptor to use later.
         final Long serviceRequestID = serviceRequest.getId();
@@ -74,10 +73,10 @@ public class RequestDaoService {
         // will be no service request row in the database.
         if (serviceRequestId != null) {
             // Get the log message for the inbound request so we can add the outbound response to it.
-            final IServiceRequest serviceRequest = serviceRequestDao.fetch(ServiceRequest.class, serviceRequestId);
+            final IServiceRequest serviceRequest = persistServiceRequest.fetch(ServiceRequest.class, serviceRequestId);
 
             // Add the response and timestamp to the service request record.
-            serviceRequest.setResponsePayload(envelope.getBytes());
+            serviceRequest.setResponsePayload(envelope);
             serviceRequest.setResponseDateTime(LocalDateTime.now());
 
             // Note that bulk reference will be null if this is not a bulk submission.
@@ -86,7 +85,7 @@ public class RequestDaoService {
                 serviceRequest.setBulkReference(bulkReference);
             }
 
-            serviceRequestDao.persist(serviceRequest);
+            persistServiceRequest.persist(serviceRequest);
         }
     }
 

@@ -43,6 +43,7 @@ import java.util.regex.Pattern;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
 
+
 /**
  * Bulk feedback enricher used to enrich outbound messages for get bulk feedback.
  *
