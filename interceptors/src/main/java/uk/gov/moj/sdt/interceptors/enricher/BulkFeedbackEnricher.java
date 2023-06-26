@@ -43,7 +43,6 @@ import uk.gov.moj.sdt.utils.SdtContext;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
 
-
 /**
  * Bulk feedback enricher used to enrich outbound messages for get bulk feedback.
  *
