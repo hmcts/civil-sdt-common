@@ -1,14 +1,14 @@
 package uk.gov.moj.sdt.interceptors.in;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.message.Message;
 import org.springframework.stereotype.Component;
 import uk.gov.moj.sdt.interceptors.AbstractSdtInterceptor;
 import uk.gov.moj.sdt.utils.SdtContext;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.apache.cxf.phase.Phase.RECEIVE;
 

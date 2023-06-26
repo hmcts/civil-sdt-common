@@ -33,6 +33,10 @@
  */
 package uk.gov.moj.sdt.interceptors.out;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PipedOutputStream;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.cxf.message.ExchangeImpl;
@@ -43,10 +47,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 import uk.gov.moj.sdt.utils.SdtContext;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PipedOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

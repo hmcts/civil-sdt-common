@@ -31,6 +31,7 @@
 package uk.gov.moj.sdt.interceptors.out;
 
 import java.io.OutputStream;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.interceptor.AttachmentOutInterceptor;
 import org.apache.cxf.interceptor.Fault;

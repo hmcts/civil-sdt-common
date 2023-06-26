@@ -1,5 +1,11 @@
 package uk.gov.moj.sdt.interceptors.in;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,17 +15,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.moj.sdt.dao.ServiceRequestDao;
 import uk.gov.moj.sdt.domain.api.IServiceRequest;
+import uk.gov.moj.sdt.interceptors.service.IPersistServiceRequest;
 import uk.gov.moj.sdt.interceptors.service.RequestDaoService;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 import uk.gov.moj.sdt.utils.SdtContext;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.any;
@@ -38,14 +38,14 @@ class ServiceRequestInboundInterceptorTest extends AbstractSdtUnitTestBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRequestInboundInterceptorTest.class);
 
     @Mock
-    ServiceRequestDao mockServiceRequestDao;
+    IPersistServiceRequest persistServiceRequest;
 
     RequestDaoService requestDaoService;
 
     @BeforeEach
     @Override
     public void setUp() {
-        requestDaoService = new RequestDaoService(mockServiceRequestDao);
+        requestDaoService = new RequestDaoService(persistServiceRequest);
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceRequestInboundInterceptorTest extends AbstractSdtUnitTestBase {
             SdtContext.getContext().setRawInXml(xml);
 
             sRII.handleMessage(new SoapMessage(new MessageImpl()));
-            verify(mockServiceRequestDao).persist(any(IServiceRequest.class));
+            verify(persistServiceRequest).persist(any(IServiceRequest.class));
 
         } catch (final SecurityException e) {
             LOGGER.error("testHandleMessage()", e);

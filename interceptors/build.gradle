@@ -28,6 +28,7 @@ artifacts {
 dependencies {
     implementation project(':domain')
     implementation project(':utils')
+    testImplementation project(path: ':utils', configuration: 'testOutput')
 }
 
 publishing {

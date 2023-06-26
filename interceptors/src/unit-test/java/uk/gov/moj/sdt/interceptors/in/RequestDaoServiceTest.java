@@ -1,20 +1,20 @@
 package uk.gov.moj.sdt.interceptors.in;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.moj.sdt.dao.ServiceRequestDao;
-import uk.gov.moj.sdt.domain.api.IServiceRequest;
-import uk.gov.moj.sdt.interceptors.service.RequestDaoService;
-import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
-import uk.gov.moj.sdt.utils.SdtContext;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.moj.sdt.domain.api.IServiceRequest;
+import uk.gov.moj.sdt.interceptors.service.IPersistServiceRequest;
+import uk.gov.moj.sdt.interceptors.service.RequestDaoService;
+import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
+import uk.gov.moj.sdt.utils.SdtContext;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.any;
@@ -24,13 +24,13 @@ import static org.mockito.Mockito.verify;
 class RequestDaoServiceTest extends AbstractSdtUnitTestBase {
 
     @Mock
-    ServiceRequestDao mockServiceRequestDao;
+    IPersistServiceRequest persistServiceRequest;
 
     RequestDaoService requestDaoService;
 
     @Override
     protected void setUpLocalTests() {
-        requestDaoService = new RequestDaoService(mockServiceRequestDao);
+        requestDaoService = new RequestDaoService(persistServiceRequest);
     }
 
     /**
@@ -46,7 +46,7 @@ class RequestDaoServiceTest extends AbstractSdtUnitTestBase {
         SdtContext.getContext().setRawInXml(xml);
 
         requestDaoService.persistRequest();
-        verify(mockServiceRequestDao).persist(any(IServiceRequest.class));
+        verify(persistServiceRequest).persist(any(IServiceRequest.class));
     }
 
     /**

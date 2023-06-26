@@ -30,6 +30,9 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.interceptors.in;
 
+import java.lang.reflect.Field;
+import java.util.TreeSet;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,9 +44,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
-
-import java.lang.reflect.Field;
-import java.util.TreeSet;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

@@ -30,16 +30,16 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.interceptors.enricher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import uk.gov.moj.sdt.utils.SdtContext;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import uk.gov.moj.sdt.utils.SdtContext;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
 

@@ -46,7 +46,6 @@ import org.apache.cxf.io.CachedWriter;
 import org.apache.cxf.io.DelegatingInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.gov.moj.sdt.interceptors.enricher.AbstractSdtEnricher;
 import uk.gov.moj.sdt.interceptors.enricher.api.ISdtEnricher;
 
