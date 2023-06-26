@@ -2,6 +2,7 @@ package uk.gov.moj.sdt.interceptors.out;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.io.CachedOutputStream;
@@ -59,7 +60,7 @@ class ServiceRequestOutboundInterceptorTest extends AbstractSdtUnitTestBase {
         assertNull(serviceRequest.getResponsePayload());
         serviceRequestOutboundInterceptor.handleMessage(soapMessage);
         assertNotNull(serviceRequest.getResponseDateTime());
-        String response = serviceRequest.getResponsePayload();
+        String response = new String(serviceRequest.getResponsePayload(), StandardCharsets.UTF_8);
         assertTrue(response.contains(data));
         verify(persistServiceRequest).persist(serviceRequest);
     }
