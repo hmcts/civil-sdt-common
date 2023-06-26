@@ -1,0 +1,22 @@
+apply plugin: 'info.solidsoft.pitest'
+
+jar {
+  enabled = true
+  archiveBaseName = 'civil-sdt-interceptors'
+}
+
+dependencyCheck {
+    suppressionFile = "${rootDir}/config/owasp/suppressions.xml"
+}
+
+dependencies {
+    implementation project(':dao')
+}
+
+bootJar {
+    enabled = false
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,19 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:bul="http://ws.sdt.moj.gov.uk/2013/sdt/BulkRequestSchema">
+   <soap:Header/>
+   <soap:Body>
+      <bul:bulkRequest>
+         <bul:header>
+            <bul:sdtCustomerId>1234</bul:sdtCustomerId>
+            <bul:targetApplicationId>live</bul:targetApplicationId>
+            <bul:requestCount>1</bul:requestCount>
+            <bul:customerReference>MC123</bul:customerReference>
+         </bul:header>
+         <bul:requests>
+            <!--1 or more repetitions:-->
+            <bul:request requestType="Claim" requestId="1">
+               <!--You may enter ANY elements at this point-->
+            </bul:request>
+         </bul:requests>
+      </bul:bulkRequest>
+   </soap:Body>
+</soap:Envelope>
