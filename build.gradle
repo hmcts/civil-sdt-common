@@ -234,6 +234,7 @@ dependencies {
     api project(':dao-api')
     api project(':domain')
     api project(':handlers-api')
+    api project(':interceptors')
     api project(':producers-api')
     api project(':services-api')
     api project(':utils')
