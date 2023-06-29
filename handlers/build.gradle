@@ -56,7 +56,3 @@ tasks.register('unit', Test) {
 }
 
 check.dependsOn unit
-
-test {
-    useJUnitPlatform()
-}
