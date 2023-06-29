@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" 
+    targetNamespace="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema"
+	elementFormDefault="qualified"
+    version="1.0">
+
+    <!-- TODO Data type to be confirmed  -->
+    <xs:simpleType name="sdtCustomerId">
+        <xs:restriction base="tns:stringMaxLength24"/>
+    </xs:simpleType>
+
+    <!-- Proposed data format AA-TTTT-YYMMSDDHHMISS-999999999-->
+    <xs:simpleType name="sdtBulkReference">
+        <xs:restriction base="xs:string">
+            <xs:length value="32"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="targetSystemId">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mcol" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="customerReference">
+        <xs:restriction base="tns:stringMaxLength32"/>
+    </xs:simpleType>
+
+	<xs:simpleType name="customerCode">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1000" />
+			<xs:maxInclusive value="9999" />
+		</xs:restriction>
+	</xs:simpleType>
+    
+    <xs:simpleType name="requestCount">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value="99999"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ncpId">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1000" />
+            <xs:maxInclusive value="9999" />
+        </xs:restriction>
+    </xs:simpleType>
+
+	<!-- Document number is now an 8 digit number -->
+	<xs:simpleType name="documentNumber">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Za-z]{8}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:simpleType name="claimantReference">
+        <xs:restriction base="tns:stringMaxLength24"/>
+    </xs:simpleType>
+
+	<!-- Defendant ID is Blank (all defendants), 1 or 2 -->
+	<xs:simpleType name="defendantId">
+		<xs:restriction base="xs:string">
+			<xs:pattern value=" |1|2" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="stringMaxLength8">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="8" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringMaxLength24">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="24" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringMaxLength30">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="30" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringMaxLength32">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="32" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringMaxLength40">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="40" />
+		</xs:restriction>
+	</xs:simpleType>
+    <xs:simpleType name="stringMaxLength60">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0" />
+            <xs:maxLength value="60" />
+        </xs:restriction>
+    </xs:simpleType>
+	<xs:simpleType name="stringMaxLength120">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="120" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringMaxLength255">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0" />
+			<xs:maxLength value="255" />
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:complexType name="sotSignatureType">
+        <xs:sequence>
+            <xs:element name="name" type="tns:stringMaxLength60"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:simpleType name="courtCode">
+		<xs:restriction base="xs:integer">
+			<xs:pattern value="[0-9]{3}" />
+		</xs:restriction>
+	</xs:simpleType>
+    <xs:simpleType name="courtName">
+        <xs:restriction base="tns:stringMaxLength40"/>
+    </xs:simpleType>
+    
+    <xs:simpleType name="postcode">
+        <xs:restriction base="xs:string">
+            <xs:pattern  value="[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z-[CIKMOV]]{2}" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:complexType name="addressType">
+		<xs:sequence>
+			<xs:element name="line1" type="tns:stringMaxLength30" />
+			<xs:element name="line2" type="tns:stringMaxLength30" />
+			<xs:element name="line3" type="tns:stringMaxLength30" minOccurs="0" />
+			<xs:element name="line4" type="tns:stringMaxLength30" minOccurs="0" />
+			<xs:element name="line5" type="tns:stringMaxLength30" minOccurs="0" />
+			<xs:element name="postcode" type="tns:postcode" />
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="correspondenceDetailType">
+        <xs:annotation>
+            <xs:documentation>
+                Describes correspondence details.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="tns:stringMaxLength30" />
+            <xs:element name="address" type="tns:addressType" />
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="personType">
+		<xs:annotation>
+			<xs:documentation>
+				Describes a person
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="tns:stringMaxLength60" />
+			<xs:element name="address" type="tns:addressType" />
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:simpleType name="requestId">
+        <xs:restriction base="tns:stringMaxLength24"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="sdtRequestId">
+        <xs:restriction base="tns:stringMaxLength40"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="requestType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mcolClaim"/>
+            <xs:enumeration value="mcolJudgment"/>
+            <xs:enumeration value="mcolJudgmentForthwith"/>
+            <xs:enumeration value="mcolWarrant"/>
+            <xs:enumeration value="mcolPaid"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="amountType999999999">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="999999999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountType99999999">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="99999999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountType9999999">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="9999999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountType999999">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="999999" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountType99999">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="99999" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="statusCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="ERROR"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="createStatusCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ACCEPTED"/>
+            <xs:enumeration value="INITIALLY_ACCEPTED"/>
+            <xs:enumeration value="REJECTED"/>
+            <xs:enumeration value="ERROR"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="errorType">
+        <xs:sequence>
+			<xs:element name="code" type="tns:stringMaxLength32" />
+			<xs:element name="description" type="tns:stringMaxLength255" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="statusType">
+        <xs:sequence>
+            <xs:element name="error" type="tns:errorType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="code" type="tns:statusCode"></xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="createStatusType">
+        <xs:sequence>
+            <xs:element name="error" type="tns:errorType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="code" type="tns:createStatusCode"></xs:attribute>
+    </xs:complexType>
+    
+</xs:schema>
