@@ -24,29 +24,22 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
+ * $Id: AbstractWsHandler.java 16915 2013-08-23 16:12:22Z agarwals $
+ * $LastChangedRevision: 16915 $
+ * $LastChangedDate: 2013-08-23 17:12:22 +0100 (Fri, 23 Aug 2013) $
  * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
-
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
+package uk.gov.moj.sdt.transformers;
 
 
 /**
- * Interface for handling bulk request submission flow.
+ * Base class for web service handlers that provides common methods for workflow.
  *
  * @author d276205
  */
-public interface IWsCreateBulkRequestHandler {
-
+public abstract class AbstractTransformer {
     /**
-     * Processes bulk request submission and returns generated response.
-     *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
+     * Constant for SDT service.
      */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
+    public static final String SDT_SERVICE = "SDT";
 
 }

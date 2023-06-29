@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,40 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
+ * $Id$
+ * $LastChangedRevision$
+ * $LastChangedDate$
+ * $LastChangedBy$ */
+package uk.gov.moj.sdt.validators;
 
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import uk.gov.moj.sdt.dao.api.IBulkCustomerDao;
+import uk.gov.moj.sdt.domain.api.ITargetApplication;
+import uk.gov.moj.sdt.domain.cache.api.ICacheable;
+import uk.gov.moj.sdt.utils.visitor.api.ITree;
+import uk.gov.moj.sdt.validators.api.ITargetApplicationValidator;
 
 /**
- * Interface for handling bulk request submission flow.
+ * Implementation of {@link ITargetApplicationValidator}.
  *
- * @author d276205
+ * @author Saurabh Agarwal
  */
-public interface IWsCreateBulkRequestHandler {
+@Component("TargetApplicationValidator")
+public class TargetApplicationValidator extends AbstractSdtValidator implements ITargetApplicationValidator {
 
-    /**
-     * Processes bulk request submission and returns generated response.
-     *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
-     */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
+    @Autowired
+    public TargetApplicationValidator(@Qualifier("BulkCustomerDao")
+                                          IBulkCustomerDao bulkCustomerDao,
+                                      @Qualifier("GlobalParametersCache")
+                                          ICacheable globalParameterCache,
+                                      @Qualifier("ErrorMessagesCache")
+                                          ICacheable errorMessagesCache) {
+        super(bulkCustomerDao, globalParameterCache, errorMessagesCache);
+    }
 
+    @Override
+    public void visit(final ITargetApplication targetApplication, final ITree tree) {
+    }
 }

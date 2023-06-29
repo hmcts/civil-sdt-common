@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,26 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
+ * $Id: ClaimXsdTest.java 16414 2013-05-29 10:56:45Z agarwals $
+ * $LastChangedRevision: 16414 $
+ * $LastChangedDate: 2013-05-29 11:56:45 +0100 (Wed, 29 May 2013) $
+ * $LastChangedBy: holmessm $ */
+package uk.gov.moj.sdt.validators.api;
 
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+import uk.gov.moj.sdt.validators.XmlValidationDetails;
 
 /**
- * Interface for handling bulk request submission flow.
+ * Interface to XML validation functionality.
  *
- * @author d276205
+ * @author d301488
  */
-public interface IWsCreateBulkRequestHandler {
+public interface IXmlValidator {
 
     /**
-     * Processes bulk request submission and returns generated response.
+     * Method to validate the xml.
      *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
+     * @return A XmlValidationDetails object containing SUCCESS/FAIL enum and if fail, error messages.
      */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
+    XmlValidationDetails validateXml();
 
 }

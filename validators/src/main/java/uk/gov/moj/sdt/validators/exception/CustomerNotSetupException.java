@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2012-2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,71 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
+ * $Id: $
+ * $LastChangedRevision: $
+ * $LastChangedDate: $
+ * $LastChangedBy: $ */
+package uk.gov.moj.sdt.validators.exception;
 
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+import java.util.List;
 
 /**
- * Interface for handling bulk request submission flow.
+ * SDT Customer has not been setup for target application.
  *
- * @author d276205
+ * @author d130680
  */
-public interface IWsCreateBulkRequestHandler {
+public class CustomerNotSetupException extends AbstractBusinessException {
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Processes bulk request submission and returns generated response.
+     * SDT Customer has not been setup for target application.
      *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
+     * @param code        error code
+     * @param description error description
      */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
+    public CustomerNotSetupException(final String code, final String description) {
+        super(code, description);
+    }
 
+    /**
+     * SDT Customer has not been setup for target application.
+     *
+     * @param code         code
+     * @param description  description
+     * @param replacements string replacements with tokens
+     */
+    public CustomerNotSetupException(final String code, final String description, final List<String> replacements) {
+        super(code, description, replacements);
+    }
+
+    /**
+     * SDT Customer has not been setup for target application.
+     *
+     * @param s the s
+     */
+    public CustomerNotSetupException(final String s) {
+        super(s);
+    }
+
+    /**
+     * SDT Customer has not been setup for target application.
+     *
+     * @param cause the cause
+     */
+    public CustomerNotSetupException(final Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * SDT Customer has not been setup for target application.
+     *
+     * @param s     the s
+     * @param cause the cause
+     */
+    public CustomerNotSetupException(final String s, final Throwable cause) {
+        super(s, cause);
+    }
 }

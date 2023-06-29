@@ -28,23 +28,68 @@
  * $LastChangedRevision: $
  * $LastChangedDate: $
  * $LastChangedBy: $ */
-package uk.gov.moj.sdt.handlers.api;
+package uk.gov.moj.sdt.validators.exception;
 
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryrequestschema.SubmitQueryRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryresponseschema.SubmitQueryResponseType;
+import java.util.List;
 
 /**
- * Interface for handling submit query flow.
+ * SDT Customer Reference not unique across data retention period.
  *
  * @author d130680
  */
-public interface IWsReadSubmitQueryHandler {
+public class CustomerReferenceNotUniqueException extends AbstractBusinessException {
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Query to submit to the case management systems.
+     * SDT Customer Reference not unique across data retention period.
      *
-     * @param requestType request including criteria
-     * @return response from managment system
+     * @param code        error code
+     * @param description error description
      */
-    SubmitQueryResponseType submitQuery(final SubmitQueryRequestType requestType);
+    public CustomerReferenceNotUniqueException(final String code, final String description) {
+        super(code, description);
+    }
+
+    /**
+     * SDT Customer Reference not unique across data retention period.
+     *
+     * @param code         code
+     * @param description  description
+     * @param replacements string replacements with tokens
+     */
+    public CustomerReferenceNotUniqueException(final String code, final String description,
+                                               final List<String> replacements) {
+        super(code, description, replacements);
+    }
+
+    /**
+     * SDT Customer Reference not unique across data retention period.
+     *
+     * @param s the s
+     */
+    public CustomerReferenceNotUniqueException(final String s) {
+        super(s);
+    }
+
+    /**
+     * SDT Customer Reference not unique across data retention period.
+     *
+     * @param cause the cause
+     */
+    public CustomerReferenceNotUniqueException(final Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * SDT Customer Reference not unique across data retention period.
+     *
+     * @param s     the s
+     * @param cause the cause
+     */
+    public CustomerReferenceNotUniqueException(final String s, final Throwable cause) {
+        super(s, cause);
+    }
 }

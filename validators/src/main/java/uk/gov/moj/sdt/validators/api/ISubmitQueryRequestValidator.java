@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,16 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
+ * $Id: IBulkSubmissionValidator.java 16611 2013-07-02 09:44:42Z agarwals $
+ * $LastChangedRevision: 16611 $
+ * $LastChangedDate: 2013-07-02 10:44:42 +0100 (Tue, 02 Jul 2013) $
  * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
-
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+package uk.gov.moj.sdt.validators.api;
 
 /**
- * Interface for handling bulk request submission flow.
+ * An interface to provide validation methods for SubmitQueryRequest.
  *
- * @author d276205
+ * @author d130680
  */
-public interface IWsCreateBulkRequestHandler {
-
-    /**
-     * Processes bulk request submission and returns generated response.
-     *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
-     */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
-
+public interface ISubmitQueryRequestValidator {
 }

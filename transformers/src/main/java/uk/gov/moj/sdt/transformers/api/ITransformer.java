@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2010 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,40 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
+ * $Id$
+ * $LastChangedRevision$
+ * $LastChangedDate$
+ * $LastChangedBy$ */
+package uk.gov.moj.sdt.transformers.api;
 
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+import uk.gov.moj.sdt.domain.api.IDomainObject;
 
 /**
- * Interface for handling bulk request submission flow.
+ * Transform JAXB object tree to domain object tree (for incoming SOAP
+ * messages), and domain object tree to JAXB object tree (for outgoing SOAP
+ * messages).
  *
- * @author d276205
+ * @param <InJaxbType>    the type of the JAXB input parameter.
+ * @param <OutJaxbType>   the type of the JAXB output parameter.
+ * @param <InDomainType>  the type of the domain input parameter.
+ * @param <OutDomainType> the type of the domain output parameter.
+ * @author Pankaj Parmar.
  */
-public interface IWsCreateBulkRequestHandler {
+public interface ITransformer<InJaxbType, OutJaxbType, InDomainType extends IDomainObject,
+        OutDomainType extends IDomainObject> {
+    /**
+     * Map JAXB object tree to domain object tree.
+     *
+     * @param jaxbInstance the JAXB object to map.
+     * @return the domain object to map.
+     */
+    InDomainType transformJaxbToDomain(final InJaxbType jaxbInstance);
 
     /**
-     * Processes bulk request submission and returns generated response.
+     * Map domain object tree to JAXB object tree.
      *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
+     * @param domainObject the domain object to map.
+     * @return the mapped JAXB object.
      */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
-
+    OutJaxbType transformDomainToJaxb(final OutDomainType domainObject);
 }

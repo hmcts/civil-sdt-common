@@ -28,23 +28,68 @@
  * $LastChangedRevision: $
  * $LastChangedDate: $
  * $LastChangedBy: $ */
-package uk.gov.moj.sdt.handlers.api;
+package uk.gov.moj.sdt.validators.exception;
 
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryrequestschema.SubmitQueryRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryresponseschema.SubmitQueryResponseType;
+import java.util.List;
 
 /**
- * Interface for handling submit query flow.
+ * Duplicate user request identifier found, it needs to be unique for each individual request.
  *
  * @author d130680
  */
-public interface IWsReadSubmitQueryHandler {
+public class DuplicateUserRequestIdentifierException extends AbstractBusinessException {
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Query to submit to the case management systems.
+     * Duplicate user request identifier found.
      *
-     * @param requestType request including criteria
-     * @return response from managment system
+     * @param code        error code
+     * @param description error description
      */
-    SubmitQueryResponseType submitQuery(final SubmitQueryRequestType requestType);
+    public DuplicateUserRequestIdentifierException(final String code, final String description) {
+        super(code, description);
+    }
+
+    /**
+     * Duplicate user request identifier found.
+     *
+     * @param code         error code
+     * @param description  error description
+     * @param replacements string replacements with tokens
+     */
+    public DuplicateUserRequestIdentifierException(final String code, final String description,
+                                                   final List<String> replacements) {
+        super(code, description, replacements);
+    }
+
+    /**
+     * Duplicate user request identifier found.
+     *
+     * @param s the s
+     */
+    public DuplicateUserRequestIdentifierException(final String s) {
+        super(s);
+    }
+
+    /**
+     * Duplicate user request identifier found.
+     *
+     * @param cause the cause
+     */
+    public DuplicateUserRequestIdentifierException(final Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Duplicate user request identifier found.
+     *
+     * @param s     the s
+     * @param cause the cause
+     */
+    public DuplicateUserRequestIdentifierException(final String s, final Throwable cause) {
+        super(s, cause);
+    }
 }

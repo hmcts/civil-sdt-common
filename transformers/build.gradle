@@ -1,0 +1,56 @@
+apply plugin: 'info.solidsoft.pitest'
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':producers-api')
+    implementation project(':utils')
+
+    testImplementation project(path: ':utils', configuration: 'testOutput')
+}
+
+sourceSets {
+    testUnit {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+            srcDir file('src/unit-test/java')
+        }
+        resources.srcDir file('src/unit-test/resources')
+    }
+}
+
+configurations {
+    testOutput
+    testOutput.extendsFrom(testUnitImplementation)
+}
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.testUnit.output
+}
+
+artifacts {
+    archives testJar
+}
+
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            artifact testJar
+            version project.version
+            from components.java
+        }
+    }
+}
+
+tasks.register('unit', Test) {
+    description = "Runs unit tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+    failFast = true
+}
+
+check.dependsOn unit

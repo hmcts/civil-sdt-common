@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,45 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
+ * $Id: ServiceTypeValidator.java 17075 2013-09-18 14:58:39Z kulkarnim $
+ * $LastChangedRevision: 17075 $
+ * $LastChangedDate: 2013-09-18 15:58:39 +0100 (Wed, 18 Sep 2013) $
+ * $LastChangedBy: kulkarnim $ */
+package uk.gov.moj.sdt.validators;
 
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import uk.gov.moj.sdt.dao.api.IBulkCustomerDao;
+import uk.gov.moj.sdt.domain.api.IErrorLog;
+import uk.gov.moj.sdt.domain.cache.api.ICacheable;
+import uk.gov.moj.sdt.utils.visitor.api.ITree;
+import uk.gov.moj.sdt.validators.api.IErrorLogValidator;
 
 /**
- * Interface for handling bulk request submission flow.
+ * Implementation of {@link ErrorLogValidator}.
  *
- * @author d276205
+ * @author Son Loi
  */
-public interface IWsCreateBulkRequestHandler {
+@Component("ErrorLogValidator")
+public class ErrorLogValidator extends AbstractSdtValidator implements IErrorLogValidator {
 
     /**
-     * Processes bulk request submission and returns generated response.
-     *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
+     * No-argument Constructor.
      */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
+    @Autowired
+    public ErrorLogValidator(@Qualifier("BulkCustomerDao")
+                                 IBulkCustomerDao bulkCustomerDao,
+                             @Qualifier("GlobalParametersCache")
+                                 ICacheable globalParameterCache,
+                             @Qualifier("ErrorMessagesCache")
+                                 ICacheable errorMessagesCache) {
+        super(bulkCustomerDao, globalParameterCache, errorMessagesCache);
+    }
+
+    @Override
+    public void visit(final IErrorLog errorLog, final ITree tree) {
+        // Do nothing since no validation is required
+    }
 
 }

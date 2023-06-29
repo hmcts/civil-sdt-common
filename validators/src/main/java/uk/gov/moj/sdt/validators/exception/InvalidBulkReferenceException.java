@@ -28,23 +28,67 @@
  * $LastChangedRevision: $
  * $LastChangedDate: $
  * $LastChangedBy: $ */
-package uk.gov.moj.sdt.handlers.api;
+package uk.gov.moj.sdt.validators.exception;
 
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryrequestschema.SubmitQueryRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryresponseschema.SubmitQueryResponseType;
+import java.util.List;
 
 /**
- * Interface for handling submit query flow.
+ * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
  *
  * @author d130680
  */
-public interface IWsReadSubmitQueryHandler {
+public class InvalidBulkReferenceException extends AbstractBusinessException {
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Query to submit to the case management systems.
+     * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
      *
-     * @param requestType request including criteria
-     * @return response from managment system
+     * @param code        error code
+     * @param description error description
      */
-    SubmitQueryResponseType submitQuery(final SubmitQueryRequestType requestType);
+    public InvalidBulkReferenceException(final String code, final String description) {
+        super(code, description);
+    }
+
+    /**
+     * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
+     *
+     * @param code         code
+     * @param description  description
+     * @param replacements string replacements with tokens
+     */
+    public InvalidBulkReferenceException(final String code, final String description, final List<String> replacements) {
+        super(code, description, replacements);
+    }
+
+    /**
+     * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
+     *
+     * @param s the s
+     */
+    public InvalidBulkReferenceException(final String s) {
+        super(s);
+    }
+
+    /**
+     * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
+     *
+     * @param cause the cause
+     */
+    public InvalidBulkReferenceException(final Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * The supplied SDT Bulk Reference is not listed against the Bulk Customer's Bulk Submissions detail.
+     *
+     * @param s     the s
+     * @param cause the cause
+     */
+    public InvalidBulkReferenceException(final String s, final Throwable cause) {
+        super(s, cause);
+    }
 }

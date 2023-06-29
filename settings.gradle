@@ -12,10 +12,13 @@ rootProject.name = 'civil-sdt-common'
 include 'domain'
 include 'dao-api'
 include 'handlers-api'
+include 'handlers'
 include 'interceptors'
 include 'producers-api'
 include 'services-api'
+include 'transformers'
 include 'utils'
+include 'validators'
 
 dependencyResolutionManagement {
     repositories {

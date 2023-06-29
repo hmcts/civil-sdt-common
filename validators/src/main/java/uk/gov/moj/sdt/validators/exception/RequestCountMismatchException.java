@@ -28,23 +28,68 @@
  * $LastChangedRevision: $
  * $LastChangedDate: $
  * $LastChangedBy: $ */
-package uk.gov.moj.sdt.handlers.api;
+package uk.gov.moj.sdt.validators.exception;
 
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryrequestschema.SubmitQueryRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.submitqueryresponseschema.SubmitQueryResponseType;
+import java.util.List;
 
 /**
- * Interface for handling submit query flow.
+ * The total number of individual requests in a bulk submission should match the request count.
  *
  * @author d130680
  */
-public interface IWsReadSubmitQueryHandler {
+public class RequestCountMismatchException extends AbstractBusinessException {
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Query to submit to the case management systems.
+     * Total of individual requests should match the request count.
      *
-     * @param requestType request including criteria
-     * @return response from managment system
+     * @param code        error code
+     * @param description error description
      */
-    SubmitQueryResponseType submitQuery(final SubmitQueryRequestType requestType);
+    public RequestCountMismatchException(final String code, final String description) {
+        super(code, description);
+    }
+
+    /**
+     * Total of individual requests should match the request count.
+     *
+     * @param code         error code
+     * @param description  error description
+     * @param replacements string replacements with tokens
+     */
+    public RequestCountMismatchException(final String code, final String description,
+                                         final List<String> replacements) {
+        super(code, description, replacements);
+    }
+
+    /**
+     * Total of individual requests should match the request count.
+     *
+     * @param s the s
+     */
+    public RequestCountMismatchException(final String s) {
+        super(s);
+    }
+
+    /**
+     * Total of individual requests should match the request count.
+     *
+     * @param cause the cause
+     */
+    public RequestCountMismatchException(final Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Total of individual requests should match the request count.
+     *
+     * @param s     the s
+     * @param cause the cause
+     */
+    public RequestCountMismatchException(final String s, final Throwable cause) {
+        super(s, cause);
+    }
 }

@@ -1,6 +1,6 @@
 /* Copyrights and Licenses
  *
- * Copyright (c) 2012-2014 by the Ministry of Justice. All rights reserved.
+ * Copyright (c) 2013 by the Ministry of Justice. All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
  * - Redistributions of source code must retain the above copyright notice, this list of conditions
@@ -24,29 +24,17 @@
  * strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this
  * software, even if advised of the possibility of such damage.
  *
- * $Id: IWsCreateBulkRequestHandler.java 16535 2013-06-17 15:37:13Z agarwals $
- * $LastChangedRevision: 16535 $
- * $LastChangedDate: 2013-06-17 16:37:13 +0100 (Mon, 17 Jun 2013) $
- * $LastChangedBy: agarwals $ */
-package uk.gov.moj.sdt.handlers.api;
-
-import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
-import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
-
+ * $Id: IServiceTypeValidator.java 17075 2013-09-18 14:58:39Z kulkarnim $
+ * $LastChangedRevision: 17075 $
+ * $LastChangedDate: 2013-09-18 15:58:39 +0100 (Wed, 18 Sep 2013) $
+ * $LastChangedBy: kulkarnim $ */
+package uk.gov.moj.sdt.validators.api;
 
 /**
- * Interface for handling bulk request submission flow.
+ * An empty interface for ErrorLog, no validation is required for this domain object. But an empty class is necessary so
+ * the visitor classes do not throw an error.
  *
- * @author d276205
+ * @author Son Loi
  */
-public interface IWsCreateBulkRequestHandler {
-
-    /**
-     * Processes bulk request submission and returns generated response.
-     *
-     * @param bulkRequest bulk request
-     * @return BulkResponseType response
-     */
-    BulkResponseType submitBulk(final BulkRequestType bulkRequest);
-
+public interface IErrorLogValidator {
 }
