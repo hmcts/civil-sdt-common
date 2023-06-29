@@ -1,5 +1,7 @@
 package uk.gov.moj.sdt.interceptors.out;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.ExchangeImpl;
@@ -64,7 +66,7 @@ class FaultOutboundInterceptorTest extends AbstractSdtUnitTestBase {
 
         faultOutboundInterceptor.handleMessage(soapMessage);
         assertNotNull(serviceRequest.getResponseDateTime());
-        String response = serviceRequest.getResponsePayload();
+        String response = new String(serviceRequest.getResponsePayload(), StandardCharsets.UTF_8);
         assertTrue(response.contains(ERROR_MESSAGE));
         verify(persistServiceRequest).persist(serviceRequest);
     }
