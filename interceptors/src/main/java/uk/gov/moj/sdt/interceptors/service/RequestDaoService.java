@@ -37,7 +37,7 @@ public class RequestDaoService {
         // Prepare log message for Hibernate.
         final IServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setBulkCustomerId(extractBulkCustomerId(rawXml));
-        serviceRequest.setRequestPayload(rawXml == null ? null : rawXml.getBytes(StandardCharsets.UTF_8));
+        serviceRequest.setRequestPayload(rawXml == null ? "".getBytes() : rawXml.getBytes(StandardCharsets.UTF_8));
         serviceRequest.setRequestDateTime(LocalDateTime.now());
         serviceRequest.setRequestType(extractRequestType(rawXml));
 
@@ -77,7 +77,7 @@ public class RequestDaoService {
             final IServiceRequest serviceRequest = persistServiceRequest.fetch(ServiceRequest.class, serviceRequestId);
 
             // Add the response and timestamp to the service request record.
-            serviceRequest.setResponsePayload(envelope == null ? null : envelope.getBytes(StandardCharsets.UTF_8));
+            serviceRequest.setResponsePayload(envelope == null ? "".getBytes() : envelope.getBytes(StandardCharsets.UTF_8));
             serviceRequest.setResponseDateTime(LocalDateTime.now());
 
             // Note that bulk reference will be null if this is not a bulk submission.
