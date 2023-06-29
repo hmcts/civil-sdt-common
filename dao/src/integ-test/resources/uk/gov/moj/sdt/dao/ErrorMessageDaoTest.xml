@@ -1,5 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-  <ERROR_MESSAGES ERROR_MESSAGE_ID="1" ERROR_CODE="1001" ERROR_TEXT="Invalid Reference Id" ERROR_DESCRIPTION="Error on response" VERSION_NUMBER="0"/>
-  <ERROR_MESSAGES ERROR_MESSAGE_ID="2" ERROR_CODE="1002" ERROR_TEXT="Invalid SDT Id" ERROR_DESCRIPTION="Error on Invalid id" VERSION_NUMBER="0"/>
-</dataset>
