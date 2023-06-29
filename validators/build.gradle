@@ -11,6 +11,14 @@ sourceSets {
     }
 }
 
+dependencies {
+    implementation project(':dao-api')
+    implementation project(':domain')
+    implementation project(':utils')
+
+    testImplementation project(path: ':utils', configuration: 'testOutput')
+}
+
 configurations {
     testOutput
     testOutput.extendsFrom(testUnitImplementation)

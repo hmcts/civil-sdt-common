@@ -1,5 +1,15 @@
 apply plugin: 'info.solidsoft.pitest'
 
+dependencies {
+    implementation project(':domain')
+    implementation project(':handlers-api')
+    implementation project(':producers-api')
+    implementation project(':utils')
+    implementation project(':services-api')
+    implementation project(':transformers')
+    implementation project(':validators')
+}
+
 sourceSets {
     testUnit {
         compileClasspath += sourceSets.main.output

@@ -1,5 +1,13 @@
 apply plugin: 'info.solidsoft.pitest'
 
+dependencies {
+    implementation project(':domain')
+    implementation project(':producers-api')
+    implementation project(':utils')
+
+    testImplementation project(path: ':utils', configuration: 'testOutput')
+}
+
 sourceSets {
     testUnit {
         compileClasspath += sourceSets.main.output
