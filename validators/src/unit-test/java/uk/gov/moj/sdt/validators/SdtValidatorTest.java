@@ -30,10 +30,6 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.validators;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,13 +43,16 @@ import uk.gov.moj.sdt.domain.api.IErrorMessage;
 import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
-import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.validators.exception.CustomerNotFoundException;
 import uk.gov.moj.sdt.validators.exception.CustomerNotSetupException;
 import uk.gov.moj.sdt.validators.exception.CustomerReferenceNotUniqueException;
 import uk.gov.moj.sdt.validators.exception.DuplicateUserRequestIdentifierException;
 import uk.gov.moj.sdt.validators.exception.InvalidBulkReferenceException;
 import uk.gov.moj.sdt.validators.exception.RequestCountMismatchException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -112,9 +111,6 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     @Mock
     private IBulkSubmissionDao bulkSubmissionDao;
 
-    @Mock
-    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
-
     /**
      * Set up test artefact.
      */
@@ -125,7 +121,6 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
                                                 mockGlobalParameterCache,
                                                 mockErrorMessagesCache,
                                                 bulkSubmissionDao,
-                                                requestTypeXmlNodeValidator,
                                                 new ConcurrentHashMap<>());
         validator.setErrorMessagesCache(mockErrorMessagesCache);
         validator.setGlobalParameterCache(mockGlobalParameterCache);
@@ -176,8 +171,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testGetErrorMessage() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_DUP_CUST_REQID)).thenReturn(result[6]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("MCOL0000012345");
 
         final String description = validator.getErrorMessage(replacements, IErrorMessage.ErrorCode.DUP_CUST_REQID);
@@ -207,8 +201,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_DUP_CUST_FILEID))
                 .thenReturn(result[0]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("MCOL00001234");
         replacements.add("09/10/2013");
         replacements.add("SDT00001234");
@@ -232,8 +225,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testCreateValidationExceptionReqCountMismatch() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_REQ_COUNT_MISMATCH)).thenReturn(result[1]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("9");
         replacements.add("10");
         replacements.add("MCOL0000123");
@@ -254,8 +246,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testCreateValidationExceptionCustNotSetup() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_CUST_NOT_SETUP)).thenReturn(result[3]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("MCOL");
         replacements.add("TBD");
 
@@ -277,8 +268,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testCreateValidationExceptionCustRefMissing() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_CUST_ID_INVALID)).thenReturn(result[4]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("TBD");
 
         try {
@@ -298,8 +288,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testCreateValidationExceptionBulkRefInvalid() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_BULK_REF_INVALID)).thenReturn(result[5]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("MCOL000001234");
 
         try {
@@ -319,8 +308,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     void testCreateValidationExceptionDupCustReqid() {
         when(mockErrorMessagesCache.getValue(IErrorMessage.class, ERR_CODE_DUP_CUST_REQID)).thenReturn(result[6]);
 
-        List<String> replacements = null;
-        replacements = new ArrayList<>();
+        List<String> replacements = new ArrayList<>();
         replacements.add("MCOL000009876");
 
         try {

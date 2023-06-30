@@ -30,6 +30,7 @@
  * $LastChangedBy$ */
 package uk.gov.moj.sdt.validators;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,7 @@ import uk.gov.moj.sdt.domain.api.IErrorMessage;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.visitor.api.ITree;
+import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.validators.api.IIndividualRequestValidator;
 
 /**
@@ -54,10 +56,14 @@ import uk.gov.moj.sdt.validators.api.IIndividualRequestValidator;
  */
 @Component("IndividualRequestValidator")
 public class IndividualRequestValidator extends AbstractSdtValidator implements IIndividualRequestValidator {
+    private static final String CLAIM_NUMBER = "claimNumber";
+
     /**
      * Individual request dao.
      */
     private IIndividualRequestDao individualRequestDao;
+
+    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
 
     @Autowired
     public IndividualRequestValidator(@Qualifier("BulkCustomerDao")
@@ -67,9 +73,11 @@ public class IndividualRequestValidator extends AbstractSdtValidator implements 
                                       @Qualifier("ErrorMessagesCache")
                                           ICacheable errorMessagesCache,
                                       @Qualifier("IndividualRequestDao")
-                                          IIndividualRequestDao individualRequestDao) {
+                                          IIndividualRequestDao individualRequestDao,
+                                      RequestTypeXmlNodeValidator requestTypeXmlNodeValidator) {
         super(bulkCustomerDao, globalParameterCache, errorMessagesCache);
         this.individualRequestDao = individualRequestDao;
+        this.requestTypeXmlNodeValidator = requestTypeXmlNodeValidator;
     }
 
     @Override
@@ -86,7 +94,7 @@ public class IndividualRequestValidator extends AbstractSdtValidator implements 
 
         if (invalidIndividualRequest != null) {
             // Set the error in the error log and continue rather than throw an exception
-            final List<String> replacements = new ArrayList<String>();
+            final List<String> replacements = new ArrayList<>();
             replacements.add(customerRequestReference);
             final String description = getErrorMessage(replacements, IErrorMessage.ErrorCode.DUP_CUST_REQID);
 
@@ -94,7 +102,23 @@ public class IndividualRequestValidator extends AbstractSdtValidator implements 
 
             // Change the status to rejected
             individualRequest.markRequestAsRejected(errorLog);
+        }
 
+        byte[] requestPayload = individualRequest.getRequestPayload();
+        String payload = requestPayload == null ? "" : new String(requestPayload, StandardCharsets.UTF_8);
+        String requestType = individualRequest.getRequestType();
+
+        if (requestTypeXmlNodeValidator.isCCDReference(payload, CLAIM_NUMBER) &&
+                !requestTypeXmlNodeValidator.isValidRequestType(requestType)) {
+            final List<String> cmcReplacements = new ArrayList<>();
+            cmcReplacements.add(customerRequestReference);
+            cmcReplacements.add(requestType);
+
+            final String cmcDescription = getErrorMessage(cmcReplacements, IErrorMessage.ErrorCode.INVALID_CMC_REQUEST);
+            final IErrorLog cmcErrorLog =
+                    new ErrorLog(IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(), cmcDescription);
+
+            individualRequest.markRequestAsRejected(cmcErrorLog);
         }
     }
 

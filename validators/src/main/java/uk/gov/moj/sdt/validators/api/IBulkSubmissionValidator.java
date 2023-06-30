@@ -46,6 +46,4 @@ public interface IBulkSubmissionValidator {
      * @param bulkSubmission bulk submission to validate
      */
     void checkIndividualRequests(final IBulkSubmission bulkSubmission);
-
-    void validateCMCRequests(final IBulkSubmission bulkSubmission);
 }

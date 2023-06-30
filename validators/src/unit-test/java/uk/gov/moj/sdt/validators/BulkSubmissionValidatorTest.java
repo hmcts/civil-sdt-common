@@ -31,12 +31,6 @@
 
 package uk.gov.moj.sdt.validators;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -56,13 +50,16 @@ import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.Utilities;
-import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.validators.exception.CustomerNotSetupException;
 import uk.gov.moj.sdt.validators.exception.CustomerReferenceNotUniqueException;
 import uk.gov.moj.sdt.validators.exception.RequestCountMismatchException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -112,9 +109,6 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
      */
     @Mock
     private IBulkSubmissionDao mockIBulkSubmissionDao;
-
-    @Mock
-    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
 
     /**
      * Subject for test.
@@ -177,8 +171,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
                                                 globalParameterCache,
                                                 errorMessagesCache,
                                                 mockIBulkSubmissionDao,
-                                                requestTypeXmlNodeValidator,
-                                                new ConcurrentHashMap());
+                                                new ConcurrentHashMap<>());
     }
 
     /**
@@ -335,12 +328,10 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         } catch (final CustomerNotSetupException e) {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
 
-            assertTrue(e.getErrorCode().equals(IErrorMessage.ErrorCode.CUST_NOT_SETUP.name()),
-                    ERROR_CODE_INCORRECT);
+            assertEquals(IErrorMessage.ErrorCode.CUST_NOT_SETUP.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
             // CHECKSTYLE:OFF
-            assertTrue(e.getErrorDescription().equals(
-                            "The Bulk Customer organisation is not setup to send Service Request messages to the MCOL. "
-                                    + "Please contact " + CONTACT + " for assistance."),
+            assertEquals("The Bulk Customer organisation is not setup to send Service Request messages to the MCOL. "
+                    + "Please contact " + CONTACT + " for assistance.", e.getErrorDescription(),
                     SUBSTITUTION_VALUE_INCORRECT);
         }
     }
@@ -393,13 +384,10 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
             verify(mockIBulkSubmissionDao).getBulkSubmission(bulkCustomer, bulkSubmission.getCustomerReference(),
                     DATA_RETENTION_PERIOD);
-            assertTrue(e.getErrorCode().equals(IErrorMessage.ErrorCode.DUP_CUST_FILEID.name()),
-                    ERROR_CODE_INCORRECT);
-            assertTrue(e.getErrorDescription().equals(
-                            "Duplicate User File Reference " + bulkSubmission.getCustomerReference() + " supplied. " +
-                                    "This was previously used to submit a Bulk Request on " +
-                                    Utilities.formatDateTimeForMessage(NOW) + " and the SDT Bulk Reference " +
-                                    SDT_BULK_REFERENCE + " was allocated."),
+            assertEquals(IErrorMessage.ErrorCode.DUP_CUST_FILEID.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
+            assertEquals("Duplicate User File Reference " + bulkSubmission.getCustomerReference() + " supplied. " +
+                    "This was previously used to submit a Bulk Request on " + Utilities.formatDateTimeForMessage(NOW) +
+                    " and the SDT Bulk Reference " + SDT_BULK_REFERENCE + " was allocated.", e.getErrorDescription(),
                     SUBSTITUTION_VALUE_INCORRECT);
         }
     }
@@ -452,13 +440,10 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
             verify(mockIBulkSubmissionDao).getBulkSubmission(bulkCustomer, bulkSubmission.getCustomerReference(),
                     DATA_RETENTION_PERIOD);
-            assertTrue(e.getErrorCode().equals(IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH.name()),
-                    ERROR_CODE_INCORRECT);
-            assertTrue(e.getErrorDescription().equals(
-                            "Unexpected Total Number of Requests identified. 1 requested identified, " + mismatchTotal +
-                                    " requests expected in Bulk Request " + bulkSubmission.getCustomerReference() +
-                                    "."),
-                    SUBSTITUTION_VALUE_INCORRECT);
+            assertEquals(IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
+            assertEquals("Unexpected Total Number of Requests identified. 1 requested identified, " +
+                    mismatchTotal + " requests expected in Bulk Request " + bulkSubmission.getCustomerReference() + ".",
+                    e.getErrorDescription(), SUBSTITUTION_VALUE_INCORRECT);
         }
     }
 
