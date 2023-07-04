@@ -44,11 +44,13 @@ import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.api.ITargetApplication;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.Utilities;
+import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.utils.concurrent.InFlightMessage;
 import uk.gov.moj.sdt.utils.concurrent.api.IInFlightMessage;
 import uk.gov.moj.sdt.utils.visitor.api.ITree;
 import uk.gov.moj.sdt.validators.api.IBulkSubmissionValidator;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,10 +68,14 @@ import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStat
 @Component("BulkSubmissionValidator")
 public class BulkSubmissionValidator extends AbstractSdtValidator implements IBulkSubmissionValidator {
 
+    private static final String CLAIM_NUMBER = "claimNumber";
+
     /**
      * Bulk submission dao.
      */
     private IBulkSubmissionDao bulkSubmissionDao;
+
+    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
 
     /**
      * The concurrencyMap to hold in flight message data keyed on sdtCustId + custRef. This is used to prevent the
@@ -87,10 +93,12 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
                                        ICacheable errorMessagesCache,
                                    @Qualifier("BulkSubmissionDao")
                                        IBulkSubmissionDao bulkSubmissionDao,
+                                   RequestTypeXmlNodeValidator requestTypeXmlNodeValidator,
                                    @Qualifier("concurrentMap")
                                        Map<String, IInFlightMessage> concurrentMap) {
         super(bulkCustomerDao, globalParameterCache, errorMessagesCache);
         this.bulkSubmissionDao = bulkSubmissionDao;
+        this.requestTypeXmlNodeValidator = requestTypeXmlNodeValidator;
         this.concurrencyMap = concurrentMap;
     }
 
@@ -176,6 +184,49 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
         }
 
         setErrorLog(bulkSubmission, bulkSubmission.getNumberOfRequest(), rejectedRequests);
+    }
+
+    public void validateCMCRequests(final IBulkSubmission bulkSubmission) {
+        int rejectedRequests = 0;
+        boolean hasCMCRequests = false;
+
+        for (IIndividualRequest individualRequest : bulkSubmission.getIndividualRequests()) {
+            if (REJECTED.getStatus().equals(individualRequest.getRequestStatus())) {
+                rejectedRequests++;
+            } else {
+                byte[] requestPayload = individualRequest.getRequestPayload();
+                String payload = requestPayload == null ? "" : new String(requestPayload, StandardCharsets.UTF_8);
+
+                if (requestTypeXmlNodeValidator.isCCDReference(payload, CLAIM_NUMBER)) {
+                    hasCMCRequests = true;
+                    String requestType = individualRequest.getRequestType();
+
+                    if (!requestTypeXmlNodeValidator.isValidRequestType(requestType)) {
+                        final List<String> replacements = new ArrayList<>();
+                        replacements.add(individualRequest.getCustomerRequestReference());
+                        replacements.add(requestType);
+
+                        final String description =
+                                getErrorMessage(replacements, IErrorMessage.ErrorCode.INVALID_CMC_REQUEST);
+                        final IErrorLog errorLog =
+                                new ErrorLog(IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(), description);
+
+                        individualRequest.markRequestAsRejected(errorLog);
+
+                        // Clear the payload as requests that are rejected by SDT do not have the
+                        // payload set - see IndividualRequestsXmlParser.populateRawRequest()
+                        individualRequest.setRequestPayload(null);
+
+                        rejectedRequests++;
+                    }
+                }
+            }
+        }
+
+        if (hasCMCRequests) {
+            // Set the bulk request error log if all requests have now been rejected by SDT
+            setErrorLog(bulkSubmission, bulkSubmission.getNumberOfRequest(), rejectedRequests);
+        }
     }
 
     private void setErrorLog(IBulkSubmission bulkSubmission, long numberOfRequests, long rejectedRequests) {

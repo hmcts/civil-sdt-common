@@ -50,22 +50,37 @@ import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.Utilities;
+import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.validators.exception.CustomerNotSetupException;
 import uk.gov.moj.sdt.validators.exception.CustomerReferenceNotUniqueException;
 import uk.gov.moj.sdt.validators.exception.RequestCountMismatchException;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.sdt.domain.api.IBulkSubmission.BulkRequestStatus.COMPLETED;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.CUST_NOT_SETUP;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.DUPLD_CUST_REQID;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.DUP_CUST_FILEID;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.DUP_CUST_REQID;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.INVALID_CMC_REQUEST;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.NO_VALID_REQS;
+import static uk.gov.moj.sdt.domain.api.IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
+import static uk.gov.moj.sdt.utils.cmc.RequestType.CLAIM;
+import static uk.gov.moj.sdt.utils.cmc.RequestType.JUDGMENT;
 
 /**
  * Tests for {@link BulkSubmissionValidatorTest}.
@@ -80,6 +95,10 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
     private static final String SUBSTITUTION_VALUE_INCORRECT = "Substitution value incorrect";
 
     private static final Long SDT_CUSTOMER_ID = 12345L;
+
+    private static final String APP_MCOL = "MCOL";
+
+    private static final String NODE_CLAIM_NUMBER = "claimNumber";
 
     /**
      * Contact details for assistance.
@@ -109,6 +128,9 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
      */
     @Mock
     private IBulkSubmissionDao mockIBulkSubmissionDao;
+
+    @Mock
+    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
 
     /**
      * Subject for test.
@@ -171,6 +193,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
                                                 globalParameterCache,
                                                 errorMessagesCache,
                                                 mockIBulkSubmissionDao,
+                                                requestTypeXmlNodeValidator,
                                                 new ConcurrentHashMap<>());
     }
 
@@ -197,7 +220,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
     void testAllSuccess() {
 
         // set up a bulk customer to use the MCOL application
-        bulkCustomer = createCustomer(createBulkCustomerApplications("MCOL"));
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
 
         // create an individual request
         final IIndividualRequest individualRequest = new IndividualRequest();
@@ -205,7 +228,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         individualRequests = new ArrayList<>();
         individualRequests.add(individualRequest);
 
-        createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, "MCOL");
+        createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, APP_MCOL);
 
         // set up the mock objects
         when(mockIBulkCustomerDao.getBulkCustomerBySdtId(SDT_CUSTOMER_ID)).thenReturn(bulkCustomer);
@@ -239,7 +262,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
     void testDuplicateIndividualRequest() {
 
         // set up a bulk customer to use the MCOL application
-        bulkCustomer = createCustomer(createBulkCustomerApplications("MCOL"));
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
 
         // create an individual request
         individualRequests = new ArrayList<>();
@@ -253,7 +276,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         individualRequest.setCustomerRequestReference("Duplicate");
         individualRequests.add(individualRequest);
 
-        createBulkSubmission(individualRequests.size(), bulkCustomer, individualRequests, "MCOL");
+        createBulkSubmission(individualRequests.size(), bulkCustomer, individualRequests, APP_MCOL);
 
         // set up the mock objects
         when(mockIBulkCustomerDao.getBulkCustomerBySdtId(SDT_CUSTOMER_ID)).thenReturn(bulkCustomer);
@@ -269,12 +292,10 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         setupDataRetentionCache();
 
         // Set up Error messages cache
-        errorMessage = new ErrorMessage();
-        errorMessage.setErrorCode(IErrorMessage.ErrorCode.DUPLD_CUST_REQID.name());
-        errorMessage.setErrorText("Unique Request Identifier has been specified more "
-                + "than once within the originating Bulk Request.");
-        when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.DUPLD_CUST_REQID.name()))
-                .thenReturn(errorMessage);
+        errorMessage = createErrorMessage(DUPLD_CUST_REQID,
+                "Unique Request Identifier has been specified more than once within the originating Bulk Request.");
+        when(errorMessagesCache.getValue(IErrorMessage.class, DUPLD_CUST_REQID.name())).thenReturn(errorMessage);
+
         validator.setErrorMessagesCache(errorMessagesCache);
 
         bulkSubmission.accept(validator, null);
@@ -309,17 +330,16 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             individualRequests = new ArrayList<>();
             individualRequests.add(individualRequest);
 
-            createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, "MCOL");
+            createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, APP_MCOL);
 
             setupContactDetailsCache();
 
             // Set up Error messages cache
-            errorMessage = new ErrorMessage();
-            errorMessage.setErrorCode(IErrorMessage.ErrorCode.CUST_NOT_SETUP.name());
-            errorMessage.setErrorText("The Bulk Customer organisation is not setup to send Service "
-                    + "Request messages to the {0}. Please contact {1} for assistance.");
-            when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.CUST_NOT_SETUP.name()))
-                    .thenReturn(errorMessage);
+            errorMessage = createErrorMessage(CUST_NOT_SETUP,
+                    "The Bulk Customer organisation is not setup to send Service Request messages to the " +
+                            "{0}. Please contact {1} for assistance.");
+            when(errorMessagesCache.getValue(IErrorMessage.class, CUST_NOT_SETUP.name())).thenReturn(errorMessage);
+
             validator.setErrorMessagesCache(errorMessagesCache);
 
             bulkSubmission.accept(validator, null);
@@ -328,7 +348,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         } catch (final CustomerNotSetupException e) {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
 
-            assertEquals(IErrorMessage.ErrorCode.CUST_NOT_SETUP.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
+            assertEquals(CUST_NOT_SETUP.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
             // CHECKSTYLE:OFF
             assertEquals("The Bulk Customer organisation is not setup to send Service Request messages to the MCOL. "
                     + "Please contact " + CONTACT + " for assistance.", e.getErrorDescription(),
@@ -344,7 +364,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
 
         try {
             // set up a bulk customer to use the MCOL application to make it error as the bulk submission sets MCOL.
-            bulkCustomer = createCustomer(createBulkCustomerApplications("MCOL"));
+            bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
 
             // set up the mock objects
             when(mockIBulkCustomerDao.getBulkCustomerBySdtId(SDT_CUSTOMER_ID)).thenReturn(bulkCustomer);
@@ -358,7 +378,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             individualRequests = new ArrayList<>();
             individualRequests.add(individualRequest);
 
-            createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, "MCOL");
+            createBulkSubmission(NUMBER_OF_REQUESTS, bulkCustomer, individualRequests, APP_MCOL);
 
             when(mockIBulkSubmissionDao.getBulkSubmission(bulkCustomer, bulkSubmission.getCustomerReference(),
                     DATA_RETENTION_PERIOD)).thenReturn(bulkSubmission);
@@ -368,13 +388,11 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             setupDataRetentionCache();
 
             // Set up Error messages cache
-            errorMessage = new ErrorMessage();
-            errorMessage.setErrorCode(IErrorMessage.ErrorCode.DUP_CUST_FILEID.name());
-            errorMessage.setErrorText("Duplicate User File Reference {0} supplied. "
-                    + "This was previously used to submit a Bulk Request on {1} "
-                    + "and the SDT Bulk Reference {2} was allocated.");
-            when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.DUP_CUST_FILEID.name()))
-                    .thenReturn(errorMessage);
+            errorMessage = createErrorMessage(DUP_CUST_FILEID,
+                    "Duplicate User File Reference {0} supplied. This was previously used to submit a " +
+                            "Bulk Request on {1} and the SDT Bulk Reference {2} was allocated.");
+            when(errorMessagesCache.getValue(IErrorMessage.class, DUP_CUST_FILEID.name())).thenReturn(errorMessage);
+
             validator.setErrorMessagesCache(errorMessagesCache);
 
             bulkSubmission.accept(validator, null);
@@ -384,7 +402,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
             verify(mockIBulkSubmissionDao).getBulkSubmission(bulkCustomer, bulkSubmission.getCustomerReference(),
                     DATA_RETENTION_PERIOD);
-            assertEquals(IErrorMessage.ErrorCode.DUP_CUST_FILEID.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
+            assertEquals(DUP_CUST_FILEID.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
             assertEquals("Duplicate User File Reference " + bulkSubmission.getCustomerReference() + " supplied. " +
                     "This was previously used to submit a Bulk Request on " + Utilities.formatDateTimeForMessage(NOW) +
                     " and the SDT Bulk Reference " + SDT_BULK_REFERENCE + " was allocated.", e.getErrorDescription(),
@@ -401,7 +419,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         final long mismatchTotal = 15;
         try {
             // set up a bulk customer to use the MCOL application
-            bulkCustomer = createCustomer(createBulkCustomerApplications("MCOL"));
+            bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
 
             // create an individual request
             final IIndividualRequest individualRequest = new IndividualRequest();
@@ -409,7 +427,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             individualRequests = new ArrayList<>();
             individualRequests.add(individualRequest);
 
-            createBulkSubmission(mismatchTotal, bulkCustomer, individualRequests, "MCOL");
+            createBulkSubmission(mismatchTotal, bulkCustomer, individualRequests, APP_MCOL);
 
             // set up the mock objects
             when(mockIBulkCustomerDao.getBulkCustomerBySdtId(SDT_CUSTOMER_ID)).thenReturn(bulkCustomer);
@@ -425,12 +443,11 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             setupDataRetentionCache();
 
             // Set up Error messages cache
-            errorMessage = new ErrorMessage();
-            errorMessage.setErrorCode(IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH.name());
-            errorMessage
-                    .setErrorText("Unexpected Total Number of Requests identified. {0} requested identified, {1} requests expected in Bulk Request {2}.");
-            when(errorMessagesCache.getValue(IErrorMessage.class,
-                            IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH.name())).thenReturn(errorMessage);
+            errorMessage = createErrorMessage(REQ_COUNT_MISMATCH,
+                    "Unexpected Total Number of Requests identified. {0} requested identified, " +
+                            "{1} requests expected in Bulk Request {2}.");
+            when(errorMessagesCache.getValue(IErrorMessage.class, REQ_COUNT_MISMATCH.name())).thenReturn(errorMessage);
+
             validator.setErrorMessagesCache(errorMessagesCache);
 
             bulkSubmission.accept(validator, null);
@@ -440,7 +457,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(SDT_CUSTOMER_ID);
             verify(mockIBulkSubmissionDao).getBulkSubmission(bulkCustomer, bulkSubmission.getCustomerReference(),
                     DATA_RETENTION_PERIOD);
-            assertEquals(IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
+            assertEquals(REQ_COUNT_MISMATCH.name(), e.getErrorCode(), ERROR_CODE_INCORRECT);
             assertEquals("Unexpected Total Number of Requests identified. 1 requested identified, " +
                     mismatchTotal + " requests expected in Bulk Request " + bulkSubmission.getCustomerReference() + ".",
                     e.getErrorDescription(), SUBSTITUTION_VALUE_INCORRECT);
@@ -454,7 +471,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
     void testIndividualRequestAllRejected() {
         // set up the data we are going to use for this customer
         // set up bulk customer with the application it can use
-        bulkCustomer = createCustomer(createBulkCustomerApplications("MCOL"));
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
 
         // inject the bulk customer into the validator
         validator.setBulkCustomerDao(mockIBulkCustomerDao);
@@ -464,8 +481,7 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
 
         // Rejected error
         IErrorLog errorLog =
-                new ErrorLog(IErrorMessage.ErrorCode.DUP_CUST_REQID.name(),
-                        "Duplicate Unique Request Identifier submitted {0}");
+                new ErrorLog(DUP_CUST_REQID.name(), "Duplicate Unique Request Identifier submitted {0}");
 
         // create an individual request 1
         IIndividualRequest individualRequest = new IndividualRequest();
@@ -485,16 +501,13 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         individualRequest.markRequestAsRejected(errorLog);
         individualRequests.add(individualRequest);
 
-        createBulkSubmission(3, bulkCustomer, individualRequests, "MCOL");
+        createBulkSubmission(3, bulkCustomer, individualRequests, APP_MCOL);
 
         // Set up Error messages cache
-        final String errorText = "The submitted Bulk Request does not contain valid individual Requests.";
+        errorMessage = createNoValidReqsErrorMessage();
 
-        errorMessage = new ErrorMessage();
-        errorMessage.setErrorCode(IErrorMessage.ErrorCode.NO_VALID_REQS.name());
-        errorMessage.setErrorText(errorText);
-        when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.NO_VALID_REQS.name()))
-                .thenReturn(errorMessage);
+        when(errorMessagesCache.getValue(IErrorMessage.class, NO_VALID_REQS.name())).thenReturn(errorMessage);
+
         validator.setErrorMessagesCache(errorMessagesCache);
 
         // Test the method
@@ -502,7 +515,131 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
 
         assertEquals(IBulkSubmission.BulkRequestStatus.COMPLETED.getStatus(),
                 bulkSubmission.getSubmissionStatus());
-        assertEquals(IErrorMessage.ErrorCode.NO_VALID_REQS.name(), bulkSubmission.getErrorCode());
+        assertEquals(NO_VALID_REQS.name(), bulkSubmission.getErrorCode());
+    }
+
+    @Test
+    void testValidateCMCRequestsAllValid() {
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
+        String requestPayload = "test request payload";
+
+        individualRequests = new ArrayList<>();
+
+        IIndividualRequest individualRequest = new IndividualRequest();
+        individualRequest.setId(1L);
+        individualRequest.setRequestType(JUDGMENT.getType());
+        individualRequest.setRequestPayload(requestPayload.getBytes(StandardCharsets.UTF_8));
+        individualRequests.add(individualRequest);
+
+        createBulkSubmission(1, bulkCustomer, individualRequests, APP_MCOL);
+
+        when(requestTypeXmlNodeValidator.isCCDReference(requestPayload, NODE_CLAIM_NUMBER)).thenReturn(true);
+        when(requestTypeXmlNodeValidator.isValidRequestType(JUDGMENT.getType())).thenReturn(true);
+
+        validator.validateCMCRequests(bulkSubmission);
+
+        assertNotEquals(REJECTED.getStatus(), individualRequest.getRequestStatus(),
+                "Individual request status should not be rejected");
+        assertNull(individualRequest.getErrorLog(), "Individual request should not have an error log");
+
+        assertNull(bulkSubmission.getErrorCode(), "Bulk submission should not have an error code");
+        assertNull(bulkSubmission.getErrorText(), "Bulk submission should not have error text");
+        assertNull(bulkSubmission.getSubmissionStatus(), "Bulk submission has unexpected status");
+
+        verify(requestTypeXmlNodeValidator).isCCDReference(requestPayload, NODE_CLAIM_NUMBER);
+        verify(requestTypeXmlNodeValidator).isValidRequestType(JUDGMENT.getType());
+    }
+
+    @Test
+    void testValidateCMCRequestsAllInvalid() {
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
+        String requestPayload = "test request payload";
+
+        individualRequests = new ArrayList<>();
+
+        IIndividualRequest individualRequest = new IndividualRequest();
+        individualRequest.setId(1L);
+        individualRequest.setRequestType(CLAIM.getType());
+        individualRequest.setCustomerRequestReference("customerRequestRef");
+        individualRequest.setRequestPayload(requestPayload.getBytes(StandardCharsets.UTF_8));
+        individualRequests.add(individualRequest);
+
+        createBulkSubmission(1, bulkCustomer, individualRequests, APP_MCOL);
+
+        when(requestTypeXmlNodeValidator.isCCDReference(requestPayload, NODE_CLAIM_NUMBER)).thenReturn(true);
+        when(requestTypeXmlNodeValidator.isValidRequestType(CLAIM.getType())).thenReturn(false);
+
+        IErrorMessage invalidCMCRequestErr = createErrorMessage(INVALID_CMC_REQUEST,
+                "Individual request {0} for CMC has an invalid request type {1}");
+        when(errorMessagesCache.getValue(IErrorMessage.class, INVALID_CMC_REQUEST.name()))
+                .thenReturn(invalidCMCRequestErr);
+
+        IErrorMessage noValidReqsErr = createNoValidReqsErrorMessage();
+        when(errorMessagesCache.getValue(IErrorMessage.class, NO_VALID_REQS.name())).thenReturn(noValidReqsErr);
+
+        validator.validateCMCRequests(bulkSubmission);
+
+        assertEquals(REJECTED.getStatus(), individualRequest.getRequestStatus(),
+                "Individual request status should be rejected");
+        IErrorLog errorLog = individualRequest.getErrorLog();
+        assertNotNull(errorLog, "Individual request should have an error log");
+        assertEquals(INVALID_CMC_REQUEST.name(), errorLog.getErrorCode(),
+                "Individual request error log has unexpected error code");
+        assertEquals("Individual request customerRequestRef for CMC has an invalid request type mcolClaim",
+                errorLog.getErrorText(), "Individual request error log has unexpected error text");
+        assertNull(individualRequest.getRequestPayload(), "Individual request should not have a request payload");
+
+        assertEquals(NO_VALID_REQS.name(), bulkSubmission.getErrorCode(), "Bulk submission has unexpected error code");
+        assertEquals("The submitted Bulk Request Customer Reference does not contain valid individual Requests.",
+                bulkSubmission.getErrorText(), "Bulk submission has unexpected error text");
+        assertEquals(COMPLETED.getStatus(), bulkSubmission.getSubmissionStatus(),
+                "Bulk submission has unexpected submission status");
+
+        verify(requestTypeXmlNodeValidator).isCCDReference(requestPayload, NODE_CLAIM_NUMBER);
+        verify(requestTypeXmlNodeValidator).isValidRequestType(CLAIM.getType());
+        verify(errorMessagesCache).getValue(IErrorMessage.class, INVALID_CMC_REQUEST.name());
+        verify(errorMessagesCache).getValue(IErrorMessage.class, NO_VALID_REQS.name());
+    }
+
+    @Test
+    void testValidateCMCRequestsOneAlreadyRejected() {
+        bulkCustomer = createCustomer(createBulkCustomerApplications(APP_MCOL));
+
+        individualRequests = new ArrayList<>();
+
+        // Set up a request that is already rejected
+        IIndividualRequest individualRequestOne = new IndividualRequest();
+        individualRequestOne.setId(1L);
+        individualRequestOne.setRequestType(CLAIM.getType());
+        individualRequestOne.setCustomerRequestReference("customerRequestRef1");
+        individualRequestOne.setRequestStatus(REJECTED.getStatus());
+        individualRequests.add(individualRequestOne);
+
+        // Set up a valid CMC request
+        IIndividualRequest individualRequestTwo = new IndividualRequest();
+        individualRequestTwo.setId(2L);
+        individualRequestTwo.setRequestType(JUDGMENT.getType());
+        individualRequestTwo.setCustomerRequestReference("customerRequestRef2");
+        individualRequestTwo.setRequestPayload(null);
+        individualRequests.add(individualRequestTwo);
+
+        createBulkSubmission(2, bulkCustomer, individualRequests, APP_MCOL);
+
+        when(requestTypeXmlNodeValidator.isCCDReference("", NODE_CLAIM_NUMBER)).thenReturn(true);
+        when(requestTypeXmlNodeValidator.isValidRequestType(JUDGMENT.getType())).thenReturn(true);
+
+        validator.validateCMCRequests(bulkSubmission);
+
+        assertNotEquals(REJECTED.getStatus(), individualRequestTwo.getRequestStatus(),
+                "Individual request two status should not be rejected");
+        assertNull(individualRequestTwo.getErrorLog(), "Individual request two should not have an error log");
+
+        assertNull(bulkSubmission.getErrorCode(), "Bulk submission should not have an error code");
+        assertNull(bulkSubmission.getErrorText(), "Bulk submission should not have error text");
+        assertNull(bulkSubmission.getSubmissionStatus(), "Bulk submission has unexpected status");
+
+        verify(requestTypeXmlNodeValidator).isCCDReference("", NODE_CLAIM_NUMBER);
+        verify(requestTypeXmlNodeValidator).isValidRequestType(JUDGMENT.getType());
     }
 
     private void createBulkSubmission(final long numberOfRequests, final IBulkCustomer bulkCustomer,
@@ -548,4 +685,15 @@ class BulkSubmissionValidatorTest extends AbstractValidatorUnitTest {
         validator.setGlobalParameterCache(globalParameterCache);
     }
 
+    private IErrorMessage createErrorMessage(IErrorMessage.ErrorCode errorCode, String errorText) {
+        IErrorMessage errMessage = new ErrorMessage();
+        errMessage.setErrorCode(errorCode.name());
+        errMessage.setErrorText(errorText);
+        return errMessage;
+    }
+
+    private IErrorMessage createNoValidReqsErrorMessage() {
+        return createErrorMessage(NO_VALID_REQS,
+                "The submitted Bulk Request {0} does not contain valid individual Requests.");
+    }
 }

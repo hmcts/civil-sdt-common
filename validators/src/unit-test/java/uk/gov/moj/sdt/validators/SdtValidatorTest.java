@@ -43,6 +43,7 @@ import uk.gov.moj.sdt.domain.api.IErrorMessage;
 import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
+import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 import uk.gov.moj.sdt.validators.exception.CustomerNotFoundException;
 import uk.gov.moj.sdt.validators.exception.CustomerNotSetupException;
 import uk.gov.moj.sdt.validators.exception.CustomerReferenceNotUniqueException;
@@ -111,6 +112,9 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
     @Mock
     private IBulkSubmissionDao bulkSubmissionDao;
 
+    @Mock
+    private RequestTypeXmlNodeValidator requestTypeXmlNodeValidator;
+
     /**
      * Set up test artefact.
      */
@@ -121,6 +125,7 @@ class SdtValidatorTest extends AbstractSdtUnitTestBase {
                                                 mockGlobalParameterCache,
                                                 mockErrorMessagesCache,
                                                 bulkSubmissionDao,
+                                                requestTypeXmlNodeValidator,
                                                 new ConcurrentHashMap<>());
         validator.setErrorMessagesCache(mockErrorMessagesCache);
         validator.setGlobalParameterCache(mockGlobalParameterCache);

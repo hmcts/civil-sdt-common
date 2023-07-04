@@ -44,16 +44,13 @@ import uk.gov.moj.sdt.domain.ErrorMessage;
 import uk.gov.moj.sdt.domain.GlobalParameter;
 import uk.gov.moj.sdt.domain.IndividualRequest;
 import uk.gov.moj.sdt.domain.api.IBulkCustomer;
-import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IErrorMessage;
 import uk.gov.moj.sdt.domain.api.IGlobalParameter;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
-import uk.gov.moj.sdt.utils.cmc.RequestTypeXmlNodeValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -72,8 +69,6 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
      * Data retention period.
      */
     private static final int DATA_RETENTION_PERIOD = 90;
-
-    private static final String NODE_NAME_CLAIM_NUMBER = "claimNumber";
 
     /**
      * IIndividualRequestDao.
@@ -108,19 +103,11 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
      */
     private IIndividualRequest individualRequest;
 
-    /**
-     * Error message.
-     */
-    private IErrorMessage errorMessage;
-
     @Mock
     private IBulkCustomerDao bulkCustomerDao;
 
     @Mock
     private IIndividualRequestDao individualRequestDao;
-
-    @Mock
-    private RequestTypeXmlNodeValidator mockRequestTypeXmlNodeValidator;
 
     /**
      * Setup of the Validator and Domain class instance.
@@ -150,7 +137,7 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
 
         // subject of test
         validator = new IndividualRequestValidator(bulkCustomerDao, globalParameterCache,
-                errorMessagesCache, individualRequestDao, mockRequestTypeXmlNodeValidator);
+                errorMessagesCache, individualRequestDao);
     }
 
     /**
@@ -158,7 +145,7 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
      */
     @Test
     void testInvalidRequest() {
-        errorMessage = new ErrorMessage();
+        ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setErrorCode(IErrorMessage.ErrorCode.DUP_CUST_REQID.name());
         errorMessage.setErrorText("Duplicate Unique Request Identifier submitted {0}.");
 
@@ -182,40 +169,6 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
                 "Individual request status should be rejected");
     }
 
-    @Test
-    void testInvalidCMCRequest() {
-        errorMessage = new ErrorMessage();
-        errorMessage.setErrorCode(IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name());
-        errorMessage.setErrorText("Individual request {0} for CMC has an invalid request type {1}");
-
-        when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name()))
-                .thenReturn(errorMessage);
-        when(mockIndividualRequestDao.getIndividualRequest(bulkCustomer,
-                individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(null);
-        when(mockRequestTypeXmlNodeValidator.isCCDReference("", NODE_NAME_CLAIM_NUMBER)).thenReturn(true);
-        when(mockRequestTypeXmlNodeValidator.isValidRequestType(null)).thenReturn(false);
-
-        validator.setIndividualRequestDao(mockIndividualRequestDao);
-
-        individualRequest.accept(validator, null);
-
-        IErrorLog requestErrorLog = individualRequest.getErrorLog();
-        assertNotNull(requestErrorLog, "Individual request should have an error log");
-        assertEquals(IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(), requestErrorLog.getErrorCode(),
-                "Individual request has unexpected error code");
-        assertEquals("Individual request customerRequestReference for CMC has an invalid request type null",
-                requestErrorLog.getErrorText(), "Individual request has unexpected error text");
-
-        assertEquals(REJECTED.getStatus(), individualRequest.getRequestStatus(),
-                "Individual request status should be rejected");
-
-        verify(errorMessagesCache).getValue(IErrorMessage.class, IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name());
-        verify(mockIndividualRequestDao).getIndividualRequest(bulkCustomer,
-                individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD);
-        verify(mockRequestTypeXmlNodeValidator).isCCDReference("", NODE_NAME_CLAIM_NUMBER);
-        verify(mockRequestTypeXmlNodeValidator).isValidRequestType(null);
-    }
-
     /**
      * The purpose of this test is to pass a valid request.
      */
@@ -223,7 +176,6 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
     void testValidRequest() {
         when(mockIndividualRequestDao.getIndividualRequest(bulkCustomer,
                 individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(null);
-        when(mockRequestTypeXmlNodeValidator.isCCDReference("", NODE_NAME_CLAIM_NUMBER)).thenReturn(false);
 
         // inject the bulk customer into the validator
         validator.setIndividualRequestDao(mockIndividualRequestDao);
@@ -236,6 +188,5 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
 
         verify(mockIndividualRequestDao).getIndividualRequest(bulkCustomer,
                 individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD);
-        verify(mockRequestTypeXmlNodeValidator).isCCDReference("", NODE_NAME_CLAIM_NUMBER);
     }
 }
