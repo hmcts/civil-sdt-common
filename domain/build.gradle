@@ -1,4 +1,5 @@
 apply plugin: 'info.solidsoft.pitest'
+
 sourceSets {
     testUnit {
         compileClasspath += sourceSets.main.output

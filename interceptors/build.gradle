@@ -41,3 +41,13 @@ publishing {
         }
     }
 }
+
+tasks.register('unit', Test) {
+    description = "Runs unit tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+    failFast = true
+}
+
+check.dependsOn unit

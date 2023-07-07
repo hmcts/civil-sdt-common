@@ -50,6 +50,8 @@ import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
@@ -62,6 +64,11 @@ import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStat
 
 @ExtendWith(MockitoExtension.class)
 class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
+
+    /**
+     * Data retention period.
+     */
+    private static final int DATA_RETENTION_PERIOD = 90;
 
     /**
      * IIndividualRequestDao.
@@ -92,24 +99,9 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
     private IBulkCustomer bulkCustomer;
 
     /**
-     * requestId.
-     */
-    private long requestId;
-
-    /**
      * IIndividualRequest.
      */
     private IIndividualRequest individualRequest;
-
-    /**
-     * Error message.
-     */
-    private IErrorMessage errorMessage;
-
-    /**
-     * Data retention period.
-     */
-    private static final int DATA_RETENTION_PERIOD = 90;
 
     @Mock
     private IBulkCustomerDao bulkCustomerDao;
@@ -121,9 +113,8 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
      * Setup of the Validator and Domain class instance.
      */
     @BeforeEach
+    @Override
     public void setUp() {
-        // subject of test
-
         // create a bulk customer
         bulkCustomer = new BulkCustomer();
         bulkCustomer.setSdtCustomerId(12345L);
@@ -133,7 +124,7 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
 
         // create an individual request
         individualRequest = new IndividualRequest();
-        individualRequest.setId(requestId);
+        individualRequest.setId(1L);
         individualRequest.setBulkSubmission(bulkSubmission);
         individualRequest.setCustomerRequestReference("customerRequestReference");
 
@@ -142,14 +133,11 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
         globalParameter.setName(IGlobalParameter.ParameterKey.DATA_RETENTION_PERIOD.name());
         globalParameter.setValue(Integer.toString(DATA_RETENTION_PERIOD));
         when(globalParameterCache.getValue(IGlobalParameter.class,
-                        IGlobalParameter.ParameterKey.DATA_RETENTION_PERIOD.name())).thenReturn(globalParameter);
+                IGlobalParameter.ParameterKey.DATA_RETENTION_PERIOD.name())).thenReturn(globalParameter);
 
-
-        // Set up Error messages cache
-        errorMessage = new ErrorMessage();
-        errorMessage.setErrorCode(IErrorMessage.ErrorCode.DUP_CUST_REQID.name());
-        errorMessage.setErrorText("Duplicate Unique Request Identifier submitted {0}.");
-        validator = new IndividualRequestValidator(bulkCustomerDao, globalParameterCache, errorMessagesCache, individualRequestDao);
+        // subject of test
+        validator = new IndividualRequestValidator(bulkCustomerDao, globalParameterCache,
+                errorMessagesCache, individualRequestDao);
     }
 
     /**
@@ -157,24 +145,28 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
      */
     @Test
     void testInvalidRequest() {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setErrorCode(IErrorMessage.ErrorCode.DUP_CUST_REQID.name());
+        errorMessage.setErrorText("Duplicate Unique Request Identifier submitted {0}.");
+
         when(errorMessagesCache.getValue(IErrorMessage.class, IErrorMessage.ErrorCode.DUP_CUST_REQID.name()))
                 .thenReturn(errorMessage);
 
         when(mockIndividualRequestDao.getIndividualRequest(bulkCustomer,
-                        individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(
-                individualRequest);
+                individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(individualRequest);
 
         // inject the bulk customer into the validator
         validator.setIndividualRequestDao(mockIndividualRequestDao);
+
         individualRequest.accept(validator, null);
+
         verify(mockIndividualRequestDao).getIndividualRequest(bulkCustomer,
                 individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD);
-        assertEquals(individualRequest.getErrorLog().getErrorText(),
-                "Duplicate Unique Request Identifier submitted "
-                        + individualRequest.getCustomerRequestReference() + ".");
-        assertEquals(
-            REJECTED.getStatus(),
-            individualRequest.getRequestStatus());
+        assertEquals("Duplicate Unique Request Identifier submitted " +
+                individualRequest.getCustomerRequestReference() + ".", individualRequest.getErrorLog().getErrorText(),
+                "Individual request has unexpected error text");
+        assertEquals(REJECTED.getStatus(), individualRequest.getRequestStatus(),
+                "Individual request status should be rejected");
     }
 
     /**
@@ -183,11 +175,17 @@ class IndividualRequestValidatorTest extends AbstractValidatorUnitTest {
     @Test
     void testValidRequest() {
         when(mockIndividualRequestDao.getIndividualRequest(bulkCustomer,
-                        individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(null);
+                individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD)).thenReturn(null);
 
         // inject the bulk customer into the validator
         validator.setIndividualRequestDao(mockIndividualRequestDao);
+
         individualRequest.accept(validator, null);
+
+        assertNull(individualRequest.getErrorLog(), "Individual request should not have an error log");
+        assertNotEquals(REJECTED.getStatus(), individualRequest.getRequestStatus(),
+                "Individual request status should not be rejected");
+
         verify(mockIndividualRequestDao).getIndividualRequest(bulkCustomer,
                 individualRequest.getCustomerRequestReference(), DATA_RETENTION_PERIOD);
     }

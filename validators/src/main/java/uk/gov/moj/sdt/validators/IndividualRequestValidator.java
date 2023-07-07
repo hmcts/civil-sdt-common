@@ -30,9 +30,6 @@
  * $LastChangedBy$ */
 package uk.gov.moj.sdt.validators;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -46,6 +43,9 @@ import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.domain.cache.api.ICacheable;
 import uk.gov.moj.sdt.utils.visitor.api.ITree;
 import uk.gov.moj.sdt.validators.api.IIndividualRequestValidator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of {@link IIndividualRequestValidator}.
@@ -86,7 +86,7 @@ public class IndividualRequestValidator extends AbstractSdtValidator implements 
 
         if (invalidIndividualRequest != null) {
             // Set the error in the error log and continue rather than throw an exception
-            final List<String> replacements = new ArrayList<String>();
+            final List<String> replacements = new ArrayList<>();
             replacements.add(customerRequestReference);
             final String description = getErrorMessage(replacements, IErrorMessage.ErrorCode.DUP_CUST_REQID);
 
@@ -94,7 +94,6 @@ public class IndividualRequestValidator extends AbstractSdtValidator implements 
 
             // Change the status to rejected
             individualRequest.markRequestAsRejected(errorLog);
-
         }
     }
 
