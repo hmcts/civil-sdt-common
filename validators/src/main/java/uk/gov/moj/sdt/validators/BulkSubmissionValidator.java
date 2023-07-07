@@ -188,7 +188,6 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
 
     public void validateCMCRequests(final IBulkSubmission bulkSubmission) {
         int rejectedRequests = 0;
-        boolean hasCMCRequests = false;
 
         for (IIndividualRequest individualRequest : bulkSubmission.getIndividualRequests()) {
             if (REJECTED.getStatus().equals(individualRequest.getRequestStatus())) {
@@ -198,7 +197,6 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
                 String payload = requestPayload == null ? "" : new String(requestPayload, StandardCharsets.UTF_8);
 
                 if (requestTypeXmlNodeValidator.isCCDReference(payload, CLAIM_NUMBER)) {
-                    hasCMCRequests = true;
                     String requestType = individualRequest.getRequestType();
 
                     if (!requestTypeXmlNodeValidator.isValidRequestType(requestType)) {
@@ -223,10 +221,8 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
             }
         }
 
-        if (hasCMCRequests) {
-            // Set the bulk request error log if all requests have now been rejected by SDT
-            setErrorLog(bulkSubmission, bulkSubmission.getNumberOfRequest(), rejectedRequests);
-        }
+        // Set the bulk request error log if all requests have now been rejected by SDT
+        setErrorLog(bulkSubmission, bulkSubmission.getNumberOfRequest(), rejectedRequests);
     }
 
     private void setErrorLog(IBulkSubmission bulkSubmission, long numberOfRequests, long rejectedRequests) {
