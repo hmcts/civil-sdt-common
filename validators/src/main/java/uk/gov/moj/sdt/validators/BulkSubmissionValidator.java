@@ -30,14 +30,6 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.validators;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -57,7 +49,14 @@ import uk.gov.moj.sdt.utils.concurrent.InFlightMessage;
 import uk.gov.moj.sdt.utils.concurrent.api.IInFlightMessage;
 import uk.gov.moj.sdt.utils.visitor.api.ITree;
 import uk.gov.moj.sdt.validators.api.IBulkSubmissionValidator;
-import uk.gov.moj.sdt.validators.exception.InvalidRequestTypeException;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
 
@@ -87,16 +86,16 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
 
     @Autowired
     public BulkSubmissionValidator(@Qualifier("BulkCustomerDao")
-                                            IBulkCustomerDao bulkCustomerDao,
-                                        @Qualifier("GlobalParametersCache")
-                                            ICacheable globalParameterCache,
-                                        @Qualifier("ErrorMessagesCache")
-                                            ICacheable errorMessagesCache,
-                                        @Qualifier("BulkSubmissionDao")
-                                           IBulkSubmissionDao bulkSubmissionDao,
+                                       IBulkCustomerDao bulkCustomerDao,
+                                   @Qualifier("GlobalParametersCache")
+                                       ICacheable globalParameterCache,
+                                   @Qualifier("ErrorMessagesCache")
+                                       ICacheable errorMessagesCache,
+                                   @Qualifier("BulkSubmissionDao")
+                                       IBulkSubmissionDao bulkSubmissionDao,
                                    RequestTypeXmlNodeValidator requestTypeXmlNodeValidator,
                                    @Qualifier("concurrentMap")
-                                           Map<String, IInFlightMessage> concurrentMap) {
+                                       Map<String, IInFlightMessage> concurrentMap) {
         super(bulkCustomerDao, globalParameterCache, errorMessagesCache);
         this.bulkSubmissionDao = bulkSubmissionDao;
         this.requestTypeXmlNodeValidator = requestTypeXmlNodeValidator;
@@ -135,7 +134,7 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
         // Check the request count matches
         if (bulkSubmission.getNumberOfRequest() != bulkSubmission.getIndividualRequests().size()) {
             replacements = new ArrayList<>();
-            replacements.add(Integer.valueOf(bulkSubmission.getIndividualRequests().size()).toString());
+            replacements.add(Integer.toString(bulkSubmission.getIndividualRequests().size()));
             replacements.add("" + bulkSubmission.getNumberOfRequest());
             replacements.add(bulkSubmission.getCustomerReference());
             createValidationException(replacements, IErrorMessage.ErrorCode.REQ_COUNT_MISMATCH);
@@ -189,28 +188,41 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
 
     public void validateCMCRequests(final IBulkSubmission bulkSubmission) {
         int rejectedRequests = 0;
+
         for (IIndividualRequest individualRequest : bulkSubmission.getIndividualRequests()) {
-            if (requestTypeXmlNodeValidator.isCCDReference(
-                new String(individualRequest.getRequestPayload(), StandardCharsets.UTF_8),
-                CLAIM_NUMBER)
-                && !requestTypeXmlNodeValidator.isValidRequestType(individualRequest.getRequestType())) {
-                final IErrorLog errorLog =
-                    new ErrorLog(
-                        IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(),
-                        "Invalid Request type for CMC " + individualRequest.getRequestType()
-                    );
-                individualRequest.markRequestAsRejected(errorLog);
+            if (REJECTED.getStatus().equals(individualRequest.getRequestStatus())) {
                 rejectedRequests++;
+            } else {
+                byte[] requestPayload = individualRequest.getRequestPayload();
+                String payload = requestPayload == null ? "" : new String(requestPayload, StandardCharsets.UTF_8);
+
+                if (requestTypeXmlNodeValidator.isCCDReference(payload, CLAIM_NUMBER)) {
+                    String requestType = individualRequest.getRequestType();
+
+                    if (!requestTypeXmlNodeValidator.isValidRequestType(requestType)) {
+                        final List<String> replacements = new ArrayList<>();
+                        replacements.add(individualRequest.getCustomerRequestReference());
+                        replacements.add(requestType);
+
+                        final String description =
+                                getErrorMessage(replacements, IErrorMessage.ErrorCode.INVALID_CMC_REQUEST);
+                        final IErrorLog errorLog =
+                                new ErrorLog(IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(), description);
+
+                        individualRequest.markRequestAsRejected(errorLog);
+
+                        // Clear the payload as requests that are rejected by SDT do not have the
+                        // payload set - see IndividualRequestsXmlParser.populateRawRequest()
+                        individualRequest.setRequestPayload(null);
+
+                        rejectedRequests++;
+                    }
+                }
             }
         }
-        long numberOfRequests = bulkSubmission.getNumberOfRequest();
-        setErrorLog(bulkSubmission, numberOfRequests, rejectedRequests);
-        if (rejectedRequests >= numberOfRequests) {
-            throw new InvalidRequestTypeException(
-                IErrorMessage.ErrorCode.INVALID_CMC_REQUEST.name(),
-                "Invalid request type for CMC"
-            );
-        }
+
+        // Set the bulk request error log if all requests have now been rejected by SDT
+        setErrorLog(bulkSubmission, bulkSubmission.getNumberOfRequest(), rejectedRequests);
     }
 
     private void setErrorLog(IBulkSubmission bulkSubmission, long numberOfRequests, long rejectedRequests) {
@@ -239,13 +251,12 @@ public class BulkSubmissionValidator extends AbstractSdtValidator implements IBu
                     bulkSubmission.getBulkCustomer().getSdtCustomerId() + bulkSubmission.getCustomerReference();
 
             // Do we already have this message in flight?
-            IInFlightMessage inFlightMessage = concurrencyMap.get(key);
-            if (inFlightMessage == null) {
+            IInFlightMessage inFlightMessage = concurrencyMap.computeIfAbsent(key, k -> {
                 // No - this is the first thread with this message.
-                inFlightMessage = new InFlightMessage();
-                inFlightMessage.setCompetingThreads(new HashMap<Thread, Thread>());
-                concurrencyMap.put(key, inFlightMessage);
-            }
+                InFlightMessage newInFlightMessage = new InFlightMessage();
+                newInFlightMessage.setCompetingThreads(new HashMap<>());
+                return newInFlightMessage;
+            });
 
             // Add this thread to list of competing threads handling this message.
             inFlightMessage.getCompetingThreads().put(Thread.currentThread(), Thread.currentThread());
