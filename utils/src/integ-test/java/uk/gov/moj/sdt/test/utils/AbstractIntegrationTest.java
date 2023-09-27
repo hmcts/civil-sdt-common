@@ -35,18 +35,17 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Implementation of the integration test for BulkSubmissionService.
  *
  * @author Manoj kulkarni
  */
-public abstract class AbstractIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class AbstractIntegrationTest {
 
     /**
      * Logger object.
@@ -66,8 +65,9 @@ public abstract class AbstractIntegrationTest extends AbstractTransactionalJUnit
          *
          * @param description Information about the test.
          */
+        @Override
         protected void starting(final Description description) {
-            LOGGER.info("Start Test: " + description.getClassName() + "." + description.getMethodName() + ".");
+            LOGGER.info("Start Test: {}.{}.", description.getClassName(), description.getMethodName());
         }
     };
 
@@ -94,10 +94,10 @@ public abstract class AbstractIntegrationTest extends AbstractTransactionalJUnit
             method.setAccessible(true);
         } catch (final SecurityException e) {
             LOGGER.debug(e.getMessage());
-            assertTrue("SecurityException please debug test", false);
+            fail("SecurityException please debug test");
         } catch (final NoSuchMethodException e) {
             LOGGER.debug(e.getMessage());
-            assertTrue("NoSuchMethodException please debug test", false);
+            fail("NoSuchMethodException please debug test");
         }
         return method;
     }
