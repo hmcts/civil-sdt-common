@@ -381,7 +381,9 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
 
     @Override
     public boolean isEnqueueable() {
-        return IIndividualRequest.IndividualRequestStatus.RECEIVED.getStatus().equals(requestStatus);
+        return IndividualRequestStatus.RECEIVED.getStatus().equals(requestStatus)
+                || IndividualRequestStatus.QUEUED.getStatus().equals(requestStatus)
+                || IndividualRequestStatus.FAILED_QUEUE.getStatus().equals(requestStatus);
     }
 
     @Override
