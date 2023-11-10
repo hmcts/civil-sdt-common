@@ -325,7 +325,12 @@ public interface IIndividualRequest extends IDomainObject {
         /**
          * Accepted.
          */
-        ACCEPTED("Accepted");
+        ACCEPTED("Accepted"),
+
+        /**
+         * Queued.
+         */
+        QUEUED("Queued");
 
         /**
          * Individual request status.
