@@ -110,7 +110,9 @@ dependencies {
     implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
     implementation group: 'javax.jws', name: 'javax.jws-api', version: '1.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
+    implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-activemq') {
+        exclude group: 'org.apache.activemq', module: 'activemq-broker'
+    }
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
@@ -175,7 +177,9 @@ subprojects {
         implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
         implementation group: 'javax.jws', name: 'javax.jws-api', version: '1.1'
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services'
-        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
+        implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-activemq') {
+            exclude group: 'org.apache.activemq', module: 'activemq-broker'
+        }
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
