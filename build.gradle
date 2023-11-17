@@ -40,7 +40,7 @@ java {
 }
 
 ext {
-    lombokVersion = '1.18.24'
+    lombokVersion = '1.18.30'
     junitVersion           = '5.7.2'
     junitPlatformVersion   = '1.7.2'
     log4jVersion = '2.20.0'
