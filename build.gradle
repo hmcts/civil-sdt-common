@@ -2,7 +2,7 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
     id 'maven-publish'
-    id 'se.patrikerdes.use-latest-versions' version '0.2.7'
+    id 'se.patrikerdes.use-latest-versions' version '0.2.18'
 
     id 'checkstyle'
     id 'jacoco'
