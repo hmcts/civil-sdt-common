@@ -1,6 +1,5 @@
 package uk.gov.moj.sdt.handlers;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +13,11 @@ import uk.gov.moj.sdt.ws._2013.sdt.individualupdaterequestschema.HeaderType;
 import uk.gov.moj.sdt.ws._2013.sdt.individualupdaterequestschema.UpdateRequestType;
 import uk.gov.moj.sdt.ws._2013.sdt.individualupdateresponseschema.UpdateResponseType;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WsUpdateItemHandlerTest {
@@ -67,9 +69,9 @@ class WsUpdateItemHandlerTest {
 
         String expected = "count[1]";
 
-        Assertions.assertTrue(SdtMetricsMBean.getMetrics().getStatusUpdateStats().contains(expected));
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(mockUpdateResponseType, result);
+        assertTrue(SdtMetricsMBean.getMetrics().getStatusUpdateStats().contains(expected));
+        assertNotNull(result);
+        assertEquals(mockUpdateResponseType, result);
     }
 
 }

@@ -1,10 +1,8 @@
 package uk.gov.moj.sdt.domain.visitor;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.moj.sdt.domain.api.IBulkCustomer;
 import uk.gov.moj.sdt.domain.api.IBulkFeedbackRequest;
@@ -17,79 +15,91 @@ import uk.gov.moj.sdt.domain.api.ITargetApplication;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
 import uk.gov.moj.sdt.utils.visitor.Tree;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractDomainObjectVisitorTest extends AbstractSdtUnitTestBase {
 
-    public AbstractDomainObjectVisitor abstractDomainObjectVisitor;
+    private AbstractDomainObjectVisitor abstractDomainObjectVisitor;
 
+    private static final String UNEXPECTED_EXCEPTION = "Unexpected exception thrown";
     private static final String EXPECTED_MESSAGE =
-        "Missing visitor implementation: this method should never be called.";
+            "Missing visitor implementation: this method should never be called.";
+    private static final String UNEXPECTED_EXCEPTION_MESSAGE =
+            "Exception has unexpected message";
 
     @Mock
     Tree mockTree;
 
-    @BeforeEach
     @Override
-    public void setUp() {
+    protected void setUpLocalTests() {
         abstractDomainObjectVisitor = new AbstractDomainObjectVisitor() {};
     }
 
     @Test
     void testVisitBulkCustomerThrows() {
-        IBulkCustomer mockBulkCustomer = Mockito.mock(IBulkCustomer.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockBulkCustomer, mockTree));
+        IBulkCustomer mockBulkCustomer = mock(IBulkCustomer.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockBulkCustomer, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitBulkSubmissionThrows() {
-        IBulkSubmission mockBulkSubmission = Mockito.mock(IBulkSubmission.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockBulkSubmission, mockTree));
+        IBulkSubmission mockBulkSubmission = mock(IBulkSubmission.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockBulkSubmission, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitServiceTypeThrows() {
-        IServiceType mockServiceType = Mockito.mock(IServiceType.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockServiceType, mockTree));
+        IServiceType mockServiceType = mock(IServiceType.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockServiceType, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitTargetApplicationThrows() {
-        ITargetApplication mockTargetApplication = Mockito.mock(ITargetApplication.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockTargetApplication, mockTree));
+        ITargetApplication mockTargetApplication = mock(ITargetApplication.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockTargetApplication, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitIndividualRequestThrows() {
-        IIndividualRequest mockIndividualRequest = Mockito.mock(IIndividualRequest.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockIndividualRequest, mockTree));
+        IIndividualRequest mockIndividualRequest = mock(IIndividualRequest.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockIndividualRequest, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitSubmitQueryRequestThrows() {
-        ISubmitQueryRequest mockSubmitQueryRequest = Mockito.mock(ISubmitQueryRequest.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockSubmitQueryRequest, mockTree));
+        ISubmitQueryRequest mockSubmitQueryRequest = mock(ISubmitQueryRequest.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockSubmitQueryRequest, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitBulkFeedbackRequestThrows() {
-        IBulkFeedbackRequest mockBulkFeedbackRequest = Mockito.mock(IBulkFeedbackRequest.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockBulkFeedbackRequest, mockTree));
+        IBulkFeedbackRequest mockBulkFeedbackRequest = mock(IBulkFeedbackRequest.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockBulkFeedbackRequest, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
     @Test
     void testVisitErrorLogThrows() {
-        IErrorLog mockErrorLog = Mockito.mock(IErrorLog.class);
-        assertThrows(EXPECTED_MESSAGE, UnsupportedOperationException.class,
-                     () -> abstractDomainObjectVisitor.visit(mockErrorLog, mockTree));
+        IErrorLog mockErrorLog = mock(IErrorLog.class);
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+                     () -> abstractDomainObjectVisitor.visit(mockErrorLog, mockTree), UNEXPECTED_EXCEPTION);
+        assertEquals(EXPECTED_MESSAGE, exception.getMessage(), UNEXPECTED_EXCEPTION_MESSAGE);
     }
 
 }

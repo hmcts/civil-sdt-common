@@ -1,15 +1,10 @@
 package uk.gov.moj.sdt.handlers;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import uk.gov.moj.sdt.domain.api.IBulkSubmission;
@@ -21,16 +16,23 @@ import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
 import uk.gov.moj.sdt.utils.visitor.VisitableTreeWalker;
 import uk.gov.moj.sdt.validators.api.IBulkSubmissionValidator;
 import uk.gov.moj.sdt.validators.exception.CustomerNotFoundException;
+import uk.gov.moj.sdt.ws._2013.sdt.baseschema.ErrorType;
+import uk.gov.moj.sdt.ws._2013.sdt.baseschema.StatusCodeType;
+import uk.gov.moj.sdt.ws._2013.sdt.baseschema.StatusType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.BulkRequestType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkrequestschema.HeaderType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkresponseschema.BulkResponseType;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WsCreateBulkRequestHandlerTest {
@@ -63,7 +65,7 @@ class WsCreateBulkRequestHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        wsCreateBulkRequestHandler = Mockito.spy(new WsCreateBulkRequestHandler(
+        wsCreateBulkRequestHandler = spy(new WsCreateBulkRequestHandler(
             mockBulkSubmissionService, mockBulkSubmissionValidator, mockTransformer, mockConcurrencyMap));
         wsCreateBulkRequestHandler.setBulkSubmissionService(mockBulkSubmissionService);
         wsCreateBulkRequestHandler.setBulkSubmissionValidator(mockBulkSubmissionValidator);
@@ -87,14 +89,13 @@ class WsCreateBulkRequestHandlerTest {
         inFlightMessage.setCompetingThreads(new HashMap<>());
         when(mockConcurrencyMap.get(anyString())).thenReturn(inFlightMessage);
 
-        try (MockedStatic<VisitableTreeWalker> mockStaticVisitableTreeWalker = Mockito.mockStatic(VisitableTreeWalker.class)) {
+        try (MockedStatic<VisitableTreeWalker> mockStaticVisitableTreeWalker = mockStatic(VisitableTreeWalker.class)) {
             mockStaticVisitableTreeWalker.when(() -> VisitableTreeWalker.walk(mockBulkSubmission, "Validator"))
                 .then((Answer<Void>) invocation -> null);
 
             result = wsCreateBulkRequestHandler.submitBulk(mockBulkRequestType);
 
-            verifyStatic(VisitableTreeWalker.class);
-            VisitableTreeWalker.walk(mockBulkSubmission, "Validator");
+            mockStaticVisitableTreeWalker.verify(() -> VisitableTreeWalker.walk(mockBulkSubmission, "Validator"));
 
             verify(mockTransformer).transformJaxbToDomain(mockBulkRequestType);
             verify(mockBulkSubmissionValidator).checkIndividualRequests(mockBulkSubmission);
@@ -103,31 +104,30 @@ class WsCreateBulkRequestHandlerTest {
         }
 
         testMetrics();
-        Assertions.assertEquals(mockBulkResponseType, result);
+        assertEquals(mockBulkResponseType, result);
     }
 
     @Test
-    public void testSubmitBulkThrowsAbstractBusinessException() throws Exception {
+    public void testSubmitBulkThrowsAbstractBusinessException() {
         CustomerNotFoundException exception = new CustomerNotFoundException("MOCK_CODE", "MOCK_DESCRIPTION");
 
         when(mockTransformer.transformJaxbToDomain(mockBulkRequestType))
             .thenThrow(exception);
 
-        wsCreateBulkRequestHandler.submitBulk(mockBulkRequestType);
+        BulkResponseType bulkResponseType = wsCreateBulkRequestHandler.submitBulk(mockBulkRequestType);
 
-        verifyPrivate(wsCreateBulkRequestHandler)
-            .invoke(
-                "handleBusinessException",
-                any(CustomerNotFoundException.class),
-                any(BulkResponseType.class)
-            );
+        StatusType statusType = bulkResponseType.getStatus();
+        assertEquals(StatusCodeType.ERROR, statusType.getCode(), "Bulk Response has unexpected status code");
+        ErrorType errorType = statusType.getError();
+        assertEquals("MOCK_CODE", errorType.getCode(), "Status error has unexpected code");
+        assertEquals("MOCK_DESCRIPTION", errorType.getDescription(), "Status error has unexpected description");
 
         testMetrics();
     }
 
     private void testMetrics() {
         String expectedBulkSubmitCount = "count[1]";
-        Assertions.assertTrue(SdtMetricsMBean.getMetrics().getBulkSubmitStats().contains(expectedBulkSubmitCount));
-        Assertions.assertEquals(1, SdtMetricsMBean.getMetrics().getActiveBulkCustomers());
+        assertTrue(SdtMetricsMBean.getMetrics().getBulkSubmitStats().contains(expectedBulkSubmitCount));
+        assertEquals(1, SdtMetricsMBean.getMetrics().getActiveBulkCustomers());
     }
 }

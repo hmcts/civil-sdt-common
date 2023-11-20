@@ -40,7 +40,6 @@ java {
 }
 
 ext {
-    lombokVersion = '1.18.30'
     junitVersion           = '5.7.2'
     junitPlatformVersion   = '1.7.2'
     log4jVersion = '2.20.0'
@@ -93,11 +92,6 @@ bootJar {
 }
 
 dependencies {
-
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.0-jre'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
@@ -123,8 +117,6 @@ dependencies {
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
     testImplementation 'org.mockito:mockito-core:5.2.0'
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
-    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-    testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
     testImplementation 'org.springframework:spring-test:6.0.7'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -148,6 +140,7 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.github.ben-manes.versions'
+    apply plugin: 'io.freefair.lombok'
 
     configurations {
         testUnitImplementation.extendsFrom testImplementation
@@ -158,11 +151,6 @@ subprojects {
     }
 
     dependencies {
-
-        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-        implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-        testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-
         // This dependency is used internally, and not exposed to consumers on their own compile classpath.
         implementation 'com.google.guava:guava:30.0-jre'
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
@@ -188,8 +176,6 @@ subprojects {
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
         testImplementation 'org.mockito:mockito-core:5.2.0'
         testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
-        testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-        testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
         testImplementation 'org.springframework:spring-test:6.0.7'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
