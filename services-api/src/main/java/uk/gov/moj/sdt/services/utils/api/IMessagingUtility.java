@@ -32,6 +32,8 @@ package uk.gov.moj.sdt.services.utils.api;
 
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 
+import java.util.List;
+
 /**
  * Messaging utility interface that define generic message queueing methods that can be
  * used by classes sharing same functionality.
@@ -43,4 +45,9 @@ public interface IMessagingUtility {
      * @param individualRequest the individual request to be queued on messaging server.
      */
     void enqueueRequest(final IIndividualRequest individualRequest);
+
+    /**
+     * @param individualRequests list of individual requests to be queued on messaging server.
+     */
+    void enqueueRequests(final List<IIndividualRequest> individualRequests);
 }
