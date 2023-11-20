@@ -71,7 +71,7 @@ class ServiceTypeTest extends AbstractSdtUnitTestBase {
     void testServiceType(){
         assertNotNull(serviceType, "ServiceType Object should be populated");
         assertTrue(serviceType.toString().contains(SERVICE_NAME), "Should contain something");
-        assertEquals(serviceType.getId(), 1L, "Service id is not equal");
+        assertEquals(1L, serviceType.getId(), "Service id is not equal");
         assertEquals("Description", serviceType.getDescription(), "Service description is not equal");
         assertEquals("YES", serviceType.getStatus(), "Service status is not equal");
         assertEquals(SERVICE_NAME, serviceType.getName(), "Service name is not equal");

@@ -30,20 +30,22 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.interceptors.in;
 
+import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.message.MessageImpl;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
+import uk.gov.moj.sdt.utils.SdtContext;
+
 import java.io.ByteArrayInputStream;
 import java.io.CharArrayReader;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.message.MessageImpl;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
-import uk.gov.moj.sdt.utils.SdtContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test class.
@@ -68,8 +70,8 @@ class XmlInboundInterceptorTest extends AbstractSdtUnitTestBase {
 
             String sdtContextXml = SdtContext.getContext().getRawInXml();
 
-            Assertions.assertNotNull(sdtContextXml);
-            Assertions.assertEquals(xmlExpected, sdtContextXml);
+            assertNotNull(sdtContextXml);
+            assertEquals(xmlExpected, sdtContextXml);
     }
 
     /**
@@ -87,8 +89,8 @@ class XmlInboundInterceptorTest extends AbstractSdtUnitTestBase {
 
         String sdtContextXml = SdtContext.getContext().getRawInXml();
 
-        Assertions.assertEquals(xmlExpected, sdtContextXml);
-        Assertions.assertNotNull(soapMessage.getContent(Reader.class));
+        assertEquals(xmlExpected, sdtContextXml);
+        assertNotNull(soapMessage.getContent(Reader.class));
     }
 
     private SoapMessage getDummySoapMessageWithInputStream(String data) {
