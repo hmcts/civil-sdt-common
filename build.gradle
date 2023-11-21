@@ -107,7 +107,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0'
     implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
@@ -166,7 +166,7 @@ subprojects {
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0'
         implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
             exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
         }
