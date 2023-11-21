@@ -1,15 +1,17 @@
 package uk.gov.moj.sdt.utils.cmc.xml;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+import java.io.IOException;
+
 @Component
 public class XmlElementValueReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlElementValueReader.class);
 
     private XmlMapper xmlMapper = new XmlMapper();
 
@@ -19,7 +21,7 @@ public class XmlElementValueReader {
             JsonNode jsonNode = xmlMapper.readValue(xmlContent.getBytes(), JsonNode.class);
             entityNode = getValuesInObject(jsonNode, xmlNodeName);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         return entityNode != null ? entityNode.textValue() : "";
     }

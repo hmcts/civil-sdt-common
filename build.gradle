@@ -6,7 +6,6 @@ plugins {
 
     id 'checkstyle'
     id 'jacoco'
-    id "io.freefair.lombok" version "6.5.1"
     id 'io.spring.dependency-management' version '1.1.4'
     id 'com.github.ben-manes.versions' version '0.44.0'
     id 'org.owasp.dependencycheck' version '8.4.3'
@@ -24,7 +23,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'info.solidsoft.pitest'
-apply plugin: 'io.freefair.lombok'
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "1.0.0"
 
@@ -141,7 +139,6 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.github.ben-manes.versions'
-    apply plugin: 'io.freefair.lombok'
 
     configurations {
         testUnitImplementation.extendsFrom testImplementation
