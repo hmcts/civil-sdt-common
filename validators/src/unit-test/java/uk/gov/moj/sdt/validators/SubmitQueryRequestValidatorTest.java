@@ -156,10 +156,10 @@ class SubmitQueryRequestValidatorTest extends AbstractValidatorUnitTest {
         } catch (final CustomerNotSetupException e) {
             verify(mockIBulkCustomerDao).getBulkCustomerBySdtId(12345L);
 
-            assertEquals(e.getErrorCode(), IErrorMessage.ErrorCode.CUST_NOT_SETUP.name());
-            assertEquals(e.getErrorDescription(),
-                    "The Bulk Customer organisation is not setup to send Service Request messages to the " + mcolCode +
-                            ". Please contact " + contact + " for assistance.");
+            assertEquals(IErrorMessage.ErrorCode.CUST_NOT_SETUP.name(), e.getErrorCode());
+            assertEquals("The Bulk Customer organisation is not setup to send Service "
+                    + "Request messages to the " + mcolCode + ". Please contact " + contact + " for assistance.",
+                    e.getErrorDescription());
         }
     }
 

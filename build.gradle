@@ -2,19 +2,18 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
     id 'maven-publish'
-    id 'se.patrikerdes.use-latest-versions' version '0.2.7'
+    id 'se.patrikerdes.use-latest-versions' version '0.2.18'
 
     id 'checkstyle'
     id 'jacoco'
-    id "io.freefair.lombok" version "6.5.1"
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'com.github.ben-manes.versions' version '0.44.0'
-    id 'org.owasp.dependencycheck' version '8.0.2'
+    id 'org.owasp.dependencycheck' version '8.4.3'
     id 'com.github.kt3k.coveralls' version '2.8.2'
     id 'org.sonarqube' version '3.4.0.2513'
     id "info.solidsoft.pitest" version '1.5.1' apply(false)
     id "org.jetbrains.gradle.plugin.idea-ext" version "0.7"
-    id 'org.springframework.boot' version '2.7.7'
+    id 'org.springframework.boot' version '2.7.17'
 }
 
 apply plugin: 'java-library'
@@ -40,12 +39,11 @@ java {
 }
 
 ext {
-    lombokVersion = '1.18.24'
     junitVersion           = '5.7.2'
     junitPlatformVersion   = '1.7.2'
     log4jVersion = '2.20.0'
     testcontainers = '1.17.5'
-    cxfVersion = '3.5.4'
+    cxfVersion = '3.6.2'
     jaxwsVersion = "2.3.1"
 }
 
@@ -93,13 +91,8 @@ bootJar {
 }
 
 dependencies {
-
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:30.0-jre'
+    implementation 'com.google.guava:guava:30.1.1-jre'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -115,7 +108,7 @@ dependencies {
     }
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0'
     implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
@@ -125,8 +118,6 @@ dependencies {
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
     testImplementation 'org.mockito:mockito-core:5.2.0'
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
-    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-    testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
     testImplementation 'org.springframework:spring-test:6.0.7'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -138,7 +129,7 @@ dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
     api 'org.apache.commons:commons-lang3:3.12.0'
-    api 'commons-io:commons-io:2.11.0'
+    api 'commons-io:commons-io:2.15.0'
 }
 
 subprojects {
@@ -160,13 +151,8 @@ subprojects {
     }
 
     dependencies {
-
-        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-        implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-        testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-
         // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-        implementation 'com.google.guava:guava:30.0-jre'
+        implementation 'com.google.guava:guava:30.1.1-jre'
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -182,7 +168,7 @@ subprojects {
         }
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0'
         implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
             exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
         }
@@ -192,8 +178,6 @@ subprojects {
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
         testImplementation 'org.mockito:mockito-core:5.2.0'
         testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
-        testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-        testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
         testImplementation 'org.springframework:spring-test:6.0.7'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -205,7 +189,7 @@ subprojects {
         // This dependency is exported to consumers, that is to say found on their compile classpath.
         api 'org.apache.commons:commons-math3:3.6.1'
         api 'org.apache.commons:commons-lang3:3.12.0'
-        api 'commons-io:commons-io:2.11.0'
+        api 'commons-io:commons-io:2.15.0'
     }
 
     bootJar {

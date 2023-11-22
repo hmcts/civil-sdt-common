@@ -30,9 +30,6 @@
  * $LastChangedBy: $ */
 package uk.gov.moj.sdt.test.utils;
 
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,25 +48,6 @@ public abstract class AbstractIntegrationTest {
      * Logger object.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTest.class);
-
-    /**
-     * Watcher to detect current test name.
-     */
-    // CHECKSTYLE:OFF
-    @Rule
-    public TestWatcher watcher = new TestWatcher() {
-        // CHECKSTYLE:ON
-
-        /**
-         * Method called whenever JUnit starts a test.
-         *
-         * @param description Information about the test.
-         */
-        @Override
-        protected void starting(final Description description) {
-            LOGGER.info("Start Test: {}.{}.", description.getClassName(), description.getMethodName());
-        }
-    };
 
     /**
      * Retrieve a field in its accessible state.
