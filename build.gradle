@@ -114,8 +114,8 @@ dependencies {
     testImplementation libraries.junit5
     testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-    testImplementation 'org.mockito:mockito-core:5.2.0'
-    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
     testImplementation 'org.springframework:spring-test:6.0.7'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
@@ -172,8 +172,8 @@ subprojects {
         testImplementation libraries.junit5
         testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-        testImplementation 'org.mockito:mockito-core:5.2.0'
-        testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.1'
+        testImplementation 'org.mockito:mockito-core:5.7.0'
+        testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
         testImplementation 'org.springframework:spring-test:6.0.7'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
