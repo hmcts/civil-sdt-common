@@ -97,7 +97,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
-    implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.23'
+    implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.31'
     implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
     implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
     implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
@@ -116,7 +116,7 @@ dependencies {
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
     testImplementation 'org.mockito:mockito-core:5.7.0'
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
-    testImplementation 'org.springframework:spring-test:6.0.7'
+    testImplementation 'org.springframework:spring-test:6.1.1'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -155,7 +155,7 @@ subprojects {
         implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
         implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
-        implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.23'
+        implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.31'
         implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
         implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
         implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
@@ -174,7 +174,7 @@ subprojects {
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
         testImplementation 'org.mockito:mockito-core:5.7.0'
         testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
-        testImplementation 'org.springframework:spring-test:6.0.7'
+        testImplementation 'org.springframework:spring-test:6.1.1'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: log4jVersion
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
