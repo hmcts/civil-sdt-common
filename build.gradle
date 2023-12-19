@@ -175,6 +175,10 @@ tasks.register('dependencyCheck') { dependsOn dependencyCheckAnalyze }
 
 configurations { codacy }
 
+dependencies {
+    codacy 'com.github.codacy:codacy-coverage-reporter:-SNAPSHOT'
+}
+
 tasks.register('sendCoverageToCodacy', JavaExec) {
     dependsOn jacocoTestReport
     main = "com.codacy.CodacyCoverageReporter"
