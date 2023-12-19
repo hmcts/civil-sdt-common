@@ -65,6 +65,16 @@ ext.libraries = [
         ]
 ]
 
+sonarqube {
+    properties {
+        property "sonar.sources", "src"
+        property "sonar.tests", "src"
+        property "sonar.test.inclusions", "**/unit-test/**,**/integ-test/**"
+        property 'sonar.exclusions', "**/**.sql"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    }
+}
+
 afterEvaluate {
     jacocoTestReport {
         reports {
@@ -317,6 +327,9 @@ subprojects {
             exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
         }
     }
+    check.dependsOn integration
+    integration.mustRunAfter test
+    jacocoTestReport.mustRunAfter test
 }
 
 dependencies {
