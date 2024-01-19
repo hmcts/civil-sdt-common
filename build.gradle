@@ -150,7 +150,11 @@ tasks.withType(Test) {
     }
 }
 
-task codeCoverageReport(type: JacocoReport, dependsOn: [allprojects*.test, allprojects*.jacocoTestReport]) {
+Set subProjectsWithTest = subprojects.findAll { sProject ->
+    sProject.tasks.matching { it.name == "test" }
+}
+
+task codeCoverageReport(type: JacocoReport, dependsOn: [subProjectsWithTest*.test, subProjectsWithTest*.jacocoTestReport]) {
 
     // Gather execution data from all subprojects
     // (change this if you e.g. want to calculate unit test/integration test coverage separately)
@@ -331,8 +335,7 @@ subprojects {
             exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
         }
     }
-    check.dependsOn integration
-    integration.mustRunAfter test
+    check.dependsOn test
     jacocoTestReport.mustRunAfter test
 }
 

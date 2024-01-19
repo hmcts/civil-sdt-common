@@ -77,4 +77,5 @@ tasks.register('unit', Test) {
     failFast = true
 }
 
+unit.mustRunAfter integration
 check.dependsOn unit
