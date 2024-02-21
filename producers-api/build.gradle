@@ -39,7 +39,7 @@ dependencies {
 }
 
 task sdtEndPointWsdl2Java(type: JavaExec) {
-  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  mainClass = "org.apache.cxf.tools.wsdlto.WSDLToJava"
   classpath = configurations.wsdl2java
   args = [
     "-d", "src-gen/main/java",
@@ -50,7 +50,7 @@ task sdtEndPointWsdl2Java(type: JavaExec) {
 }
 
 task sdtInternalEndpointWsdl2Java(type: JavaExec) {
-  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  mainClass = "org.apache.cxf.tools.wsdlto.WSDLToJava"
   classpath = configurations.wsdl2java
   args = [
     "-d", "src-gen/main/java",
@@ -61,7 +61,7 @@ task sdtInternalEndpointWsdl2Java(type: JavaExec) {
 }
 
 task targetAppInternalEndpointWsdl2Java(type: JavaExec) {
-  main = "org.apache.cxf.tools.wsdlto.WSDLToJava"
+  mainClass = "org.apache.cxf.tools.wsdlto.WSDLToJava"
   classpath = configurations.wsdl2java
   args = [
     "-d", "src-gen/main/java",
@@ -87,7 +87,7 @@ check.dependsOn unit
 
 
 task testJar(type: Jar, dependsOn: testClasses) {
-    classifier = 'test'
+    archiveClassifier = 'test'
     from sourceSets.testUnit.output
 }
 

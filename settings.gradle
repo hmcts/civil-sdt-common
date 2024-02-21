@@ -27,6 +27,5 @@ dependencyResolutionManagement {
         maven {
             url 'https://jitpack.io'
         }
-        jcenter()
     }
 }
