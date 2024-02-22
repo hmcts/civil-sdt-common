@@ -71,7 +71,7 @@ sonarqube {
         property "sonar.tests", "src"
         property "sonar.test.inclusions", "**/unit-test/**,**/integ-test/**"
         property 'sonar.exclusions', "**/**.sql"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.outputLocation.get()}"
     }
 }
 
