@@ -42,12 +42,12 @@ repositories {
 }
 
 task testJar(type: Jar, dependsOn: testClasses) {
-    classifier = 'test'
+    archiveClassifier = 'test'
     from sourceSets.testUnit.output
 }
 
 task testIntegJar(type: Jar, dependsOn: testClasses) {
-    classifier = 'integ-test'
+    archiveClassifier = 'integ-test'
     from sourceSets.testIntegration.output
 }
 
