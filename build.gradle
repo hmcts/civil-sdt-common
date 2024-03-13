@@ -211,7 +211,7 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
     implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.32'
     implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
     implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
@@ -270,7 +270,7 @@ subprojects {
         implementation 'com.google.guava:guava:30.1.1-jre'
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
-        implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
+        implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
         implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.32'
         implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
         implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
