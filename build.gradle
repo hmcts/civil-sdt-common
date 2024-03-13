@@ -43,7 +43,7 @@ ext {
     junitPlatformVersion   = '1.10.2'
     log4jVersion = '2.23.1'
     testcontainers = '1.17.5'
-    cxfVersion = '3.6.2'
+    cxfVersion = '3.6.3'
     jaxwsVersion = "2.3.1"
     limits = [
             'instruction': 99,
