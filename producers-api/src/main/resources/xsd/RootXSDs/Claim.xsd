@@ -103,7 +103,7 @@
             <xs:element name="interest" type="tns:interestType" minOccurs="0"/>
 			<xs:element name="claimAmount" type="xs:unsignedLong"/>
 			<xs:element name="solicitorCost" type="xs:unsignedLong" minOccurs="0" />
-            <xs:element name="particulars" type="tns:particularsType" minOccurs="1" maxOccurs="24"/>
+            <xs:element name="particulars" type="tns:particularsType" minOccurs="1" maxOccurs="100"/>
             <xs:element name="sotSignature" type="base:sotSignatureType"/>
         </xs:sequence>
 	</xs:complexType>
