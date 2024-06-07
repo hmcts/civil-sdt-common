@@ -94,8 +94,14 @@ public interface IIndividualRequestDao extends IGenericDao {
     List<IIndividualRequest> getStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
 
     /**
-     * Returns a count of ...
-     * ...
+     * Returns a count of the number of individual requests that have been in the received or forwarded state
+     * for more than the specified number of minutes.
+     * @param minimumAgeInMinutes the minimum number of minutes since a message was updated before it will be
+     *                            requeued.
+     * @return count of individual requests stuck in the received or forwarded state that exceed
+     *                            the specified number of minutes.
+     * @throws DataAccessException JPA exception
      */
+
     long countStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
 }
