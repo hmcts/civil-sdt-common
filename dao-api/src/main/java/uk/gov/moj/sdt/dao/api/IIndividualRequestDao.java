@@ -92,4 +92,10 @@ public interface IIndividualRequestDao extends IGenericDao {
      * @throws DataAccessException JPA exception
      */
     List<IIndividualRequest> getStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
+
+    /**
+     * Returns a count of ...
+     * ...
+     */
+    long countStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
 }
