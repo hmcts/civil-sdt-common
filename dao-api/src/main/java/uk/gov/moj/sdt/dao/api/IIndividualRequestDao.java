@@ -96,6 +96,7 @@ public interface IIndividualRequestDao extends IGenericDao {
     /**
      * Returns a count of the number of individual requests that have been in the received or forwarded state
      * for more than the specified number of minutes.
+     *
      * @param minimumAgeInMinutes the minimum number of minutes since a message was updated before it will be
      *                            requeued.
      * @return count of individual requests stuck in the received or forwarded state that exceed
