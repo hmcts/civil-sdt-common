@@ -103,6 +103,5 @@ public interface IIndividualRequestDao extends IGenericDao {
      *                            the specified number of minutes.
      * @throws DataAccessException JPA exception
      */
-
     long countStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
 }
