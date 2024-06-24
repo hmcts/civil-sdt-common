@@ -36,8 +36,8 @@
             </xs:element>
             <xs:element name="status" type="base:individualStatusType"/>
         </xs:sequence>
-        <xs:attribute name="requestType" type="base:requestTypeType" use="required"/>
         <xs:attribute name="requestId" type="base:requestIdType" use="required"/>
+        <xs:attribute name="requestType" type="base:requestTypeType" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="responsesType">
