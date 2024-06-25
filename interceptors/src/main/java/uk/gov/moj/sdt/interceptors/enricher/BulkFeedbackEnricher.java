@@ -209,10 +209,13 @@ public class BulkFeedbackEnricher extends AbstractSdtEnricher {
             if (matcher.find() && !matcher.group(1).equals(REJECTED.getStatus())) {
                 // Use the captured status code to ignore rejected responses which do not need to be enhanced.
                 // We found a response that has not been enriched. Failure to find matching request in outgoing XML.
+
+                // Log this as an error but don't throw UnsupportedOperationException anymore.  The requestId attribute
+                // was not the last attribute in the response tag in SDT, so the UnsupportedOperationException was never
+                // thrown.  Following the refresh of the code however, the requestId is the last attribute, so the
+                // exception is thrown.  Removed exception to ensure same behaviour as SDT.
                 LOGGER.error("Detected unenriched response tag[{}] within bulk feedback response XML.",
                              matcher.group());
-                throw new UnsupportedOperationException("Detected unenriched response tag[" + matcher.group() +
-                                                            "] within bulk feedback response XML.");
             }
 
             if (LOGGER.isDebugEnabled()) {
