@@ -45,6 +45,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -157,6 +158,7 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
      * List of individual requests.
      */
     @OneToMany(mappedBy = "bulkSubmission", orphanRemoval = true, targetEntity = IndividualRequest.class, cascade = {CascadeType.ALL})
+    @OrderBy("lineNumber")
     private List<IIndividualRequest> individualRequests = new ArrayList<>();
 
     /**
