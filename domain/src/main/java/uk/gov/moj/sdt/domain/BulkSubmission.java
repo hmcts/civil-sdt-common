@@ -48,6 +48,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Type;
 import uk.gov.moj.sdt.domain.api.IBulkCustomer;
@@ -68,10 +69,11 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_sub_seq")
-    @SequenceGenerator(name="bulk_sub_seq", sequenceName = "bulk_sub_seq", allocationSize = 1)
+    @SequenceGenerator(name = "bulk_sub_seq", sequenceName = "bulk_sub_seq", allocationSize = 1)
     @Column(name = "BULK_SUBMISSION_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
@@ -79,14 +81,14 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
      * Bulk customer.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BulkCustomer.class)
-    @JoinColumn(name="BULK_CUSTOMER_ID")
+    @JoinColumn(name = "BULK_CUSTOMER_ID")
     private IBulkCustomer bulkCustomer;
 
     /**
      * The target application that SDT routes the Bulk Request onto for subsequent processing.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TargetApplication.class)
-    @JoinColumn(name="TARGET_APPLICATION_ID")
+    @JoinColumn(name = "TARGET_APPLICATION_ID")
     private ITargetApplication targetApplication;
 
     /**
@@ -165,7 +167,7 @@ public class BulkSubmission extends AbstractDomainObject implements IBulkSubmiss
      * Service request is an audit log for incoming and outgoing request.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ServiceRequest.class)
-    @JoinColumn(name="SERVICE_REQUEST_ID")
+    @JoinColumn(name = "SERVICE_REQUEST_ID")
     private IServiceRequest serviceRequest;
 
     /**

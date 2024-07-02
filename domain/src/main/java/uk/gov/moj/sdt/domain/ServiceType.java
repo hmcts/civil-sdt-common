@@ -40,6 +40,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Each defined target application will have a set of associated Request Types.
@@ -53,10 +54,11 @@ public class ServiceType extends AbstractDomainObject implements IServiceType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ser_typ_seq")
-    @SequenceGenerator(name="ser_typ_seq", sequenceName = "ser_typ_seq", allocationSize = 1)
+    @SequenceGenerator(name = "ser_typ_seq", sequenceName = "ser_typ_seq", allocationSize = 1)
     @Column(name = "SERVICE_TYPE_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 

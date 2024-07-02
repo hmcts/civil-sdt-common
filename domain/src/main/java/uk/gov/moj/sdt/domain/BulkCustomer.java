@@ -45,6 +45,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Bulk Customer Information manually set up and maintained
@@ -59,10 +60,11 @@ public class BulkCustomer extends AbstractDomainObject implements IBulkCustomer 
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_cust_seq")
-    @SequenceGenerator(name="bulk_cust_seq", sequenceName = "bulk_cust_seq", allocationSize = 1)
+    @SequenceGenerator(name = "bulk_cust_seq", sequenceName = "bulk_cust_seq", allocationSize = 1)
     @Column(name = "BULK_CUSTOMER_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
