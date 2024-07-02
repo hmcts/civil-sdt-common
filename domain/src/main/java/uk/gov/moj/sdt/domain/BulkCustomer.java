@@ -57,7 +57,6 @@ import javax.persistence.Version;
 @Entity
 public class BulkCustomer extends AbstractDomainObject implements IBulkCustomer {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_cust_seq")
     @SequenceGenerator(name = "bulk_cust_seq", sequenceName = "bulk_cust_seq", allocationSize = 1)
