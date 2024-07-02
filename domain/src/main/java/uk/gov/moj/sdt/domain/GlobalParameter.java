@@ -40,6 +40,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Global parameters.
@@ -52,10 +53,11 @@ public class GlobalParameter extends AbstractDomainObject implements IGlobalPara
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "glb_par_seq")
-    @SequenceGenerator(name="glb_par_seq", sequenceName = "glb_par_seq", allocationSize = 1)
+    @SequenceGenerator(name = "glb_par_seq", sequenceName = "glb_par_seq", allocationSize = 1)
     @Column(name = "GLOBAL_PARAMETER_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 

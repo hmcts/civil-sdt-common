@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
@@ -40,10 +41,11 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ind_req_seq")
-    @SequenceGenerator(name="ind_req_seq", sequenceName = "ind_req_seq", allocationSize = 1)
+    @SequenceGenerator(name = "ind_req_seq", sequenceName = "ind_req_seq", allocationSize = 1)
     @Column(name = "INDIVIDUAL_REQUEST_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
@@ -51,7 +53,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Bulk submission.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BulkSubmission.class)
-    @JoinColumn(name="BULK_SUBMISSION_ID")
+    @JoinColumn(name = "BULK_SUBMISSION_ID")
     private IBulkSubmission bulkSubmission;
 
     /**
@@ -133,7 +135,7 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
      * Error log.
      */
     @OneToOne(cascade = CascadeType.ALL, targetEntity= ErrorLog.class)
-    @JoinColumn(name="ERROR_LOG_ID")
+    @JoinColumn(name = "ERROR_LOG_ID")
     private IErrorLog errorLog;
 
     /**

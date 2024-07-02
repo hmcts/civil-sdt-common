@@ -45,6 +45,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * SDT will maintain routing information for target applications based on the Request Type Tag.
@@ -57,10 +58,11 @@ public class ServiceRouting extends AbstractDomainObject implements IServiceRout
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ser_rou_seq")
-    @SequenceGenerator(name="ser_rou_seq", sequenceName = "ser_rou_seq", allocationSize = 1)
+    @SequenceGenerator(name = "ser_rou_seq", sequenceName = "ser_rou_seq", allocationSize = 1)
     @Column(name = "SERVICE_ROUTINGS_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
@@ -68,14 +70,14 @@ public class ServiceRouting extends AbstractDomainObject implements IServiceRout
      * Target application.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TargetApplication.class)
-    @JoinColumn(name="TARGET_APPLICATION_ID")
+    @JoinColumn(name = "TARGET_APPLICATION_ID")
     private ITargetApplication targetApplication;
 
     /**
      * Service type.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ServiceType.class)
-    @JoinColumn(name="SERVICE_TYPE_ID")
+    @JoinColumn(name = "SERVICE_TYPE_ID")
     private IServiceType serviceType;
 
     /**

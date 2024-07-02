@@ -42,6 +42,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.time.LocalDateTime;
 
 /**
@@ -55,10 +56,11 @@ public class ServiceRequest extends AbstractDomainObject implements IServiceRequ
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "srv_req_seq")
-    @SequenceGenerator(name="srv_req_seq", sequenceName = "srv_req_seq", allocationSize = 1)
+    @SequenceGenerator(name = "srv_req_seq", sequenceName = "srv_req_seq", allocationSize = 1)
     @Column(name = "SERVICE_REQUEST_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
