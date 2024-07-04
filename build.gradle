@@ -6,9 +6,9 @@ plugins {
 
     id 'checkstyle'
     id 'jacoco'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.spring.dependency-management' version '1.1.5'
     id 'com.github.ben-manes.versions' version '0.51.0'
-    id 'org.owasp.dependencycheck' version '9.1.0'
+    id 'org.owasp.dependencycheck' version '9.2.0'
     id 'com.github.kt3k.coveralls' version '2.12.2'
     id 'org.sonarqube' version '5.0.0.4638'
     id "info.solidsoft.pitest" version '1.15.0' apply(false)
@@ -39,8 +39,8 @@ java {
 }
 
 ext {
-    junitVersion           = '5.10.2'
-    junitPlatformVersion   = '1.10.2'
+    junitVersion           = '5.10.3'
+    junitPlatformVersion   = '1.10.3'
     log4jVersion = '2.23.1'
     testcontainers = '1.17.5'
     cxfVersion = '3.6.3'
@@ -212,7 +212,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
-    implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.34'
+    implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.37'
     implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
     implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
     implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
@@ -223,7 +223,7 @@ dependencies {
     }
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.1'
     implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
@@ -231,9 +231,9 @@ dependencies {
     testImplementation libraries.junit5
     testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
-    testImplementation 'org.springframework:spring-test:6.1.6'
+    testImplementation 'org.springframework:spring-test:6.1.10'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -271,7 +271,7 @@ subprojects {
         implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
         implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
         implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
-        implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.34'
+        implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.37'
         implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: cxfVersion
         implementation group: 'org.apache.cxf', name: 'cxf-rt-transports-http-jetty', version: cxfVersion
         implementation group: 'org.apache.cxf', name: 'cxf-rt-features-logging', version: cxfVersion
@@ -282,7 +282,7 @@ subprojects {
         }
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.0'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.1'
         implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
             exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
         }
@@ -290,9 +290,9 @@ subprojects {
         testImplementation libraries.junit5
         testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-        testImplementation 'org.mockito:mockito-core:5.11.0'
+        testImplementation 'org.mockito:mockito-core:5.12.0'
         testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
-        testImplementation 'org.springframework:spring-test:6.1.6'
+        testImplementation 'org.springframework:spring-test:6.1.10'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
         testImplementation("org.springframework.boot:spring-boot-starter-test") {

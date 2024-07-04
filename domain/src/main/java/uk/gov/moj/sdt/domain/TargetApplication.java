@@ -47,6 +47,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Target Application that the Bulk Customer has been set up to submit messages to.
@@ -59,11 +60,12 @@ public class TargetApplication extends AbstractDomainObject implements ITargetAp
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tar_app_seq")
-    @SequenceGenerator(name="tar_app_seq", sequenceName = "tar_app_seq", allocationSize = 1)
-    @Column(name ="TARGET_APPLICATION_ID")
+    @SequenceGenerator(name = "tar_app_seq", sequenceName = "tar_app_seq", allocationSize = 1)
+    @Column(name = "TARGET_APPLICATION_ID")
     private long id;
 
-    @Column(name ="VERSION_NUMBER")
+    @Version
+    @Column(name = "VERSION_NUMBER")
     private int version;
 
     /**
@@ -75,13 +77,13 @@ public class TargetApplication extends AbstractDomainObject implements ITargetAp
     /**
      * Target application code.
      */
-    @Column(name ="TARGET_APPLICATION_CODE")
+    @Column(name = "TARGET_APPLICATION_CODE")
     private String targetApplicationCode;
 
     /**
      * Target application name.
      */
-    @Column(name ="TARGET_APPLICATION_NAME")
+    @Column(name = "TARGET_APPLICATION_NAME")
     private String targetApplicationName;
 
     @Override

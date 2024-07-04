@@ -45,6 +45,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Bulk customer application.
@@ -57,10 +58,11 @@ public class BulkCustomerApplication extends AbstractDomainObject implements IBu
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bulk_cust_app_seq")
-    @SequenceGenerator(name="bulk_cust_app_seq", sequenceName = "bulk_cust_app_seq", allocationSize = 1)
+    @SequenceGenerator(name = "bulk_cust_app_seq", sequenceName = "bulk_cust_app_seq", allocationSize = 1)
     @Column(name = "BULK_CUSTOMER_APPLICATIONS_ID")
     private long id;
 
+    @Version
     @Column(name = "VERSION_NUMBER")
     private int version;
 
@@ -68,14 +70,14 @@ public class BulkCustomerApplication extends AbstractDomainObject implements IBu
      * Bulk customer.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BulkCustomer.class)
-    @JoinColumn(name="BULK_CUSTOMER_ID")
+    @JoinColumn(name = "BULK_CUSTOMER_ID")
     private IBulkCustomer bulkCustomer;
 
     /**
      * Target Application that the Bulk Customer has been set up to submit messages to.
      */
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TargetApplication.class)
-    @JoinColumn(name="TARGET_APPLICATION_ID")
+    @JoinColumn(name = "TARGET_APPLICATION_ID")
     private ITargetApplication targetApplication;
 
     /**

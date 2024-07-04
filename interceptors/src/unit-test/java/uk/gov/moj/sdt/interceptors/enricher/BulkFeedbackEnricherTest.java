@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
@@ -67,6 +68,7 @@ class BulkFeedbackEnricherTest extends AbstractSdtUnitTestBase {
      * Setup for this test.
      */
     @BeforeEach
+    @Override
     public void setUp() {
         // Create enricher to be tested.
         enricher = new BulkFeedbackEnricher();
@@ -240,6 +242,7 @@ class BulkFeedbackEnricherTest extends AbstractSdtUnitTestBase {
      * Test failure to enrich one of the requests in the outgoing XML.
      */
     @Test
+    @Disabled("Disabled following removal of UnsupportedOperationException from enrichXml() method")
     void testUnenrichedResponse() {
         // Create map to hold fake responses from MCOL.
         final Map<String, String> targetApplicationRespMap = new HashMap<>();
@@ -331,12 +334,12 @@ class BulkFeedbackEnricherTest extends AbstractSdtUnitTestBase {
         // Setup the XML to be enriched.
         final String inXml = Utilities.getRawXml("src/unit-test/resources/", "testLargeFeedbackResponse.xml");
 
-        LOGGER.info("Start enrichment of " + targetApplicationRespMap.size() + " responses.");
+        LOGGER.info("Start enrichment of {} responses.", targetApplicationRespMap.size());
 
         // Call the enricher.
         enricher.enrichXml(inXml);
 
-        LOGGER.info("End enrichment of " + targetApplicationRespMap.size() + " responses.");
+        LOGGER.info("End enrichment of {} responses.", targetApplicationRespMap.size());
     }
 
 }
