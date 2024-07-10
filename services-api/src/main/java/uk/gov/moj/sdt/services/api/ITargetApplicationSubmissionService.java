@@ -48,9 +48,7 @@ public interface ITargetApplicationSubmissionService {
      * the bulk submission request are processed to their final state i.e. Accepted or Rejected.
      *
      * @param sdtRequestReference the unique SDT Request Reference associated with individual request
-     * @param caseOffLine         when case is offLine, then invoke mcol service
      */
-    void processRequestToSubmit(final String sdtRequestReference, Boolean caseOffLine);
 
     /**
      * Performs action on the SDT Individual Request depending on the given request status.
