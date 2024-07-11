@@ -75,4 +75,11 @@ public interface ISdtMessage {
      */
     void setEnqueueLoggingId(final long enqueueLoggingId);
 
+    /**
+     * Represent class as String.
+     *
+     * @return class represented as String.
+     */
+    String toString();
+
 }
