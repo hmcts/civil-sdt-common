@@ -1,5 +1,5 @@
 apply plugin: 'info.solidsoft.pitest'
-sourceSets.main.java.srcDirs += "src-gen/main/java"
+sourceSets.main.java.srcDirs = ["src/main/java", "src-gen/main/java"]
 
 sourceSets {
     testUnit {
