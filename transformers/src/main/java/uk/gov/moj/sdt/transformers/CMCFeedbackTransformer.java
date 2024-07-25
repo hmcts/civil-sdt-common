@@ -1,46 +1,85 @@
 package uk.gov.moj.sdt.transformers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.moj.sdt.cmc.model.CMCUpdateRequest;
+import uk.gov.moj.sdt.domain.ErrorLog;
 import uk.gov.moj.sdt.domain.IndividualRequest;
+import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.transformers.api.ICMCFeedbackTransformer;
-import uk.gov.moj.sdt.utils.cmc.exception.CMCException;
+import uk.gov.moj.sdt.transformers.exception.JaxbXmlConversionException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
 @Component("cmcFeedbackTransformer")
 @Getter
 @Setter
+@Slf4j
 public class CMCFeedbackTransformer implements ICMCFeedbackTransformer {
 
-    private XmlMapper xmlMapper;
+    private JAXBContext jaxbContext;
 
     public CMCFeedbackTransformer() {
-        xmlMapper = new XmlMapper();
+        try {
+            jaxbContext = JAXBContext.newInstance(CMCUpdateRequest.class);
+        } catch (JAXBException e) {
+            throw new JaxbXmlConversionException("Could not create JAXBContext", e);
+        }
     }
 
     @Override
     public IIndividualRequest transformJsonToDomain(String sdtRequestId, CMCUpdateRequest cmcUpdateRequest) {
-        IIndividualRequest individualRequest = new IndividualRequest();
+        log.debug("Transform from CMCUpdateRequest for sdtRequestId [{}] to IIndividualRequest", sdtRequestId);
 
+        IIndividualRequest individualRequest = new IndividualRequest();
         individualRequest.setSdtRequestReference(sdtRequestId);
 
-        String cmcUpdateRequestXml;
-        try {
-            cmcUpdateRequestXml = xmlMapper.writeValueAsString(cmcUpdateRequest);
-        } catch (JsonProcessingException e) {
-            throw new CMCException(e.getMessage(), e);
+        Integer errorCode = cmcUpdateRequest.getErrorCode();
+        if (errorCode != null && errorCode > 0) {
+            IErrorLog errorLog = new ErrorLog();
+
+            errorLog.setErrorCode(errorCode.toString());
+            errorLog.setErrorText(cmcUpdateRequest.getErrorText());
+
+            individualRequest.markRequestAsRejected(errorLog);
         }
 
+        String cmcUpdateRequestXml = convertToXml(cmcUpdateRequest);
+
         byte[] targetAppResponse =
-                cmcUpdateRequestXml == null ? null : cmcUpdateRequestXml.getBytes(StandardCharsets.UTF_8);
+                cmcUpdateRequestXml.isEmpty() ? null : cmcUpdateRequestXml.getBytes(StandardCharsets.UTF_8);
         individualRequest.setTargetApplicationResponse(targetAppResponse);
 
         return individualRequest;
+    }
+
+    private String convertToXml(CMCUpdateRequest cmcUpdateRequest) {
+        log.debug("Convert CMCUpdateRequest to XML");
+
+        String xml;
+
+        try {
+            Marshaller marshaller = jaxbContext.createMarshaller();
+
+            // Exclude XML declaration from output
+            marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+
+            StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(cmcUpdateRequest, stringWriter);
+
+            xml = stringWriter.toString();
+
+        } catch (JAXBException e) {
+            throw new JaxbXmlConversionException("Could not convert CMCUpdateRequest to XML", e);
+        }
+
+        return xml;
     }
 }

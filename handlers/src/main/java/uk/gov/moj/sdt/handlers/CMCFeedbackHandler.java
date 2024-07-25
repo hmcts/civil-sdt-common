@@ -2,6 +2,7 @@ package uk.gov.moj.sdt.handlers;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import uk.gov.moj.sdt.transformers.api.ICMCFeedbackTransformer;
 @Component("cmcFeedbackHandler")
 @Getter
 @Setter
+@Slf4j
 public class CMCFeedbackHandler implements ICMCFeedbackHandler {
 
     private ICMCFeedbackTransformer cmcFeedbackTransformer;
@@ -32,10 +34,13 @@ public class CMCFeedbackHandler implements ICMCFeedbackHandler {
 
     @Override
     public void cmcFeedback(String sdtRequestId, CMCUpdateRequest cmcUpdateRequest) {
+        log.debug("CMCUpdateRequest started for sdtRequestId [{}]", sdtRequestId);
 
         IIndividualRequest individualRequest =
                 cmcFeedbackTransformer.transformJsonToDomain(sdtRequestId, cmcUpdateRequest);
 
         cmcFeedbackService.cmcFeedback(individualRequest);
+
+        log.info("CMCUpdateRequest completed for sdtRequestId [{}]", sdtRequestId);
     }
 }
