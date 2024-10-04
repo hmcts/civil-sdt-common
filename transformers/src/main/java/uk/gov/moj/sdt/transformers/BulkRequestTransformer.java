@@ -99,7 +99,9 @@ public final class BulkRequestTransformer extends AbstractTransformer implements
 
             individualRequest.setRequestType(request.getRequestType());
 
-            individualRequest.setCreatedDate(LocalDateTime.now());
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            individualRequest.setCreatedDate(currentDateTime);
+            individualRequest.setUpdatedDate(currentDateTime);
 
             bulkSubmission.addIndividualRequest(individualRequest);
         }
