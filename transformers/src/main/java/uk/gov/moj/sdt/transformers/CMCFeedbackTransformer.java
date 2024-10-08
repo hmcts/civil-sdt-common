@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.moj.sdt.cmc.model.CMCUpdateRequest;
+import uk.gov.moj.sdt.cmc.model.CMCUpdateRequestStatus;
 import uk.gov.moj.sdt.domain.ErrorLog;
 import uk.gov.moj.sdt.domain.IndividualRequest;
 import uk.gov.moj.sdt.domain.api.IErrorLog;
@@ -41,14 +42,19 @@ public class CMCFeedbackTransformer implements ICMCFeedbackTransformer {
         IIndividualRequest individualRequest = new IndividualRequest();
         individualRequest.setSdtRequestReference(sdtRequestId);
 
-        Integer errorCode = cmcUpdateRequest.getErrorCode();
-        if (errorCode != null && errorCode > 0) {
+        CMCUpdateRequestStatus status = cmcUpdateRequest.getRequestStatus();
+
+        if (CMCUpdateRequestStatus.REJECTED.equals(status)) {
             IErrorLog errorLog = new ErrorLog();
 
-            errorLog.setErrorCode(errorCode.toString());
+            errorLog.setErrorCode(String.valueOf(cmcUpdateRequest.getErrorCode()));
             errorLog.setErrorText(cmcUpdateRequest.getErrorText());
 
             individualRequest.markRequestAsRejected(errorLog);
+        } else if (CMCUpdateRequestStatus.ACCEPTED.equals(status)) {
+            individualRequest.markRequestAsAccepted();
+        } else if (CMCUpdateRequestStatus.INITIALLY_ACCEPTED.equals(status)) {
+            individualRequest.markRequestAsInitiallyAccepted();
         }
 
         String cmcUpdateRequestXml = convertToXml(cmcUpdateRequest);

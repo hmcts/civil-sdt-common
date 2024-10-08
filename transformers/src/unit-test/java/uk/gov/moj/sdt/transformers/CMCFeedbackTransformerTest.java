@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.moj.sdt.cmc.model.CMCUpdateRequest;
+import uk.gov.moj.sdt.cmc.model.CMCUpdateRequestStatus;
 import uk.gov.moj.sdt.cmc.model.JudgmentWarrantStatus;
-import uk.gov.moj.sdt.cmc.model.ProcessingStatus;
 import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.transformers.exception.JaxbXmlConversionException;
@@ -28,6 +28,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.ACCEPTED;
+import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.INITIALLY_ACCEPTED;
+import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
 
 @ExtendWith(MockitoExtension.class)
 class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
@@ -85,10 +88,39 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
     }
 
     @Test
-    void testCmcFeedbackError() {
+    void testCmcFeedbackAccepted() {
+        CMCUpdateRequest cmcUpdateRequest = new CMCUpdateRequest();
+        cmcUpdateRequest.setRequestStatus(CMCUpdateRequestStatus.ACCEPTED);
+
+        IIndividualRequest individualRequest =
+                cmcFeedbackTransformer.transformJsonToDomain(SDT_REQUEST_ID, cmcUpdateRequest);
+
+        assertNotNull(individualRequest, ERROR_INDIVIDUAL_REQUEST_IS_NULL);
+        assertEquals(SDT_REQUEST_ID, individualRequest.getSdtRequestReference(), ERROR_UNEXPECTED_SDT_REQUEST_REF);
+
+        assertIndividualRequestStatus(ACCEPTED.getStatus(), individualRequest);
+    }
+
+    @Test
+    void testCmcFeedbackInitiallyAccepted() {
+        CMCUpdateRequest cmcUpdateRequest = new CMCUpdateRequest();
+        cmcUpdateRequest.setRequestStatus(CMCUpdateRequestStatus.INITIALLY_ACCEPTED);
+
+        IIndividualRequest individualRequest =
+                cmcFeedbackTransformer.transformJsonToDomain(SDT_REQUEST_ID, cmcUpdateRequest);
+
+        assertNotNull(individualRequest, ERROR_INDIVIDUAL_REQUEST_IS_NULL);
+        assertEquals(SDT_REQUEST_ID, individualRequest.getSdtRequestReference(), ERROR_UNEXPECTED_SDT_REQUEST_REF);
+
+        assertIndividualRequestStatus(INITIALLY_ACCEPTED.getStatus(), individualRequest);
+    }
+
+    @Test
+    void testCmcFeedbackRejected() {
         String errorText = "Error text 1";
 
         CMCUpdateRequest cmcUpdateRequest = new CMCUpdateRequest();
+        cmcUpdateRequest.setRequestStatus(CMCUpdateRequestStatus.REJECTED);
         cmcUpdateRequest.setErrorCode(1);
         cmcUpdateRequest.setErrorText(errorText);
         cmcUpdateRequest.setFee(100L);
@@ -103,8 +135,7 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
         assertNotNull(errorLog, "Error log should not be null");
         assertEquals("1", errorLog.getErrorCode(), "Error log has unexpected error code");
         assertEquals(errorText, errorLog.getErrorText(), "Error log has unexpected error text");
-        assertEquals(IIndividualRequest.IndividualRequestStatus.REJECTED.getStatus(),
-                individualRequest.getRequestStatus(), "Individual request has unexpected status");
+        assertIndividualRequestStatus(REJECTED.getStatus(), individualRequest);
 
         String expectedElement = createXmlElement("fee", "100");
         String expectedTargetAppResponse = createResponseDetailXmlElement(expectedElement);
@@ -165,11 +196,14 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
     }
 
     private String createResponseDetailXmlElement(String elementValue) {
-        return createXmlElement("cmcResponseDetail", elementValue);
+        return createXmlElement("mcolResponseDetail", elementValue);
     }
 
     private static Stream<Arguments> fieldsIncludedInXml() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RESPONSE_DATE_FORMAT);
+
+        CMCUpdateRequest cmcUpdateRequestClaimNumber = new CMCUpdateRequest();
+        cmcUpdateRequestClaimNumber.setClaimNumber("12131415");
 
         CMCUpdateRequest cmcUpdateRequestIssueDate = new CMCUpdateRequest();
         Date issueDate = new Calendar.Builder().setDate(2024, Calendar.JULY, 1).build().getTime();
@@ -203,6 +237,7 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
         cmcUpdateRequestJudgmentWarrantStatus.setJudgmentWarrantStatus(JudgmentWarrantStatus.JUDGMENT_REJECTED_BY_CCBC);
 
         return Stream.of(
+                arguments(cmcUpdateRequestClaimNumber, "claimNumber", "12131415"),
                 arguments(cmcUpdateRequestIssueDate, "issueDate", simpleDateFormat.format(issueDate)),
                 arguments(cmcUpdateRequestServiceDate, "serviceDate", simpleDateFormat.format(serviceDate)),
                 arguments(cmcUpdateRequestJudgmentEnteredDate, "judgmentEnteredDate",
@@ -225,13 +260,17 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
         CMCUpdateRequest cmcUpdateRequestErrorText = new CMCUpdateRequest();
         cmcUpdateRequestErrorText.setErrorText("Error text 99");
 
-        CMCUpdateRequest cmcUpdateRequestProcessingStatus = new CMCUpdateRequest();
-        cmcUpdateRequestProcessingStatus.setProcessingStatus(ProcessingStatus.PROCESSED);
+        CMCUpdateRequest cmcUpdateRequestRequestStatus = new CMCUpdateRequest();
+        cmcUpdateRequestRequestStatus.setRequestStatus(CMCUpdateRequestStatus.ACCEPTED);
 
         return Stream.of(
                 arguments(named("errorCode", cmcUpdateRequestErrorCode)),
                 arguments(named("errorText", cmcUpdateRequestErrorText)),
-                arguments(named("processingStatus", cmcUpdateRequestProcessingStatus))
+                arguments(named("requestStatus", cmcUpdateRequestRequestStatus))
         );
+    }
+
+    private void assertIndividualRequestStatus(String expectedStatus, IIndividualRequest individualRequest) {
+        assertEquals(expectedStatus, individualRequest.getRequestStatus(), "Individual request has unexpected status");
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.moj.sdt.cmc.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
-@XmlRootElement(name = "cmcResponseDetail")
+@XmlRootElement(name = "mcolResponseDetail")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CMCUpdateRequest {
 
@@ -24,16 +25,22 @@ public class CMCUpdateRequest {
     @XmlTransient
     private String errorText;
 
+    private String claimNumber;
+
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
     private Date issueDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
     private Date serviceDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
     private Date judgmentEnteredDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
     private Date firstPaymentDate;
 
     private String warrantNumber;
@@ -47,5 +54,5 @@ public class CMCUpdateRequest {
     private JudgmentWarrantStatus judgmentWarrantStatus;
 
     @XmlTransient
-    private ProcessingStatus processingStatus;
+    private CMCUpdateRequestStatus requestStatus;
 }
