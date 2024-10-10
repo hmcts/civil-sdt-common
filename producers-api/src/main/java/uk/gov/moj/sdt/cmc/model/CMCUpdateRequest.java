@@ -19,6 +19,9 @@ import java.util.Date;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CMCUpdateRequest {
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIMEZONE_EUROPE_LONDON = "Europe/London";
+
     @XmlTransient
     private Integer errorCode;
 
@@ -28,19 +31,19 @@ public class CMCUpdateRequest {
     private String claimNumber;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
+    @JsonFormat(pattern = DATE_FORMAT, timezone = TIMEZONE_EUROPE_LONDON)
     private Date issueDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
+    @JsonFormat(pattern = DATE_FORMAT, timezone = TIMEZONE_EUROPE_LONDON)
     private Date serviceDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
+    @JsonFormat(pattern = DATE_FORMAT, timezone = TIMEZONE_EUROPE_LONDON)
     private Date judgmentEnteredDate;
 
     @XmlJavaTypeAdapter(CMCUpdateRequestDateAdaptor.class)
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/London")
+    @JsonFormat(pattern = DATE_FORMAT, timezone = TIMEZONE_EUROPE_LONDON)
     private Date firstPaymentDate;
 
     private String warrantNumber;

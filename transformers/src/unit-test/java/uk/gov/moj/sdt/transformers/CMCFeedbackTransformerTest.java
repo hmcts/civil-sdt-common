@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.when;
@@ -151,12 +151,10 @@ class CMCFeedbackTransformerTest extends AbstractSdtUnitTestBase {
 
         CMCUpdateRequest cmcUpdateRequest = new CMCUpdateRequest();
 
-        try {
-            cmcFeedbackTransformer.transformJsonToDomain(SDT_REQUEST_ID, cmcUpdateRequest);
-            fail("JaxbXmlConversionException should be raised");
-        } catch (JaxbXmlConversionException e) {
-            assertEquals("Could not convert CMCUpdateRequest to XML", e.getMessage());
-        }
+        JaxbXmlConversionException exception =
+                assertThrows(JaxbXmlConversionException.class,
+                             () -> cmcFeedbackTransformer.transformJsonToDomain(SDT_REQUEST_ID, cmcUpdateRequest));
+        assertEquals("Could not convert CMCUpdateRequest to XML", exception.getMessage());
     }
 
     @ParameterizedTest
