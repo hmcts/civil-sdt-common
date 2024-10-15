@@ -25,6 +25,7 @@ import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.utils.mbeans.SdtMetricsMBean;
 
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.AWAITING_DATA;
+import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.CASE_LOCKED;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.FORWARDED;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.INITIALLY_ACCEPTED;
 import static uk.gov.moj.sdt.domain.api.IIndividualRequest.IndividualRequestStatus.REJECTED;
@@ -379,6 +380,17 @@ public class IndividualRequest extends AbstractDomainObject implements IIndividu
         // Set the updated date
         this.setUpdatedDate(LocalDateTime.now());
 
+    }
+
+    @Override
+    public void markRequestAsCaseLocked() {
+        setRequestStatus(CASE_LOCKED.getStatus());
+
+        // Reset forwarding attempts
+        setForwardingAttempts(0);
+
+        // Set the updated date
+        setUpdatedDate(LocalDateTime.now());
     }
 
     @Override

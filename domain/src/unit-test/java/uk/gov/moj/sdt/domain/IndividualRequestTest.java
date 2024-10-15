@@ -1,6 +1,5 @@
 package uk.gov.moj.sdt.domain;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.gov.moj.sdt.domain.api.IBulkSubmission;
@@ -25,23 +24,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DisplayName("Writing Individual Request Tests")
 class IndividualRequestTest extends AbstractSdtUnitTestBase {
-    /**
-     * Test subject.
-     */
-    private IIndividualRequest individualRequest;
     private static final String UPDATED_DATE_SHOULD_BE_POPULATED = "Updated date should be populated";
     private static final String FORWARDING_ATTEMPT_COUNT_MESSAGE = "Forwarding attempt count is incorrect";
     private static final String STATUS_IS_INCORRECT_MESSAGE = "Status is incorrect";
     private static final String REQUEST_TYPE_MESSAGE = "Request Type";
 
-    private static final LocalDateTime createdDate = LocalDateTime.now();
+    private static final LocalDateTime CREATED_DATE = LocalDateTime.now();
+
+    /**
+     * Test subject.
+     */
+    private IIndividualRequest individualRequest;
 
     /**
      * Set up test data.
      */
-    @BeforeEach
     @Override
-    public void setUp() {
+    protected void setUpLocalTests() {
         individualRequest = new IndividualRequest();
     }
 
@@ -49,7 +48,7 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
     void testIndividualRequestSetters() {
         individualRequest.setId(1L);
         individualRequest.setDeadLetter(true);
-        individualRequest.setCreatedDate(createdDate);
+        individualRequest.setCreatedDate(CREATED_DATE);
         individualRequest.setRequestType(REQUEST_TYPE_MESSAGE);
         individualRequest.setRequestPayload("Request Payload".getBytes());
         individualRequest.setSdtRequestReference("1");
@@ -59,7 +58,7 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
 
         assertTrue(individualRequest.isDeadLetter());
         assertEquals(1L, individualRequest.getId());
-        assertEquals(createdDate, individualRequest.getCreatedDate());
+        assertEquals(CREATED_DATE, individualRequest.getCreatedDate());
         assertEquals(REQUEST_TYPE_MESSAGE, individualRequest.getRequestType());
         assertEquals("Request Payload", new String(individualRequest.getRequestPayload(), StandardCharsets.UTF_8));
         assertEquals("1", individualRequest.getSdtRequestReference());
@@ -165,11 +164,24 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
     }
 
     @Test
+    @DisplayName("Test mark request as Case Locked")
+    void testMarkRequestAsCaseLocked() {
+        individualRequest.setForwardingAttempts(1);
+
+        individualRequest.markRequestAsCaseLocked();
+
+        assertEquals(IndividualRequestStatus.CASE_LOCKED.getStatus(),
+                     individualRequest.getRequestStatus(),
+                     STATUS_IS_INCORRECT_MESSAGE);
+        assertEquals(0, individualRequest.getForwardingAttempts(), FORWARDING_ATTEMPT_COUNT_MESSAGE);
+        assertNotNull(individualRequest.getUpdatedDate(), UPDATED_DATE_SHOULD_BE_POPULATED);
+    }
+
+    @Test
     @DisplayName("Test Individual Request Reference")
     void testIndividualRequestReference() {
-
         individualRequest.setSdtBulkReference("REF0202");
-        assertEquals("REF0202", individualRequest.getSdtBulkReference(), "reference should be set");
+        assertEquals("REF0202", individualRequest.getSdtBulkReference(), "SDT bulk reference should be set");
         assertNull(individualRequest.getErrorLog(), "Error log should be null");
     }
 
@@ -216,8 +228,10 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
         individualRequest.setLineNumber(1);
         individualRequest.populateReferences();
 
-        assertEquals("BULK-REF-0000001", individualRequest.getSdtRequestReference(), "Request reference is incorrect");
-        assertEquals("BULK-REF", individualRequest.getSdtBulkReference(), "Request reference is incorrect");
+        assertEquals("BULK-REF-0000001",
+                     individualRequest.getSdtRequestReference(),
+                     "Request SDT request reference is incorrect");
+        assertEquals("BULK-REF", individualRequest.getSdtBulkReference(), "Request SDT bulk reference is incorrect");
     }
 
 
@@ -232,7 +246,8 @@ class IndividualRequestTest extends AbstractSdtUnitTestBase {
     @DisplayName("Test Request Internal System Error")
     void testIndividualRequestSystemError(){
         individualRequest.setInternalSystemError("Internal System Error");
-        assertEquals("Internal System Error", individualRequest.getInternalSystemError(),"Internal System error should be populated");
+        assertEquals("Internal System Error",
+                     individualRequest.getInternalSystemError(), "Internal System error should be populated");
     }
 
 }
