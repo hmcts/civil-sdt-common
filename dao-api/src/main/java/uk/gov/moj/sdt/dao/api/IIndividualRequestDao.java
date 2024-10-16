@@ -104,4 +104,15 @@ public interface IIndividualRequestDao extends IGenericDao {
      * @throws DataAccessException JPA exception
      */
     long countStaleIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
+
+    /**
+     * Returns a list of individual requests that are in the case locked state for more than the specified number
+     * of minutes.  This state occurs when the target application returns a response indicating that the case the
+     * request corresponds to is locked.
+     *
+     * @param minimumAgeInMinutes The minimum number of minutes since an individual request was updated
+     * @return List of individual requests
+     * @throws DataAccessException JPA exception
+     */
+    List<IIndividualRequest> getCaseLockedIndividualRequests(final int minimumAgeInMinutes) throws DataAccessException;
 }
