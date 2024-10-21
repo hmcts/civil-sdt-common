@@ -252,6 +252,12 @@ public interface IIndividualRequest extends IDomainObject {
     void markRequestAsAwaitingData();
 
     /**
+     * This method will mark the individual request object with "Case Locked" status
+     * and set the updated date.
+     */
+    void markRequestAsCaseLocked();
+
+    /**
      * is Enqueueable?.
      *
      * @return true if request can be enqueued else false.
@@ -331,6 +337,11 @@ public interface IIndividualRequest extends IDomainObject {
          * Queued.
          */
         QUEUED("Queued"),
+
+        /**
+         * Case Locked.
+         */
+        CASE_LOCKED("Case Locked"),
 
         /**
          * Queued.
