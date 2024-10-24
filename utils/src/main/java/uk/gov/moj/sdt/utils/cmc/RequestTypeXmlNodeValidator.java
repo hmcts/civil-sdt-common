@@ -2,7 +2,7 @@ package uk.gov.moj.sdt.utils.cmc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.moj.sdt.utils.cmc.exception.CMCException;
+import uk.gov.moj.sdt.utils.cmc.exception.CMCUnsupportedRequestTypeException;
 import uk.gov.moj.sdt.utils.cmc.xml.XmlElementValueReader;
 
 import static uk.gov.moj.sdt.utils.cmc.RequestType.BREATHING_SPACE;
@@ -36,8 +36,9 @@ public class RequestTypeXmlNodeValidator {
                                     String xmlNodeName,
                                     boolean throwException) {
         if (isCCDReference(requestPayload, xmlNodeName)) {
-            if (!isValidRequestType(requestType) && throwException) {
-                throw new CMCException(String.format("Request Type: %s not supported", requestType));
+            if (throwException && !isValidRequestType(requestType)) {
+                throw new CMCUnsupportedRequestTypeException(String.format("Request Type %s not supported",
+                                                                           requestType));
             }
             return true;
         }
