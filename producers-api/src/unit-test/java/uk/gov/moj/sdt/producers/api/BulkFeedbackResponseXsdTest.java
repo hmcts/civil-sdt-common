@@ -86,6 +86,7 @@ class BulkFeedbackResponseXsdTest extends AbstractSdtXmlTestBase {
     /**
      * Tests that expected errors are reported for incorrect format of fields.
      */
+    @Test
     void testInvalidXmlIncorrectFormat() {
         final String condition = "IncorrectFormat";
         final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;

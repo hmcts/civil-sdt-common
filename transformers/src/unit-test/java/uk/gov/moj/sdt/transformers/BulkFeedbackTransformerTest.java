@@ -31,28 +31,38 @@
 package uk.gov.moj.sdt.transformers;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.moj.sdt.domain.BulkSubmission;
 import uk.gov.moj.sdt.domain.ErrorLog;
 import uk.gov.moj.sdt.domain.IndividualRequest;
+import uk.gov.moj.sdt.domain.api.IBulkCustomer;
 import uk.gov.moj.sdt.domain.api.IBulkFeedbackRequest;
 import uk.gov.moj.sdt.domain.api.IBulkSubmission;
+import uk.gov.moj.sdt.domain.api.IErrorLog;
 import uk.gov.moj.sdt.domain.api.IIndividualRequest;
 import uk.gov.moj.sdt.utils.AbstractSdtUnitTestBase;
+import uk.gov.moj.sdt.utils.Utilities;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.ErrorType;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.IndividualStatusCodeType;
 import uk.gov.moj.sdt.ws._2013.sdt.baseschema.IndividualStatusType;
+import uk.gov.moj.sdt.ws._2013.sdt.baseschema.StatusCodeType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkfeedbackrequestschema.BulkFeedbackRequestType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkfeedbackrequestschema.HeaderType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkfeedbackresponseschema.BulkFeedbackResponseType;
+import uk.gov.moj.sdt.ws._2013.sdt.bulkfeedbackresponseschema.BulkRequestStatusType;
 import uk.gov.moj.sdt.ws._2013.sdt.bulkfeedbackresponseschema.ResponseType;
 
-import java.lang.reflect.Constructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for BulkRequestTransformer.
@@ -69,7 +79,8 @@ class BulkFeedbackTransformerTest extends AbstractSdtUnitTestBase {
     /**
      * Set up variables for the test.
      */
-    public void setUpLocalTests() {
+    @Override
+    protected void setUpLocalTests() {
         transformer = new BulkFeedbackTransformer();
     }
 
@@ -91,16 +102,23 @@ class BulkFeedbackTransformerTest extends AbstractSdtUnitTestBase {
 
         // Do the transformation
         final IBulkFeedbackRequest domain = transformer.transformJaxbToDomain(jaxb);
-        assertEquals(sdtCustomerId, domain.getBulkCustomer().getSdtCustomerId(), "SDT Customer ID does not match");
+
         assertEquals(sdtBulkReference, domain.getSdtBulkReference(), "SDT Bulk Reference does not match");
 
+        IBulkCustomer bulkCustomer = domain.getBulkCustomer();
+        assertNotNull(bulkCustomer, "Bulk customer should not be null");
+        assertEquals(sdtCustomerId, bulkCustomer.getSdtCustomerId(), "SDT Customer ID does not match");
     }
 
     /**
-     * Test the from transformation domain to jaxb object.
+     * Test the transformation from domain to jaxb object.
+     * @param individualRequestStatus The status of the individual request
+     * @param expectedIndividualStatusCodeType The expected status of the individual status type
      */
-    @Test
-    void testTransformDomainToJaxb() {
+    @ParameterizedTest
+    @MethodSource("domainAndJaxbStatuses")
+    void testTransformDomainToJaxb(IIndividualRequest.IndividualRequestStatus individualRequestStatus,
+                                   IndividualStatusCodeType expectedIndividualStatusCodeType) {
         // Set up the domain object to transform
         final IBulkSubmission domain = new BulkSubmission();
         final long numberOfRequest = 8;
@@ -109,83 +127,115 @@ class BulkFeedbackTransformerTest extends AbstractSdtUnitTestBase {
         final LocalDateTime createdDate = LocalDateTime.now();
         final String submissionStatus = "Validated";
 
+        final String customerRequestRef = "CustReqRef";
+        final String errorCode = "87";
+        final String errorText = "Specified claim does not belong to the requesting customer.";
+
         domain.setNumberOfRequest(numberOfRequest);
         domain.setSdtBulkReference(sdtBulkReference);
         domain.setCustomerReference(customerRef);
         domain.setCreatedDate(createdDate);
         domain.setSubmissionStatus(submissionStatus);
 
-        // Setup some individual requests
+        // Setup individual request
         final List<IIndividualRequest> individualRequests = new ArrayList<>();
-        final String customerRequestReference1 = "request 1";
-        IndividualRequest ir = new IndividualRequest();
-        ir.setCustomerRequestReference(customerRequestReference1);
-        ir.setRequestStatus(IndividualStatusCodeType.ACCEPTED.value());
-        individualRequests.add(ir);
 
-        ir = new IndividualRequest();
-        final String customerRequestReference2 = "request 2";
-        ir.setCustomerRequestReference(customerRequestReference2);
-        ir.setRequestStatus(IndividualStatusCodeType.RECEIVED.value());
-        individualRequests.add(ir);
+        IIndividualRequest individualRequest = new IndividualRequest();
+        individualRequest.setCustomerRequestReference(customerRequestRef);
+        individualRequest.setRequestStatus(individualRequestStatus.getStatus());
 
-        // Set one up as rejected so an error log can be created
-        ir = new IndividualRequest();
-        final String customerRequestReference3 = "request 3";
-        ir.setCustomerRequestReference(customerRequestReference3);
-        ir.setRequestStatus(IndividualStatusCodeType.REJECTED.value());
+        if (IIndividualRequest.IndividualRequestStatus.REJECTED.getStatus()
+                .equals(individualRequestStatus.getStatus())) {
+            IErrorLog errorLog = new ErrorLog(errorCode, errorText);
+            individualRequest.setErrorLog(errorLog);
+        }
 
-        // Set the error log and message
-        final String errorCode = "87";
-        final String errorText = "Specified claim does not belong to the requesting customer.";
-        final ErrorLog errorLog = new ErrorLog(errorCode, errorText);
-        ir.setErrorLog(errorLog);
-        individualRequests.add(ir);
-
+        individualRequests.add(individualRequest);
         domain.setIndividualRequests(individualRequests);
 
         final BulkFeedbackResponseType jaxb = transformer.transformDomainToJaxb(domain);
 
         // Check the domain object has been transformed
-        assertEquals(numberOfRequest, domain.getNumberOfRequest(), "The number of request does not match");
-        assertEquals(sdtBulkReference, domain.getSdtBulkReference(), "The SDT Bulk Reference does not match");
-        assertEquals(customerRef, domain.getCustomerReference(), "The Customer Reference does not match");
-        assertEquals(createdDate, domain.getCreatedDate(), "The created date does not match");
-        assertEquals(submissionStatus, domain.getSubmissionStatus(), "The submission status does not match");
+        BulkRequestStatusType bulkRequestStatusType = jaxb.getBulkRequestStatus();
+        assertNotNull(bulkRequestStatusType, "Bulk request status type should not be null");
+
+        assertEquals(StatusCodeType.OK.value(),
+                     bulkRequestStatusType.getStatus().getCode().value(),
+                     "The status does not match");
+        assertEquals(numberOfRequest,
+                     bulkRequestStatusType.getRequestCount(),
+                     "The number of requests does not match");
+        assertEquals(sdtBulkReference,
+                     bulkRequestStatusType.getSdtBulkReference(),
+                     "The SDT Bulk Reference does not match");
+        assertEquals(customerRef,
+                     bulkRequestStatusType.getCustomerReference(),
+                     "The Customer Reference does not match");
+        assertEquals(Utilities.convertLocalDateTimeToCalendar(createdDate),
+                     bulkRequestStatusType.getSubmittedDate(),
+                     "The created date does not match");
+        assertEquals(submissionStatus,
+                     bulkRequestStatusType.getBulkStatus().getCode().value(),
+                     "The submission status does not match");
+        assertEquals(AbstractTransformer.SDT_SERVICE,
+                     bulkRequestStatusType.getSdtService(),
+                     "The SDT service does not match");
 
         final List<ResponseType> responseTypes = jaxb.getResponses().getResponse();
-        // Individual request 1
+        assertEquals(1, responseTypes.size(), "Unexpected number of response types");
+
         ResponseType responseType = responseTypes.get(0);
-        assertEquals(customerRequestReference1, responseType.getRequestId(),
-                "Request ID for individual request 1 does not match");
-        assertEquals(IndividualStatusCodeType.ACCEPTED.value(), responseType.getStatus().getCode().value(),
-                "Status for individual request 1 does not match");
+        assertEquals(customerRequestRef,
+                     responseType.getRequestId(),
+                     "Request ID for individual request does not match");
         assertNotNull(responseType.getResponseDetail(), "ResponseDetail should not be null");
 
-        // Individual request 2
-        responseType = responseTypes.get(1);
-        assertEquals(customerRequestReference2, responseType.getRequestId(),
-                "Request ID for individual request 2 does not match");
-        assertEquals(IndividualStatusCodeType.RECEIVED.value(), responseType.getStatus().getCode().value(),
-                "Status for individual request 2 does not match");
-        assertNotNull(responseType.getResponseDetail(), "ResponseDetail should not be null");
+        IndividualStatusType individualStatusType = responseType.getStatus();
+        assertNotNull(individualStatusType, "Individual status type should not be null");
+        assertEquals(expectedIndividualStatusCodeType.value(), individualStatusType.getCode().value(),
+                "Status for individual request does not match");
 
-        // Individual request 3
-        responseType = responseTypes.get(2);
-        assertEquals(customerRequestReference3, responseType.getRequestId(),
-                "Request ID for individual request 3 does not match");
-        assertEquals(IndividualStatusCodeType.REJECTED.value(), responseType.getStatus().getCode().value(),
-                "Status for individual request 3 does not match");
-        assertNotNull(responseType.getResponseDetail(), "ResponseDetail should not be null");
-
-        // Check for the errors
-        final IndividualStatusType individualStatusType = responseType.getStatus();
-        assertEquals(IndividualStatusCodeType.REJECTED.value(), individualStatusType.getCode().value(),
-                "Error status for individual request 3 does not match");
         final ErrorType errorType = individualStatusType.getError();
-        assertEquals(errorCode, errorType.getCode(), "Error code for individual request 3 does not match");
-        assertEquals(errorText, errorType.getDescription(),
-                "Error text for individual request 3 does not match");
-        assertNotNull(responseType.getResponseDetail(), "ResponseDetail should not be null");
+        if (IIndividualRequest.IndividualRequestStatus.REJECTED.getStatus()
+                .equals(individualRequestStatus.getStatus())) {
+            assertNotNull(errorType, "Error type should not be null");
+            assertEquals(errorCode, errorType.getCode(), "Error code for individual request does not match");
+            assertEquals(errorText, errorType.getDescription(), "Error text for individual request does not match");
+        } else {
+            assertNull(errorType, "Error type should be null");
+        }
+    }
+
+    private static Stream<Arguments> domainAndJaxbStatuses() {
+        return Stream.of(
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.ACCEPTED,
+                        IndividualStatusCodeType.ACCEPTED
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.AWAITING_DATA,
+                        IndividualStatusCodeType.AWAITING_DATA
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.CASE_LOCKED,
+                        IndividualStatusCodeType.CASE_LOCKED
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.FORWARDED,
+                        IndividualStatusCodeType.FORWARDED
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.INITIALLY_ACCEPTED,
+                        IndividualStatusCodeType.INITIALLY_ACCEPTED
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.RECEIVED,
+                        IndividualStatusCodeType.RECEIVED
+                ),
+                arguments(
+                        IIndividualRequest.IndividualRequestStatus.REJECTED,
+                        IndividualStatusCodeType.REJECTED
+                )
+        );
     }
 }
