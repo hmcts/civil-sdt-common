@@ -241,6 +241,7 @@
             <xs:enumeration value="Awaiting Data" />
             <xs:enumeration value="Accepted" />
             <xs:enumeration value="Rejected" />
+            <xs:enumeration value="Case Locked" />
         </xs:restriction>
     </xs:simpleType>
 
