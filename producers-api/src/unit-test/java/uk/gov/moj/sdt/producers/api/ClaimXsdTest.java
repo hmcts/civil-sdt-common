@@ -68,7 +68,7 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
     void testValidXml() {
         final String condition = "Valid";
         final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
-        this.validateXsd (xmlPath, XSD_PATH, null);
+        this.validateXsd(xmlPath, XSD_PATH, null);
     }
 
     /**
@@ -80,7 +80,7 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
         final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
         final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
 
-        this.validateXsd (xmlPath, XSD_PATH, errorFilePathname);
+        this.validateXsd(xmlPath, XSD_PATH, errorFilePathname);
     }
 
     /**
@@ -92,6 +92,27 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
         final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
         final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
 
-        this.validateXsd (xmlPath, XSD_PATH, errorFilePathname);
+        this.validateXsd(xmlPath, XSD_PATH, errorFilePathname);
+    }
+    /**
+     * Tests that the maximum number of particulars has been exceeded.
+     */
+    @Test
+    void testInvalidXmlIncorrectNumParticulars() {
+        final String condition = "IncorrectNumParticulars";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+        final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, errorFilePathname);
+    }
+    /**
+     * Tests that the correct number of particulars has been accepted.
+     */
+    @Test
+    void testValidXmlCorrectNumParticulars() {
+        final String condition = "CorrectNumParticulars";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, null);
     }
 }
