@@ -39,6 +39,10 @@
   <tns:claimAmount>-1</tns:claimAmount>
   <tns:solicitorCost>-1</tns:solicitorCost>
   <tns:particulars>1234567890123456789012345678901234567890123456</tns:particulars>
+  <tns:claimantWitnessVulnerable>
+    <tns:isVulnerable></tns:isVulnerable>
+    <tns:vulnerableDetails>1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901</tns:vulnerableDetails>
+  </tns:claimantWitnessVulnerable>
   <tns:sotSignature>
     <base:flag></base:flag>
     <base:name>123456789012345678901234567890</base:name>
