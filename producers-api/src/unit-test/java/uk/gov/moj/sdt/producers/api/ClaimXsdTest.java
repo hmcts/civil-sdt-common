@@ -85,7 +85,7 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
     }
 
     /**
-     * Tests that vulnerability details field is optional.
+     * Tests that vulnerable details field is optional.
      */
     @Test
     void testValidXmlOptionalVulnerableDetails() {
@@ -131,6 +131,9 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
         this.validateXsd (xmlPath, XSD_PATH, errorFilePathname);
     }
 
+    /**
+     * Tests that expected errors are reported for a blank vulnerable details field.
+     */
     @Test
     void testInvalidXmlVulnerableDetailsBlank() {
         final String condition = "VulnerableDetailsBlank";
