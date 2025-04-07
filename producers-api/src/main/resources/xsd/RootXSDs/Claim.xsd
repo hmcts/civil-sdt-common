@@ -90,6 +90,20 @@
             <xs:element name="address" type="base:addressType" />
         </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="claimantWitnessVulnerableType">
+        <xs:sequence>
+            <xs:element name="isVulnerable" type="xs:boolean" />
+            <xs:element name="vulnerableDetails" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="base:sdtNonBlankStringType">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="150" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
     
 	<xs:complexType name="claimType">
         <xs:sequence>
@@ -104,6 +118,7 @@
 			<xs:element name="claimAmount" type="xs:unsignedLong"/>
 			<xs:element name="solicitorCost" type="xs:unsignedLong" minOccurs="0" />
             <xs:element name="particulars" type="tns:particularsType" minOccurs="1" maxOccurs="24"/>
+            <xs:element name="claimantWitnessVulnerable" type="tns:claimantWitnessVulnerableType" minOccurs="0"/>
             <xs:element name="sotSignature" type="base:sotSignatureType"/>
         </xs:sequence>
 	</xs:complexType>

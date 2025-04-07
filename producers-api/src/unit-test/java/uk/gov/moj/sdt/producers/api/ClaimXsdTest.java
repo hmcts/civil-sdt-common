@@ -72,6 +72,30 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
     }
 
     /**
+     * Tests that the claimant/witness vulnerable section is optional.
+     * Note that this test will need to be removed and the mandatory
+     * missing test updated when the section is made mandatory.
+     */
+    @Test
+    void testValidXmlOptionalClaimantWitnessVulnerable() {
+        final String condition = "OptionalClaimantWitnessVulnerable";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, null);
+    }
+
+    /**
+     * Tests that vulnerable details field is optional.
+     */
+    @Test
+    void testValidXmlOptionalVulnerableDetails() {
+        final String condition = "OptionalVulnerableDetails";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, null);
+    }
+
+    /**
      * Tests that expected errors are reported for missing mandatory fields.
      */
     @Test
@@ -84,6 +108,18 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
     }
 
     /**
+     * Tests that expected errors are reported for missing mandatory isVulnerable field.
+     */
+    @Test
+    void testInvalidXmlMandatoryIsVulnerableMissing() {
+        final String condition = "MandatoryIsVulnerableMissing";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+        final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, errorFilePathname);
+    }
+
+    /**
      * Tests that expected errors are reported for incorrect format of fields.
      */
     @Test
@@ -93,5 +129,17 @@ class ClaimXsdTest extends AbstractSdtXmlTestBase {
         final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
 
         this.validateXsd (xmlPath, XSD_PATH, errorFilePathname);
+    }
+
+    /**
+     * Tests that expected errors are reported for a blank vulnerable details field.
+     */
+    @Test
+    void testInvalidXmlVulnerableDetailsBlank() {
+        final String condition = "VulnerableDetailsBlank";
+        final String xmlPath = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.XML_FILE_SUFFIX;
+        final String errorFilePathname = XML_DIR + XSD_NAME + condition + AbstractSdtXmlTestBase.ERROR_FILE_SUFFIX;
+
+        this.validateXsd(xmlPath, XSD_PATH, errorFilePathname);
     }
 }
