@@ -223,7 +223,7 @@ dependencies {
     }
     implementation 'org.hibernate:hibernate-core:5.6.15.Final'
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.3'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.19.0'
     implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
@@ -282,7 +282,7 @@ subprojects {
         }
         implementation 'org.hibernate:hibernate-core:5.6.15.Final'
         implementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
-        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.3'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.19.0'
         implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc') {
             exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
         }
