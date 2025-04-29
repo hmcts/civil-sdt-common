@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:mcolClaim xmlns:base="http://ws.sdt.moj.gov.uk/2013/sdt/BaseSchema" xmlns:tns="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ws.sdt.moj.gov.uk/2013/mcol/ClaimSchema ../../../../../main/resources/xsd/RootXSDs/Claim.xsd ">
+    <tns:claimant>
+        <tns:name>tns name</tns:name>
+        <tns:address>
+            <tns:line1>tns line1</tns:line1>
+            <tns:line2>tns line2</tns:line2>
+            <tns:line3>tns line3</tns:line3>
+            <tns:line4>tns line4</tns:line4>
+            <tns:postcode>FL23 2SD</tns:postcode>
+        </tns:address>
+    </tns:claimant>
+    <tns:defendant1>
+        <tns:name>tns name</tns:name>
+        <tns:address>
+            <base:line1>base line1</base:line1>
+            <base:line2>base line2</base:line2>
+            <base:line3>base line3</base:line3>
+            <base:line4>base line4</base:line4>
+            <base:postcode>FL23 2SD</base:postcode>
+        </tns:address>
+    </tns:defendant1>
+    <tns:sendParticularsSeparately>true</tns:sendParticularsSeparately>
+    <tns:reserveRightToClaimInterest>false</tns:reserveRightToClaimInterest>
+    <tns:claimAmount>0</tns:claimAmount>
+    <tns:solicitorCost>0</tns:solicitorCost>
+    <tns:particulars>tns particulars</tns:particulars>
+    <tns:claimantWitnessVulnerable>
+        <tns:isVulnerable>false</tns:isVulnerable>
+    </tns:claimantWitnessVulnerable>
+    <tns:sotSignature>
+        <base:flag>true</base:flag>
+        <base:name>123456789012345678901234567890</base:name>
+    </tns:sotSignature>
+</tns:mcolClaim>
