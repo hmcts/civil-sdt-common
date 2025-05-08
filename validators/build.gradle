@@ -35,9 +35,9 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonValidators(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'validators'
             artifact testJar
             version project.version
             from components.java

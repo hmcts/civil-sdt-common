@@ -27,9 +27,9 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonDomain(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'domain'
             artifact testJar
             version project.version
             from components.java

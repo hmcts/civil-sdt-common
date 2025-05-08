@@ -58,9 +58,9 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonUtils(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'utils'
             artifact testJar
             artifact testIntegJar
             version project.version

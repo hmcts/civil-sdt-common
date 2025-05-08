@@ -7,9 +7,9 @@ dependencies {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonHandlersApi(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'handlers-api'
             version project.version
             from components.java
         }

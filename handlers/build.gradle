@@ -37,9 +37,9 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonHandlers(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'handlers'
             artifact testJar
             version project.version
             from components.java

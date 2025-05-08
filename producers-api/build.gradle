@@ -97,9 +97,9 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonProducersApi(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'producers-api'
             artifact testJar
             version project.version
             from components.java

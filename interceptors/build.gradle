@@ -33,9 +33,9 @@ dependencies {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        SdtCommonInterceptors(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'interceptors'
             version project.version
             from components.java
         }
