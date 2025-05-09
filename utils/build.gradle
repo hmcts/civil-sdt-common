@@ -58,7 +58,7 @@ artifacts {
 
 publishing {
     publications {
-        SdtCommonUtils(MavenPublication) {
+        AzureArtUtils(MavenPublication) {
             groupId project.group
             artifactId 'utils'
             artifact testJar
@@ -70,7 +70,7 @@ publishing {
 
     repositories {
         maven {
-            name = "AzureArtifacts"
+            name = "UtilsAzureArtifacts"
             url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
             credentials {
                 username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
