@@ -7,7 +7,7 @@ dependencies {
 
 publishing {
     publications {
-        AzureArtHandlersApi(MavenPublication) {
+        HandlersApiPub(MavenPublication) {
             groupId project.group
             artifactId 'handlers-api'
             version project.version

@@ -58,7 +58,7 @@ artifacts {
 
 publishing {
     publications {
-        AzureArtUtils(MavenPublication) {
+        UtilsPub(MavenPublication) {
             groupId project.group
             artifactId 'utils'
             artifact testJar

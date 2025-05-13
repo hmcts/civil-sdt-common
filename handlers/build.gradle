@@ -37,7 +37,7 @@ artifacts {
 
 publishing {
     publications {
-        AzureArtHandlers(MavenPublication) {
+        HandlersPub(MavenPublication) {
             groupId project.group
             artifactId 'handlers'
             artifact testJar

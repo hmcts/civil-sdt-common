@@ -35,7 +35,7 @@ artifacts {
 
 publishing {
     publications {
-        AzureArtValidators(MavenPublication) {
+        ValidatorsPub(MavenPublication) {
             groupId project.group
             artifactId 'validators'
             artifact testJar

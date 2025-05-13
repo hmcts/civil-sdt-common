@@ -6,7 +6,7 @@ dependencies {
 
 publishing {
     publications {
-        AzureArtServicesApi(MavenPublication) {
+        ServicesApiPub(MavenPublication) {
             groupId project.group
             artifactId 'services-api'
             version project.version

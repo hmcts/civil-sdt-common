@@ -27,7 +27,7 @@ artifacts {
 
 publishing {
     publications {
-        AzureArtDomain(MavenPublication) {
+        DomainPub(MavenPublication) {
             groupId project.group
             artifactId 'domain'
             artifact testJar

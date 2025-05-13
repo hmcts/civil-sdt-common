@@ -97,7 +97,7 @@ artifacts {
 
 publishing {
     publications {
-        AzureArtProducersApi(MavenPublication) {
+        ProducersApiPub(MavenPublication) {
             groupId project.group
             artifactId 'producers-api'
             artifact testJar

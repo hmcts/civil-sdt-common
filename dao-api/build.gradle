@@ -6,7 +6,7 @@ dependencies {
 
 publishing {
     publications {
-        AzureArtDaoApi(MavenPublication) {
+        DaoApiPub(MavenPublication) {
             groupId project.group
             artifactId 'dao-api'
             version project.version
