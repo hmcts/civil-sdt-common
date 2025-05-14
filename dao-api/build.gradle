@@ -6,11 +6,22 @@ dependencies {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        DaoApiPub(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'dao-api'
             version project.version
             from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "DaoApiAzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+            }
         }
     }
 }

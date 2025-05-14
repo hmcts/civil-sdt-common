@@ -97,12 +97,23 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        ProducersApiPub(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'producers-api'
             artifact testJar
             version project.version
             from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "ProducersApiAzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+            }
         }
     }
 }
