@@ -28,7 +28,7 @@ jobs:
 
       - name: Publish dao-api to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishDaoApiPubPublicationToDaoApiAzureArtifactsRepository
+          ./gradlew publishDaoApiPubPublicationToDaoApiAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
 
       - name: Publish domain to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishDomainPubPublicationToDomainAzureArtifactsRepository
+          ./gradlew publishDomainPubPublicationToDomainAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -46,7 +46,7 @@ jobs:
 
       - name: Publish handlers to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishHandlersPubPublicationToHandlersAzureArtifactsRepository
+          ./gradlew publishHandlersPubPublicationToHandlersAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
 
       - name: Publish handlers-api to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishHandlersApiPubPublicationToHandlersApiAzureArtifactsRepository
+          ./gradlew publishHandlersApiPubPublicationToHandlersApiAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Publish interceptors to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishInterceptorsPubPublicationToInterceptorsAzureArtifactsRepository
+          ./gradlew publishInterceptorsPubPublicationToInterceptorsAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: Publish producers-api to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishProducersApiPubPublicationToProducersApiAzureArtifactsRepository
+          ./gradlew publishProducersApiPubPublicationToProducersApiAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -82,7 +82,7 @@ jobs:
 
       - name: Publish services-api to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishServicesApiPubPublicationToServicesApiAzureArtifactsRepository
+          ./gradlew publishServicesApiPubPublicationToServicesApiAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Publish transformers to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishTransformersPubPublicationToTransformersAzureArtifactsRepository
+          ./gradlew publishTransformersPubPublicationToTransformersAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
 
       - name: Publish utils to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishUtilsPubPublicationToUtilsAzureArtifactsRepository
+          ./gradlew publishUtilsPubPublicationToUtilsAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
 
       - name: Publish validators to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishValidatorsPubPublicationToValidatorsAzureArtifactsRepository
+          ./gradlew publishValidatorsPubPublicationToValidatorsAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
@@ -118,7 +118,7 @@ jobs:
 
       - name: Publish sdt-common to Azure DevOps Artifacts
         run: |
-          ./gradlew --info publishSdtCommonPubPublicationToSdtCommonAzureArtifactsRepository
+          ./gradlew publishSdtCommonPubPublicationToSdtCommonAzureArtifactsRepository
         env:
           AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
           AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
