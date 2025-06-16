@@ -39,8 +39,8 @@ java {
 }
 
 ext {
-    junitVersion           = '5.11.4'
-    junitPlatformVersion   = '1.11.4'
+    junitVersion           = '5.13.1'
+    junitPlatformVersion   = '1.13.1'
     log4jVersion = '2.24.3'
     testcontainers = '1.17.5'
     cxfVersion = '3.6.6'
