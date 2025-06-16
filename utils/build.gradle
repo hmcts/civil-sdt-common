@@ -58,13 +58,24 @@ artifacts {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        UtilsPub(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'utils'
             artifact testJar
             artifact testIntegJar
             version project.version
             from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "UtilsAzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+            }
         }
     }
 }

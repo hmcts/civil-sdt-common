@@ -6,11 +6,22 @@ dependencies {
 
 publishing {
     publications {
-        "$project.name"(MavenPublication) {
+        ServicesApiPub(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId 'services-api'
             version project.version
             from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "ServicesApiAzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+            }
         }
     }
 }
