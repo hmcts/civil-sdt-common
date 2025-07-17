@@ -243,7 +243,7 @@ dependencies {
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
-    api 'org.apache.commons:commons-lang3:3.17.0'
+    api 'org.apache.commons:commons-lang3:3.18.0'
     api 'commons-io:commons-io:2.19.0'
 }
 
@@ -302,7 +302,7 @@ subprojects {
 
         // This dependency is exported to consumers, that is to say found on their compile classpath.
         api 'org.apache.commons:commons-math3:3.6.1'
-        api 'org.apache.commons:commons-lang3:3.17.0'
+        api 'org.apache.commons:commons-lang3:3.18.0'
         api 'commons-io:commons-io:2.19.0'
     }
 
