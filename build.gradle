@@ -34,7 +34,7 @@ def gitRepo = "https://github.com/hmcts/civil-sdt-common.git"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
