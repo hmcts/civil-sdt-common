@@ -65,6 +65,8 @@ ext.libraries = [
         ]
 ]
 
+ext['byte-buddy.version'] = '1.17.7'
+
 sonarqube {
     properties {
         property "sonar.sources", "src"
@@ -231,8 +233,7 @@ dependencies {
     testImplementation libraries.junit5
     testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
     testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-    testImplementation 'org.mockito:mockito-core:5.13.0'
-    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
+    testImplementation 'org.mockito:mockito-core:5.21.0'
     testImplementation 'org.springframework:spring-test:6.2.16'
     testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
@@ -290,8 +291,7 @@ subprojects {
         testImplementation libraries.junit5
         testImplementation group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.15.0'
         testImplementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
-        testImplementation 'org.mockito:mockito-core:5.13.0'
-        testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
+        testImplementation 'org.mockito:mockito-core:5.21.0'
         testImplementation 'org.springframework:spring-test:6.2.16'
         testImplementation group: 'xerces', name: 'xercesImpl', version: '2.12.2'
         testImplementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
